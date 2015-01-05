@@ -1,0 +1,104 @@
+body {
+    font-size: 130%;
+    font-family: sans;
+    background-color: #EEE;
+    color: #555;
+}
+
+code {
+font-family: Courier, monospace;
+background-color: #EEE;
+font-weight: bold;
+}
+
+pre.knitr {
+    font-family: Courier, monospace;
+    color: black;
+    font-weight: bold;
+}
+
+#counter {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 1px solid red;
+    background: white;
+    z-index: 5;
+}
+
+#title {
+    font-size: 200%;
+    text-align: center;
+}
+
+.slide {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 1em 1em 1em 1em;
+    border: 5px solid #b5121b;
+    border-radius: 1em;
+    xwidth: 90%;
+    padding: 0em 1em 0em 1em;
+    background-color: white;
+}
+
+.slide img.fit {
+    width: 100%;
+}
+
+img.mainpic {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slide img .rimage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slide .rimage img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div .left {
+    width: 50%;
+    left:0;
+    top: 0;
+    float: left;
+}
+div .right {
+    width: 50%;
+    right:0;
+    top: 0;
+    float: right;
+}
+
+h1 {
+    text-align: center;
+}
+
+dt {
+    margin-left: 1em;
+    display: list-item;
+    list-style-type: disc;
+    }
+
+dl.packagelist dt {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 120%;
+    margin-bottom: 0.5em;
+}
+
+
+dl.packagelist dd {
+    margin-bottom: 1em;
+}
+

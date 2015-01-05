@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+.knitr.inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+},
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0em 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage.left {
+  text-align: left;
+}
+.rimage.right {
+  text-align: right;
+}
+.rimage.center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<meta charset="utf-8"> 
+<title>The Hadleyverse</title>
+<link rel="stylesheet" type="text/css" href="presentation.css" />
+</head>
+<body>
+<div id="counter"></div>
+
+
+<div class="slide" id="title">
+<h1>Packages of the Hadleyverse</h1>
+<h2>Power for your R</h2>
+<h3>Barry Rowlingson</h3>
+<h4>Lancaster University</h4>
+</div>
+<div class="slide" id="first">
+<h1>Who?</h1>
+<div class="left">
+<ul>
+<li>Hadley Wickham</li>
+<li>RStudio Chief Scientist</li>
+</ul>
+</div>
+<div class="right">
+<img src="images/hadley.jpg" />
+</div>
+</div>
+<div class="slide" id="another">
+<h1>Packages</h1>
+<div class="left">
+<img class="fit" src="images/MRAN2.png" />
+</div>
+<div class="right">
+<img class="fit" src="images/github.png" />
+</div>
+</div>
+
+<div class="slide">
+<div class="left">
+<h1>Beginners</h1>
+<dl class="packagelist">
+<dt><code>lubridate</code></dt>
+<dd>Date and time handling</dd>
+<dt><code>stringr</code></dt>
+<dd>Working with text strings</dd>
+<!--dt>reshape2</dt>
+<dd>Reshape data</dd-->
+<dt><code>tidyr</code></dt>
+<dd>Make tidy data</dd>
+<dt><code>dplyr</code></dt>
+<dd>Data manipulation</dd>
+<dt><code>ggplot2</code></dt>
+<dd>The graphical grammar</dd>
+</dl>
+</div>
+<div class="right">
+<h1>Advanced</h1>
+<dl class="packagelist">
+<dt><code>devtools</code></dt>
+<dd>Package development</dd>
+<dt><code>roxygen2</code></dt>
+<dd>Document your functions</dd>
+<dt><code>testthat</code></dt>
+<dd>Automatic code testing</dd>
+</dl>
+</div>
+</div>
+
+<div class="slide">
+<h1><code>lubridate</code></h1>
+<p>provides</p>
+<ul>
+<li>Text to Date/Date Time Conversion</li>
+<li>Duration and Periods</li>
+<li>Arithmetic for Dates</li>
+</ul>
+<h1>But....</h1>
+<p>
+Doesn't R already have dates and times?
+</p>
+<p>
+Yes...
+</p>
+<pre>
+strptime                 package:base                  R Documentation
+
+Date-time Conversion Functions to and from Character
+
+Description:
+
+Functions to convert between character representations and objects
+of classes ‘"POSIXlt"’ and ‘"POSIXct"’ representing calendar dates
+and times.
+
+‘strptime’ converts character vectors to class ‘"POSIXlt"’: its
+input ‘x’ is first converted by ‘as.character’.  Each input string
+is processed as far as necessary for the format specified: any
+trailing characters are ignored.
+
+‘strftime’ is a wrapper for ‘format.POSIXlt’, and it and
+‘format.POSIXct’ first convert to class ‘"POSIXlt"’ by calling
+‘as.POSIXlt’ (so they also work for class ‘"Date"’).  Note that
+only that conversion depends on the time zone.
+</pre>
+</div>
+
+<div class="slide">
+<h1>Make it Easy</h1>
+<h2>Dates with <code>ymd</code> etc</h2>
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">d</span> <span class="hl kwb">=</span> <span class="hl kwd">ymd</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;2001-01-12&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;2011/3/31&quot;</span><span class="hl std">))</span>
+<span class="hl std">&gt; </span><span class="hl std">d</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "2001-01-12 UTC" "2011-03-31 UTC"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">dmy</span><span class="hl std">(</span><span class="hl str">&quot;310314&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "2014-03-31 UTC"
+</pre></div>
+</div></div>
+<h2>Dates and times...</h2>
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">dt</span> <span class="hl kwb">=</span> <span class="hl kwd">ymd_hms</span><span class="hl std">(</span><span class="hl str">&quot;2001-01-12 14:12:00&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl std">dt</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "2001-01-12 14:12:00 UTC"
+</pre></div>
+</div></div>
+<h2>Date and Time Info</h2>
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">day</span><span class="hl std">(dt);</span> <span class="hl kwd">month</span><span class="hl std">(dt);</span> <span class="hl kwd">year</span><span class="hl std">(dt)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 12
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 1
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 2001
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">month</span><span class="hl std">(dt,</span> <span class="hl kwc">label</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] Jan
+12 Levels: Jan < Feb < Mar < Apr < May < Jun < Jul < Aug < Sep < ... < Dec
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">wday</span><span class="hl std">(dt,</span> <span class="hl kwc">label</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] Fri
+Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">yday</span><span class="hl std">(d)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 12 90
+</pre></div>
+</div></div>
+<h2>Durations and Intervals</h2>
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">leave</span> <span class="hl kwb">=</span> <span class="hl kwd">ymd</span><span class="hl std">(</span><span class="hl num">20150601</span><span class="hl std">)</span>    <span class="hl com"># go away</span>
+<span class="hl std">&gt; </span><span class="hl std">ret</span> <span class="hl kwb">=</span> <span class="hl std">leave</span> <span class="hl opt">+</span> <span class="hl kwd">weeks</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">)</span> <span class="hl opt">+</span> <span class="hl kwd">days</span><span class="hl std">(</span><span class="hl num">4</span><span class="hl std">)</span>   <span class="hl com"># come back 2 weeks 4 days later</span>
+<span class="hl std">&gt; </span><span class="hl std">ret</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "2015-06-19 UTC"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">howlong</span> <span class="hl kwb">=</span> <span class="hl std">ret</span> <span class="hl opt">-</span> <span class="hl std">leave</span>    <span class="hl com"># an R difftime</span>
+<span class="hl std">&gt; </span><span class="hl std">howlong</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Time difference of 18 days
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">holiday</span> <span class="hl kwb">=</span> <span class="hl std">leave</span> <span class="hl opt">%--%</span> <span class="hl std">ret</span> <span class="hl com"># a lubridate interval</span>
+<span class="hl std">&gt; </span><span class="hl std">holiday</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 2015-06-01 UTC--2015-06-19 UTC
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">holiday</span><span class="hl opt">/</span><span class="hl kwd">dweeks</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">)</span>   <span class="hl com"># how many weeks?</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 2.571
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">leave</span> <span class="hl opt">+</span> <span class="hl kwd">days</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r"> [1] "2015-06-02 UTC" "2015-06-03 UTC" "2015-06-04 UTC" "2015-06-05 UTC"
+ [5] "2015-06-06 UTC" "2015-06-07 UTC" "2015-06-08 UTC" "2015-06-09 UTC"
+ [9] "2015-06-10 UTC" "2015-06-11 UTC"
+</pre></div>
+</div></div>
+</div>
+
+<div class="slide">
+<h1><code>stringr</code></h1>
+<p>Doesn't R have string handling?</p>
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">nchar</span><span class="hl std">(</span><span class="hl str">&quot;Barry&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 5
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">who</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Barry&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Fred&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Steve&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">nchar</span><span class="hl std">(who)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 5 4 5
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">who</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Sara&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Julie&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Jenny&quot;</span><span class="hl std">,</span> <span class="hl num">NA</span><span class="hl std">,</span> <span class="hl str">&quot;Helen&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">nchar</span><span class="hl std">(who)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 4 5 5 2 5
+</pre></div>
+</div></div>
+</div>
+
+<div class="slide">
+<h1><code>stringr</code> for sensible string handling</h1>
+<h2>String Length</h2>
+<div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">who</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "Sara"  "Julie" "Jenny" NA      "Helen"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_length</span><span class="hl std">(who)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1]  4  5  5 NA  5
+</pre></div>
+</div></div>
+
+<h2>Pattern count</h2>
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(stringr)</span>
+<span class="hl std">&gt; </span><span class="hl std">fruit</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;apple&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;banana&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;pear&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;pineapple&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">str_count</span><span class="hl std">(fruit,</span> <span class="hl str">&quot;apple&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 1 0 0 1
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_count</span><span class="hl std">(fruit,</span> <span class="hl str">&quot;p&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 2 0 1 3
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_count</span><span class="hl std">(fruit,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;a&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;b&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;p&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;p&quot;</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 1 1 1 3
+</pre></div>
+</div></div>
+
+<h2>Pattern matching</h2>
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_detect</span><span class="hl std">(fruit,</span> <span class="hl str">&quot;apple&quot;</span><span class="hl std">)</span> <span class="hl com"># find anywhere</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1]  TRUE FALSE FALSE  TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_detect</span><span class="hl std">(fruit,</span> <span class="hl str">&quot;^p&quot;</span><span class="hl std">)</span>     <span class="hl com"># ^ matches start</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] FALSE FALSE  TRUE  TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_detect</span><span class="hl std">(fruit,</span> <span class="hl str">&quot;a$&quot;</span><span class="hl std">)</span>     <span class="hl com"># $ matches end</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] FALSE  TRUE FALSE FALSE
+</pre></div>
+</div></div>
+
+<h2>Extracting patterns</h2>
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">people</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Arthur 25&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Barry 33&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Charles 12&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Darren Edward 19&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">str_extract</span><span class="hl std">(people,</span> <span class="hl str">&quot;\\d+&quot;</span><span class="hl std">)</span>     <span class="hl com"># one or more digits</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "25" "33" "12" "19"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_extract</span><span class="hl std">(people,</span> <span class="hl str">&quot;[^0-9]+&quot;</span><span class="hl std">)</span>  <span class="hl com"># from start to non-numeric</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "Arthur "        "Barry "         "Charles "       "Darren Edward "
+</pre></div>
+</div></div>
+
+<h2>Trim</h2>
+<div class="chunk" id="unnamed-chunk-10"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_trim</span><span class="hl std">(</span><span class="hl kwd">str_extract</span><span class="hl std">(people,</span> <span class="hl str">&quot;[^0-9]*&quot;</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "Arthur"        "Barry"         "Charles"       "Darren Edward"
+</pre></div>
+</div></div>
+
+<h2>Splitting</h2>
+<div class="chunk" id="unnamed-chunk-11"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bp</span><span class="hl kwb">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;150;120;110&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;100;100;110;120;130&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;90&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">str_split</span><span class="hl std">(bp,</span> <span class="hl str">&quot;;&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[[1]]
+[1] "150" "120" "110"
+
+[[2]]
+[1] "100" "100" "110" "120" "130"
+
+[[3]]
+[1] "90"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_split</span><span class="hl std">(bp,</span> <span class="hl str">&quot;;&quot;</span><span class="hl std">,</span> <span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[[1]]
+[1] "150"     "120;110"
+
+[[2]]
+[1] "100"             "100;110;120;130"
+
+[[3]]
+[1] "90"
+</pre></div>
+</div></div>
+
+<h2>Substrings</h2>
+<div class="chunk" id="unnamed-chunk-12"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">s</span> <span class="hl kwb">=</span> <span class="hl str">&quot;The Quick Brown Fox&quot;</span>
+<span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl num">5</span><span class="hl std">,</span><span class="hl num">9</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "Quick"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl num">5</span><span class="hl std">,</span><span class="hl num">9</span><span class="hl std">)</span> <span class="hl kwb">&lt;-</span> <span class="hl str">&quot;Slow&quot;</span> <span class="hl com"># replace with different length</span>
+<span class="hl std">&gt; </span><span class="hl std">s</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "The Slow Brown Fox"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl opt">-</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span>         <span class="hl com"># negative numbers count from end</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "Fox"
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl opt">-</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl kwb">&lt;-</span> <span class="hl str">&quot;Monkey&quot;</span>
+<span class="hl std">&gt; </span><span class="hl std">s</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] "The Slow Brown Monkey"
+</pre></div>
+</div></div>
+
+</div>
+
+<!--div class="slide">
+<h1>reshape2</h1>
+</div-->
+
+<div class="slide">
+<h1><code>tidyr</code></h1>
+<h2>A package for making tidy data</h2>
+<h3>What is tidy data?</h3>
+<p>Read all about it here:
+<a href="http://vita.had.co.nz/papers/tidy-data.pdf">http://vita.had.co.nz/papers/tidy-data.pdf</a>. In a nutshell:
+<ul>
+<li>Each observation is a row</li>
+<li>Each variable is a column</li>
+<li>No data in labels</li>
+</ul>
+</p>
+
+
+
+<h3>Untidy data</h3>
+<p>As seen in spreadsheets...</p>
+
+<div class="chunk" id="unnamed-chunk-13"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">stocks</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Stock 2009-01-01 2009-01-02 2009-01-03 2009-01-04 2009-01-05 2009-01-06
+1  MSFT        719        724        725        730        727        721
+2  GOOG        290        302        308        311        312        315
+3  ORAC        546        543        531        517        508        502
+4  AMAZ        350        358        366        370        379        386
+5  SONY        410        396        379        363        358        352
+6  YHOO        310        303        298        295        296        299
+</pre></div>
+</div></div>
+
+<p><code>gather</code> to put one observation per row</p>
+
+<div class="chunk" id="unnamed-chunk-14"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(tidyr)</span>
+<span class="hl std">&gt; </span><span class="hl std">stockTidy</span> <span class="hl kwb">=</span> <span class="hl kwd">gather</span><span class="hl std">(stocks, Date, Price,</span> <span class="hl opt">-</span><span class="hl std">Stock)</span>
+<span class="hl std">&gt; </span><span class="hl std">stockTidy[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">20</span><span class="hl std">,]</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Stock       Date Price
+1   MSFT 2009-01-01   719
+2   GOOG 2009-01-01   290
+3   ORAC 2009-01-01   546
+4   AMAZ 2009-01-01   350
+5   SONY 2009-01-01   410
+6   YHOO 2009-01-01   310
+7   MSFT 2009-01-02   724
+8   GOOG 2009-01-02   302
+9   ORAC 2009-01-02   543
+10  AMAZ 2009-01-02   358
+11  SONY 2009-01-02   396
+12  YHOO 2009-01-02   303
+13  MSFT 2009-01-03   725
+14  GOOG 2009-01-03   308
+15  ORAC 2009-01-03   531
+16  AMAZ 2009-01-03   366
+17  SONY 2009-01-03   379
+18  YHOO 2009-01-03   298
+19  MSFT 2009-01-04   730
+20  GOOG 2009-01-04   311
+</pre></div>
+</div></div>
+
+<p><code>spread</code> reverses <code>gather</code> to get
+the table format back:</p>
+
+<div class="chunk" id="unnamed-chunk-15"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">spread</span><span class="hl std">(stockTidy, Date, Price)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Stock 2009-01-01 2009-01-02 2009-01-03 2009-01-04 2009-01-05 2009-01-06
+1  MSFT        719        724        725        730        727        721
+2  GOOG        290        302        308        311        312        315
+3  ORAC        546        543        531        517        508        502
+4  AMAZ        350        358        366        370        379        386
+5  SONY        410        396        379        363        358        352
+6  YHOO        310        303        298        295        296        299
+</pre></div>
+</div></div>
+
+<p>or this way round:</p>
+
+<div class="chunk" id="unnamed-chunk-16"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">spread</span><span class="hl std">(stockTidy, Stock, Price)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">        Date MSFT GOOG ORAC AMAZ SONY YHOO
+1 2009-01-01  719  290  546  350  410  310
+2 2009-01-02  724  302  543  358  396  303
+3 2009-01-03  725  308  531  366  379  298
+4 2009-01-04  730  311  517  370  363  295
+5 2009-01-05  727  312  508  379  358  296
+6 2009-01-06  721  315  502  386  352  299
+</pre></div>
+</div></div>
+
+<h2>Why tidy data?</h2>
+<p>
+Regularity makes queries easy...
+</p>
+<div class="chunk" id="unnamed-chunk-17"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl com"># any stock prices over 540:</span>
+<span class="hl std">&gt; </span><span class="hl kwd">subset</span><span class="hl std">(stockTidy, Price</span> <span class="hl opt">&gt;</span> <span class="hl num">540</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Stock       Date Price
+1   MSFT 2009-01-01   719
+3   ORAC 2009-01-01   546
+7   MSFT 2009-01-02   724
+9   ORAC 2009-01-02   543
+13  MSFT 2009-01-03   725
+19  MSFT 2009-01-04   730
+25  MSFT 2009-01-05   727
+31  MSFT 2009-01-06   721
+</pre></div>
+</div></div>
+
+</div>
+
+<div class="slide">
+<h1>More tidyr-ing</h1>
+
+<h2>Sample data</h2>
+<p>Blood pressure for five individuals recorded over 
+up to four weeks</p>
+<div class="chunk" id="unnamed-chunk-18"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bpd</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start  Week1  Week2  Week3  Week4
+1 Anne  35 2014-03-27 100/80 140/70 100/75 120/90
+2  Ben  41 2014-03-09 110/65 115/80 100/65 135/70
+3 Carl  33 2014-04-02 125/80 140/90   <NA>   <NA>
+4 Debs  27 2014-04-01 100/65 115/85 120/80   <NA>
+5   Ed  22 2014-04-02 115/75  90/75 110/65 120/75
+</pre></div>
+</div></div>
+
+<p>What's wrong with it?
+<ul>
+<li>Several observations in a row</li>
+<li>Measurement columns have two variables</li>
+<li>Week number is coded into the column label</li>
+</ul>
+</p>
+
+<p>Let's fix this up:
+<dl>
+<dt>put the weekly measurements onto separate lines:</dt>
+<dd>
+<div class="chunk" id="unnamed-chunk-19"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">gather</span><span class="hl std">(bpd, Week, BP, Week1</span><span class="hl opt">:</span><span class="hl std">Week4)</span>
+<span class="hl std">&gt; </span><span class="hl std">bps</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Age      Start  Week     BP
+1  Anne  35 2014-03-27 Week1 100/80
+2   Ben  41 2014-03-09 Week1 110/65
+3  Carl  33 2014-04-02 Week1 125/80
+4  Debs  27 2014-04-01 Week1 100/65
+5    Ed  22 2014-04-02 Week1 115/75
+6  Anne  35 2014-03-27 Week2 140/70
+7   Ben  41 2014-03-09 Week2 115/80
+8  Carl  33 2014-04-02 Week2 140/90
+9  Debs  27 2014-04-01 Week2 115/85
+10   Ed  22 2014-04-02 Week2  90/75
+11 Anne  35 2014-03-27 Week3 100/75
+12  Ben  41 2014-03-09 Week3 100/65
+13 Carl  33 2014-04-02 Week3   <NA>
+14 Debs  27 2014-04-01 Week3 120/80
+15   Ed  22 2014-04-02 Week3 110/65
+16 Anne  35 2014-03-27 Week4 120/90
+17  Ben  41 2014-03-09 Week4 135/70
+18 Carl  33 2014-04-02 Week4   <NA>
+19 Debs  27 2014-04-01 Week4   <NA>
+20   Ed  22 2014-04-02 Week4 120/75
+</pre></div>
+</div></div>
+</dd>
+<dt>split the BP measurement up and convert to numbers</dt>
+<dd>
+<div class="chunk" id="unnamed-chunk-20"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(bps, BP,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">,</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span> <span class="hl str">&quot;/&quot;</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">,</span> <span class="hl kwc">extra</span><span class="hl std">=</span><span class="hl str">&quot;drop&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl std">bps</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Age      Start  Week sys dia
+1  Anne  35 2014-03-27 Week1 100  80
+2   Ben  41 2014-03-09 Week1 110  65
+3  Carl  33 2014-04-02 Week1 125  80
+4  Debs  27 2014-04-01 Week1 100  65
+5    Ed  22 2014-04-02 Week1 115  75
+6  Anne  35 2014-03-27 Week2 140  70
+7   Ben  41 2014-03-09 Week2 115  80
+8  Carl  33 2014-04-02 Week2 140  90
+9  Debs  27 2014-04-01 Week2 115  85
+10   Ed  22 2014-04-02 Week2  90  75
+11 Anne  35 2014-03-27 Week3 100  75
+12  Ben  41 2014-03-09 Week3 100  65
+13 Carl  33 2014-04-02 Week3  NA  NA
+14 Debs  27 2014-04-01 Week3 120  80
+15   Ed  22 2014-04-02 Week3 110  65
+16 Anne  35 2014-03-27 Week4 120  90
+17  Ben  41 2014-03-09 Week4 135  70
+18 Carl  33 2014-04-02 Week4  NA  NA
+19 Debs  27 2014-04-01 Week4  NA  NA
+20   Ed  22 2014-04-02 Week4 120  75
+</pre></div>
+</div></div>
+</dd>
+<dt>Split the weekN word up on the fourth character</dt>
+<dd>
+<div class="chunk" id="unnamed-chunk-21"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(bps, Week,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;X&quot;</span><span class="hl std">,</span><span class="hl str">&quot;Week&quot;</span><span class="hl std">),</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl std">bps</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Age      Start    X Week sys dia
+1  Anne  35 2014-03-27 Week    1 100  80
+2   Ben  41 2014-03-09 Week    1 110  65
+3  Carl  33 2014-04-02 Week    1 125  80
+4  Debs  27 2014-04-01 Week    1 100  65
+5    Ed  22 2014-04-02 Week    1 115  75
+6  Anne  35 2014-03-27 Week    2 140  70
+7   Ben  41 2014-03-09 Week    2 115  80
+8  Carl  33 2014-04-02 Week    2 140  90
+9  Debs  27 2014-04-01 Week    2 115  85
+10   Ed  22 2014-04-02 Week    2  90  75
+11 Anne  35 2014-03-27 Week    3 100  75
+12  Ben  41 2014-03-09 Week    3 100  65
+13 Carl  33 2014-04-02 Week    3  NA  NA
+14 Debs  27 2014-04-01 Week    3 120  80
+15   Ed  22 2014-04-02 Week    3 110  65
+16 Anne  35 2014-03-27 Week    4 120  90
+17  Ben  41 2014-03-09 Week    4 135  70
+18 Carl  33 2014-04-02 Week    4  NA  NA
+19 Debs  27 2014-04-01 Week    4  NA  NA
+20   Ed  22 2014-04-02 Week    4 120  75
+</pre></div>
+</div></div>
+</dd>
+</dl>
+
+<p>Or we could do it like this...</p>
+
+<div class="chunk" id="unnamed-chunk-22"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(</span>
+<span class="hl std"> </span>         <span class="hl kwd">separate</span><span class="hl std">(</span>
+<span class="hl std"> </span>           <span class="hl kwd">gather</span><span class="hl std">(bpd, Week, BP, Week1</span><span class="hl opt">:</span><span class="hl std">Week4),</span>
+<span class="hl std"> </span>           <span class="hl std">BP,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">,</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span> <span class="hl str">&quot;/&quot;</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">,</span> <span class="hl kwc">extra</span><span class="hl std">=</span><span class="hl str">&quot;drop&quot;</span>
+<span class="hl std"> </span>         <span class="hl std">),</span>
+<span class="hl std"> </span>         <span class="hl std">Week,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;X&quot;</span><span class="hl std">,</span><span class="hl str">&quot;Week&quot;</span><span class="hl std">),</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl std">bps</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Age      Start    X Week sys dia
+1  Anne  35 2014-03-27 Week    1 100  80
+2   Ben  41 2014-03-09 Week    1 110  65
+3  Carl  33 2014-04-02 Week    1 125  80
+4  Debs  27 2014-04-01 Week    1 100  65
+5    Ed  22 2014-04-02 Week    1 115  75
+6  Anne  35 2014-03-27 Week    2 140  70
+7   Ben  41 2014-03-09 Week    2 115  80
+8  Carl  33 2014-04-02 Week    2 140  90
+9  Debs  27 2014-04-01 Week    2 115  85
+10   Ed  22 2014-04-02 Week    2  90  75
+11 Anne  35 2014-03-27 Week    3 100  75
+12  Ben  41 2014-03-09 Week    3 100  65
+13 Carl  33 2014-04-02 Week    3  NA  NA
+14 Debs  27 2014-04-01 Week    3 120  80
+15   Ed  22 2014-04-02 Week    3 110  65
+16 Anne  35 2014-03-27 Week    4 120  90
+17  Ben  41 2014-03-09 Week    4 135  70
+18 Carl  33 2014-04-02 Week    4  NA  NA
+19 Debs  27 2014-04-01 Week    4  NA  NA
+20   Ed  22 2014-04-02 Week    4 120  75
+</pre></div>
+</div></div>
+
+<p>And now we have tidy data, except for the redundant <code>X</code>
+column....</p>
+</div>
+
+
+<div class="slide">
+<h1><code>magrittr</code></h1>
+<img class="mainpic" src="images/MagrittePipe.jpg">
+<p>
+<code>magrittr</code> is about creating <em>pipelines</em>
+</p>
+<div class="chunk" id="unnamed-chunk-23"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">log</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">)))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 0.7552
+</pre></div>
+</div></div>
+<p>can be written as a <em>pipeline:</em></p>
+<div class="chunk" id="unnamed-chunk-24"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">sqrt</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">log</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">mean</span><span class="hl std">()</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 0.7552
+</pre></div>
+</div></div>
+<p>especially neat when you have args to each function:</p>
+<div class="chunk" id="unnamed-chunk-25"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(</span><span class="hl kwd">log</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">base</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">)),</span><span class="hl kwc">trim</span><span class="hl std">=</span><span class="hl num">0.1</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 1.499
+</pre></div>
+</div></div>
+<p>becomes</p>
+<div class="chunk" id="unnamed-chunk-26"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>  <span class="hl kwd">log</span><span class="hl std">(</span><span class="hl kwc">base</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>  <span class="hl kwd">sqrt</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>  <span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwc">trim</span><span class="hl std">=</span><span class="hl num">0.1</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">[1] 1.499
+</pre></div>
+</div></div>
+<p>because the arguments are now closer to the function names!</p>
+</div>
+
+<div class="slide">
+<h1><code>magrittr</code> + <code>tidyr</code></h1>
+<p>Remember...</p>
+<div class="chunk" id="unnamed-chunk-27"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">gather</span><span class="hl std">(bpd, Week, BP, Week1</span><span class="hl opt">:</span><span class="hl std">Week4)</span>
+<span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(bps, BP,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">,</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span> <span class="hl str">&quot;/&quot;</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">,</span> <span class="hl kwc">extra</span><span class="hl std">=</span><span class="hl str">&quot;drop&quot;</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(bps, Week,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;X&quot;</span><span class="hl std">,</span><span class="hl str">&quot;Week&quot;</span><span class="hl std">),</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+</pre></div>
+</div></div>
+<p>Can do with pipes:</p>
+<div class="chunk" id="unnamed-chunk-28"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bpd</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start  Week1  Week2  Week3  Week4
+1 Anne  35 2014-03-27 100/80 140/70 100/75 120/90
+2  Ben  41 2014-03-09 110/65 115/80 100/65 135/70
+3 Carl  33 2014-04-02 125/80 140/90   <NA>   <NA>
+4 Debs  27 2014-04-01 100/65 115/85 120/80   <NA>
+5   Ed  22 2014-04-02 115/75  90/75 110/65 120/75
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl std">bpd</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>      <span class="hl kwd">gather</span><span class="hl std">(Week, BP, Week1</span><span class="hl opt">:</span><span class="hl std">Week4)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>      <span class="hl kwd">separate</span><span class="hl std">(BP,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">,</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span><span class="hl str">&quot;/&quot;</span><span class="hl std">,</span> <span class="hl kwc">extra</span><span class="hl std">=</span><span class="hl str">&quot;drop&quot;</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>      <span class="hl kwd">separate</span><span class="hl std">(Week,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;X&quot;</span><span class="hl std">,</span><span class="hl str">&quot;Week&quot;</span><span class="hl std">),</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">head</span><span class="hl std">(bps)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start    X Week sys dia
+1 Anne  35 2014-03-27 Week    1 100  80
+2  Ben  41 2014-03-09 Week    1 110  65
+3 Carl  33 2014-04-02 Week    1 125  80
+4 Debs  27 2014-04-01 Week    1 100  65
+5   Ed  22 2014-04-02 Week    1 115  75
+6 Anne  35 2014-03-27 Week    2 140  70
+</pre></div>
+</div></div>
+</div>
+
+<div class="slide">
+<h1><code>dplyr</code></h1>
+<h2>useful functions for tidy data</h2>
+<h3>Selecting - chooses <em>columns</em></h2>
+<div class="chunk" id="unnamed-chunk-29"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span><span class="hl num">3</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start
+1 Anne  35 2014-03-27
+2  Ben  41 2014-03-09
+3 Carl  33 2014-04-02
+4 Debs  27 2014-04-01
+5   Ed  22 2014-04-02
+6 Anne  35 2014-03-27
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(Name, Start)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name      Start
+1 Anne 2014-03-27
+2  Ben 2014-03-09
+3 Carl 2014-04-02
+4 Debs 2014-04-01
+5   Ed 2014-04-02
+6 Anne 2014-03-27
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">X)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start Week sys dia
+1 Anne  35 2014-03-27    1 100  80
+2  Ben  41 2014-03-09    1 110  65
+3 Carl  33 2014-04-02    1 125  80
+4 Debs  27 2014-04-01    1 100  65
+5   Ed  22 2014-04-02    1 115  75
+6 Anne  35 2014-03-27    2 140  70
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">X)</span> <span class="hl kwb">-&gt;</span> <span class="hl std">bps</span>
+</pre></div>
+</div></div>
+<h3>Filtering - chooses <em>rows</em></h3>
+<div class="chunk" id="unnamed-chunk-30"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Anne&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start Week sys dia
+1 Anne  35 2014-03-27    1 100  80
+2 Anne  35 2014-03-27    2 140  70
+3 Anne  35 2014-03-27    3 100  75
+4 Anne  35 2014-03-27    4 120  90
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(sys</span> <span class="hl opt">&gt;=</span> <span class="hl num">140</span> <span class="hl opt">&amp;</span> <span class="hl std">dia</span> <span class="hl opt">&gt;=</span><span class="hl num">80</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start Week sys dia
+1 Carl  33 2014-04-02    2 140  90
+</pre></div>
+</div></div>
+<h3>Mutating - adding <em>columns</em></h3>
+<div class="chunk" id="unnamed-chunk-31"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">mutate</span><span class="hl std">(</span><span class="hl kwc">obs_date</span> <span class="hl std">= Start</span> <span class="hl opt">+</span> <span class="hl kwd">weeks</span><span class="hl std">(Week</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Age      Start Week sys dia   obs_date
+1  Anne  35 2014-03-27    1 100  80 2014-03-27
+2   Ben  41 2014-03-09    1 110  65 2014-03-09
+3  Carl  33 2014-04-02    1 125  80 2014-04-02
+4  Debs  27 2014-04-01    1 100  65 2014-04-01
+5    Ed  22 2014-04-02    1 115  75 2014-04-02
+6  Anne  35 2014-03-27    2 140  70 2014-04-03
+7   Ben  41 2014-03-09    2 115  80 2014-03-16
+8  Carl  33 2014-04-02    2 140  90 2014-04-09
+9  Debs  27 2014-04-01    2 115  85 2014-04-08
+10   Ed  22 2014-04-02    2  90  75 2014-04-09
+11 Anne  35 2014-03-27    3 100  75 2014-04-10
+12  Ben  41 2014-03-09    3 100  65 2014-03-23
+13 Carl  33 2014-04-02    3  NA  NA 2014-04-16
+14 Debs  27 2014-04-01    3 120  80 2014-04-15
+15   Ed  22 2014-04-02    3 110  65 2014-04-16
+16 Anne  35 2014-03-27    4 120  90 2014-04-17
+17  Ben  41 2014-03-09    4 135  70 2014-03-30
+18 Carl  33 2014-04-02    4  NA  NA 2014-04-23
+19 Debs  27 2014-04-01    4  NA  NA 2014-04-22
+20   Ed  22 2014-04-02    4 120  75 2014-04-23
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">mutate</span><span class="hl std">(</span><span class="hl kwc">obs_date</span> <span class="hl std">= Start</span> <span class="hl opt">+</span> <span class="hl kwd">weeks</span><span class="hl std">(Week</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>        <span class="hl kwd">filter</span><span class="hl std">(</span><span class="hl opt">!</span><span class="hl kwd">is.na</span><span class="hl std">(sys))</span>
+<span class="hl std">&gt; </span><span class="hl kwd">head</span><span class="hl std">(bps)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start Week sys dia   obs_date
+1 Anne  35 2014-03-27    1 100  80 2014-03-27
+2  Ben  41 2014-03-09    1 110  65 2014-03-09
+3 Carl  33 2014-04-02    1 125  80 2014-04-02
+4 Debs  27 2014-04-01    1 100  65 2014-04-01
+5   Ed  22 2014-04-02    1 115  75 2014-04-02
+6 Anne  35 2014-03-27    2 140  70 2014-04-03
+</pre></div>
+</div></div>
+<h3>Sorting</h3>
+<div class="chunk" id="unnamed-chunk-32"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Name,</span><span class="hl opt">-</span><span class="hl std">sys)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Age      Start Week sys dia   obs_date
+1  Anne  35 2014-03-27    2 140  70 2014-04-03
+2  Anne  35 2014-03-27    4 120  90 2014-04-17
+3  Anne  35 2014-03-27    1 100  80 2014-03-27
+4  Anne  35 2014-03-27    3 100  75 2014-04-10
+5   Ben  41 2014-03-09    4 135  70 2014-03-30
+6   Ben  41 2014-03-09    2 115  80 2014-03-16
+7   Ben  41 2014-03-09    1 110  65 2014-03-09
+8   Ben  41 2014-03-09    3 100  65 2014-03-23
+9  Carl  33 2014-04-02    2 140  90 2014-04-09
+10 Carl  33 2014-04-02    1 125  80 2014-04-02
+11 Debs  27 2014-04-01    3 120  80 2014-04-15
+12 Debs  27 2014-04-01    2 115  85 2014-04-08
+13 Debs  27 2014-04-01    1 100  65 2014-04-01
+14   Ed  22 2014-04-02    4 120  75 2014-04-23
+15   Ed  22 2014-04-02    1 115  75 2014-04-02
+16   Ed  22 2014-04-02    3 110  65 2014-04-16
+17   Ed  22 2014-04-02    2  90  75 2014-04-09
+</pre></div>
+</div></div>
+</div>
+
+<div class="slide">
+<h1><code>dplyr</code> grouping</h1>
+<p><code>group_by</code> specifies a grouping of a data frame:</p>
+<div class="chunk" id="unnamed-chunk-33"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Source: local data frame [17 x 7]
+Groups: Name
+
+   Name Age      Start Week sys dia   obs_date
+1  Anne  35 2014-03-27    1 100  80 2014-03-27
+2   Ben  41 2014-03-09    1 110  65 2014-03-09
+3  Carl  33 2014-04-02    1 125  80 2014-04-02
+4  Debs  27 2014-04-01    1 100  65 2014-04-01
+5    Ed  22 2014-04-02    1 115  75 2014-04-02
+6  Anne  35 2014-03-27    2 140  70 2014-04-03
+7   Ben  41 2014-03-09    2 115  80 2014-03-16
+8  Carl  33 2014-04-02    2 140  90 2014-04-09
+9  Debs  27 2014-04-01    2 115  85 2014-04-08
+10   Ed  22 2014-04-02    2  90  75 2014-04-09
+11 Anne  35 2014-03-27    3 100  75 2014-04-10
+12  Ben  41 2014-03-09    3 100  65 2014-03-23
+13 Debs  27 2014-04-01    3 120  80 2014-04-15
+14   Ed  22 2014-04-02    3 110  65 2014-04-16
+15 Anne  35 2014-03-27    4 120  90 2014-04-17
+16  Ben  41 2014-03-09    4 135  70 2014-03-30
+17   Ed  22 2014-04-02    4 120  75 2014-04-23
+</pre></div>
+</div></div>
+<p>which you can then pass to <code>summarize</code></p>
+<div class="chunk" id="unnamed-chunk-34"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>  <span class="hl kwd">summarize</span><span class="hl std">(</span><span class="hl kwc">min</span><span class="hl std">=</span><span class="hl kwd">min</span><span class="hl std">(sys),</span> <span class="hl kwc">max</span><span class="hl std">=</span><span class="hl kwd">max</span><span class="hl std">(sys))</span>
+</pre></div>
+<div class="error"><pre class="knitr r">Error: argument "by" is missing, with no default
+</pre></div>
+</div></div>
+
+<p>Having the data in a tidy format makes grouping by different
+variables easy - eg what was each person's highest systolic BP, and
+what was the highest BP measured in each week?</p>
+
+<div class="chunk" id="unnamed-chunk-35"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(sys</span><span class="hl opt">==</span><span class="hl kwd">max</span><span class="hl std">(sys))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Source: local data frame [5 x 7]
+Groups: Name
+
+  Name Age      Start Week sys dia   obs_date
+1 Anne  35 2014-03-27    2 140  70 2014-04-03
+2 Carl  33 2014-04-02    2 140  90 2014-04-09
+3 Debs  27 2014-04-01    3 120  80 2014-04-15
+4  Ben  41 2014-03-09    4 135  70 2014-03-30
+5   Ed  22 2014-04-02    4 120  75 2014-04-23
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Week)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(sys</span><span class="hl opt">==</span><span class="hl kwd">max</span><span class="hl std">(sys))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">Source: local data frame [5 x 7]
+Groups: Week
+
+  Name Age      Start Week sys dia   obs_date
+1 Carl  33 2014-04-02    1 125  80 2014-04-02
+2 Anne  35 2014-03-27    2 140  70 2014-04-03
+3 Carl  33 2014-04-02    2 140  90 2014-04-09
+4 Debs  27 2014-04-01    3 120  80 2014-04-15
+5  Ben  41 2014-03-09    4 135  70 2014-03-30
+</pre></div>
+</div></div>
+
+<p><em>Exercise: do those on the untidy, spreadsheet format data.</em></p>
+
+</div>
+
+<div class="slide">
+<h1><code>dplyr</code>  data joins</h1>
+
+<p>Suppose the data is in two tables, connected by the <code>Name</code> 
+column:</p>
+<ul>
+<li>People data:
+<div class="chunk" id="unnamed-chunk-36"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">people</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start
+1 Anne  35 2014-03-27
+2  Ben  41 2014-03-09
+3 Carl  33 2014-04-02
+4 Debs  27 2014-04-01
+5   Ed  22 2014-04-02
+</pre></div>
+</div></div>
+</li>
+<li>Measurement data:
+<div class="chunk" id="unnamed-chunk-37"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">head</span><span class="hl std">(bpsdata)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Week sys dia
+1 Anne    1  99  62
+2  Ben    1 160  62
+3 Carl    1 165  45
+4 Debs    1 135  48
+5   Ed    1 147  68
+6 Anne    2  91  61
+</pre></div>
+</div></div>
+</li>
+</ul>
+<p>We can join them using <em>join</em> operations</p>
+<div class="chunk" id="unnamed-chunk-38"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">left_join</span><span class="hl std">(bpsdata, people)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">Joining by: "Name"
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Week sys dia Age      Start
+1  Anne    1  99  62  35 2014-03-27
+2   Ben    1 160  62  41 2014-03-09
+3  Carl    1 165  45  33 2014-04-02
+4  Debs    1 135  48  27 2014-04-01
+5    Ed    1 147  68  22 2014-04-02
+6  Anne    2  91  61  35 2014-03-27
+7   Ben    2 147  60  41 2014-03-09
+8  Carl    2 165  42  33 2014-04-02
+9  Debs    2 136  48  27 2014-04-01
+10   Ed    2 157  71  22 2014-04-02
+</pre></div>
+</div></div>
+<p>Hence we can compute the observation date by a join and a mutate:</p>
+<div class="chunk" id="unnamed-chunk-39"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">left_join</span><span class="hl std">(bpsdata, people)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>   <span class="hl kwd">mutate</span><span class="hl std">(</span><span class="hl kwc">obs_date</span> <span class="hl std">= Start</span><span class="hl opt">+</span><span class="hl kwd">dweeks</span><span class="hl std">(Week</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>   <span class="hl kwd">head</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">Joining by: "Name"
+</pre></div>
+<div class="output"><pre class="knitr r">   Name Week sys dia Age      Start   obs_date
+1  Anne    1  99  62  35 2014-03-27 2014-03-27
+2   Ben    1 160  62  41 2014-03-09 2014-03-09
+3  Carl    1 165  45  33 2014-04-02 2014-04-02
+4  Debs    1 135  48  27 2014-04-01 2014-04-01
+5    Ed    1 147  68  22 2014-04-02 2014-04-02
+6  Anne    2  91  61  35 2014-03-27 2014-04-03
+7   Ben    2 147  60  41 2014-03-09 2014-03-16
+8  Carl    2 165  42  33 2014-04-02 2014-04-09
+9  Debs    2 136  48  27 2014-04-01 2014-04-08
+10   Ed    2 157  71  22 2014-04-02 2014-04-09
+</pre></div>
+</div></div>
+</div>
+
+<div class="slide">
+<h1><code>ggplot2</code></h1>
+<p>A plotting system, works best with tidy data, implementing a
+grammar of graphics</p>
+<h2>Concepts</h2>
+<dl>
+<dt><em>aesthetics</em></dt>
+<dd>An <em>aesthetic</em> is a mapping of a data frame column
+to some aspect of the thing you are trying to draw - such as
+position, size, colour.</dd>
+<dt><em>geom</em></dt>
+<dd>A <em>geom</em> is a type of graphic that does the mapping
+of aesthetics to actual visible things on the page - such 
+as point, lines, rectangles, boxplots</dd>
+<dt><em>layer</em></dt>
+<dd>The plot is built up using layers, starting with the data,
+and adding elements until the result is printed.</dd>
+</dl>
+
+<h2>Example</h2>
+<p>The <code>geom_point</code> geom uses x, y, and colour aesthetics (amongst others)</p>
+<div class="chunk" id="unnamed-chunk-40"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggplot2)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-40.png" title="plot of chunk unnamed-chunk-40" alt="plot of chunk unnamed-chunk-40" class="plot" /></div></div>
+<p>Add a smoothing layer</p>
+<div class="chunk" id="unnamed-chunk-41"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">()</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>   <span class="hl kwd">stat_smooth</span><span class="hl std">(</span><span class="hl kwc">method</span><span class="hl std">=</span><span class="hl str">&quot;loess&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-41.png" title="plot of chunk unnamed-chunk-41" alt="plot of chunk unnamed-chunk-41" class="plot" /></div></div>
+<p>Lines need the additional <code>group</code> aesthetic
+to define what to join up:</p>
+<div class="chunk" id="unnamed-chunk-42"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>   <span class="hl kwd">geom_line</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-421.png" title="plot of chunk unnamed-chunk-42" alt="plot of chunk unnamed-chunk-42" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>   <span class="hl kwd">geom_line</span><span class="hl std">()</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>   <span class="hl kwd">geom_point</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-422.png" title="plot of chunk unnamed-chunk-42" alt="plot of chunk unnamed-chunk-42" class="plot" /></div></div>
+<p>To plot more than one variable, specify the aesthetic in the geom.
+Getting the legend right takes a bit of fiddling:</p>
+<div class="chunk" id="unnamed-chunk-43"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">),</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>     <span class="hl kwd">geom_line</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>     <span class="hl kwd">geom_line</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">y</span><span class="hl std">=dia,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>     <span class="hl kwd">scale_colour_manual</span><span class="hl std">(</span><span class="hl kwc">name</span><span class="hl std">=</span><span class="hl str">&quot;Phase&quot;</span><span class="hl std">,</span>
+<span class="hl std"> </span>             <span class="hl kwc">values</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwc">sys</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span><span class="hl kwc">dia</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>     <span class="hl kwd">ylab</span><span class="hl std">(</span><span class="hl str">&quot;mmHg&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-43.png" title="plot of chunk unnamed-chunk-43" alt="plot of chunk unnamed-chunk-43" class="plot" /></div></div>
+<p>Or tidy the variables using <code>gather</code>:</p>
+<div class="chunk" id="unnamed-chunk-44"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>  <span class="hl kwd">gather</span><span class="hl std">(BP, Hg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Week)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
+</pre></div>
+<div class="output"><pre class="knitr r">  Name Age      Start Week   obs_date  BP  Hg
+1 Carl  33 2014-04-02    1 2014-04-02 sys 165
+2 Carl  33 2014-04-02    1 2014-04-02 dia  45
+3 Carl  33 2014-04-02    2 2014-04-09 sys 165
+4 Carl  33 2014-04-02    2 2014-04-09 dia  42
+5 Carl  33 2014-04-02    3 2014-04-16 sys 159
+6 Carl  33 2014-04-02    3 2014-04-16 dia  43
+</pre></div>
+</div></div>
+<p>We pipe that into <code>ggplot</code> and the legend is
+then automatically nice:</p>
+<div class="chunk" id="unnamed-chunk-45"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">gather</span><span class="hl std">(Phase, mmHg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>   <span class="hl kwd">ggplot</span><span class="hl std">(</span>
+<span class="hl std"> </span>    <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=mmHg,</span> <span class="hl kwc">group</span><span class="hl std">=Phase,</span> <span class="hl kwc">col</span><span class="hl std">=Phase)</span>
+<span class="hl std"> </span>   <span class="hl std">)</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>   <span class="hl kwd">geom_line</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-45.png" title="plot of chunk unnamed-chunk-45" alt="plot of chunk unnamed-chunk-45" class="plot" /></div></div>
+<h2>Some other geoms</h2>
+<h3>histograms</h3>
+<div class="chunk" id="unnamed-chunk-46"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_histogram</span><span class="hl std">(</span><span class="hl kwc">binwidth</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-461.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys,</span> <span class="hl kwc">fill</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_histogram</span><span class="hl std">(</span><span class="hl kwc">binwidth</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-462.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" class="plot" /></div></div>
+
+<h3>boxplots</h3>
+<p>The <code>boxplot</code> geom uses <code>group</code> to
+define the set of points in each boxplot:
+</p>
+<div class="chunk" id="unnamed-chunk-47"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Name,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_boxplot</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-47.png" title="plot of chunk unnamed-chunk-47" alt="plot of chunk unnamed-chunk-47" class="plot" /></div></div>
+
+<h3>pie charts</h3>
+<div class="chunk" id="unnamed-chunk-48"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">size</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_pie</span><span class="hl std">()</span>
+</pre></div>
+<div class="error"><pre class="knitr r">Error: could not find function "geom_pie"
+</pre></div>
+</div></div>
+
+</div>
+
+<div class="slide">
+<h1>Saving and Theming</h1>
+<p>Layers and plots can be saved:</p>
+<div class="chunk" id="unnamed-chunk-49"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl kwb">=</span> <span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys,</span> <span class="hl kwc">y</span><span class="hl std">=dia,</span> <span class="hl kwc">col</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>    <span class="hl kwd">geom_point</span><span class="hl std">()</span>
+</pre></div>
+</div></div>
+<p>nothing plots until the object is printed</p>
+<div class="chunk" id="unnamed-chunk-50"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-50.png" title="plot of chunk unnamed-chunk-50" alt="plot of chunk unnamed-chunk-50" class="plot" /></div></div>
+<p>then you can add things to objects:</p>
+<div class="chunk" id="unnamed-chunk-51"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">size</span><span class="hl std">=Week))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-51.png" title="plot of chunk unnamed-chunk-51" alt="plot of chunk unnamed-chunk-51" class="plot" /></div></div>
+<h2>themes</h2>
+<p>Add a <code>theme</code> function to modify a plot's appearance</p>
+<div class="chunk" id="unnamed-chunk-52"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-521.png" title="plot of chunk unnamed-chunk-52" alt="plot of chunk unnamed-chunk-52" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_minimal</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-522.png" title="plot of chunk unnamed-chunk-52" alt="plot of chunk unnamed-chunk-52" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_classic</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-523.png" title="plot of chunk unnamed-chunk-52" alt="plot of chunk unnamed-chunk-52" class="plot" /></div></div>
+<p>with the <code>ggthemes</code> package you get some more themes:</p>
+<div class="chunk" id="unnamed-chunk-53"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggthemes)</span>
+<span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_excel</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-531.png" title="plot of chunk unnamed-chunk-53" alt="plot of chunk unnamed-chunk-53" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_tufte</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-532.png" title="plot of chunk unnamed-chunk-53" alt="plot of chunk unnamed-chunk-53" class="plot" /></div></div>
+<p>and even...</p>
+<img class="mainpic" src="images/xkcd.png">
+<p>inspired by <a href="http://www.xkcd.com/">XKCD comic</a></p>
+<img class="mainpic" src="images/minifigs.png">
+<img class="mainpic" src="images/decline.png">
+</div>
+
+<div class="slide">
+<h1>Faceting</h1>
+<p>Faceting is breaking a plot into several mini-plots
+by levels of a factor</p>
+<div class="chunk" id="ggp1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=sys))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>  <span class="hl kwd">geom_line</span><span class="hl std">()</span> <span class="hl opt">+</span> <span class="hl kwd">stat_smooth</span><span class="hl std">(</span><span class="hl kwc">method</span><span class="hl std">=</span><span class="hl str">&quot;loess&quot;</span><span class="hl std">)</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>  <span class="hl kwd">facet_wrap</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">Name,</span><span class="hl kwc">nrow</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>  <span class="hl kwd">theme_stata</span><span class="hl std">()</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/ggp1.png" title="plot of chunk ggp1" alt="plot of chunk ggp1" class="plot" /></div></div>
+
+<p>You can control which axes are fixed and which are free.
+Here's a ribbon geom with free y axis and common x axis:</p>
+
+<div class="chunk" id="ggp2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">ymin</span><span class="hl std">=dia,</span> <span class="hl kwc">ymax</span><span class="hl std">=sys,</span> <span class="hl kwc">fill</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>  <span class="hl kwd">geom_ribbon</span><span class="hl std">(</span><span class="hl kwc">alpha</span><span class="hl std">=</span><span class="hl num">0.5</span><span class="hl std">)</span> <span class="hl opt">+</span>
+<span class="hl std"> </span>  <span class="hl kwd">facet_wrap</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">Name,</span> <span class="hl kwc">ncol</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">scales</span><span class="hl std">=</span><span class="hl str">&quot;free_y&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/ggp2.png" title="plot of chunk ggp2" alt="plot of chunk ggp2" class="plot" /></div></div>
+</div>
+
+<div class="slide">
+<h1>devtools</h1>
+</div>
+
+<div class="slide">
+<h1>roxygen2</h1>
+</div>
+
+<div class="slide">
+<h1>testthat</h1>
+</div>
+
+
+<script type="text/javascript" src="lib/jquery-2.1.3.min.js" ></script>
+<script type="text/javascript" src="presentation.js"></script>
+</body>
+</html>

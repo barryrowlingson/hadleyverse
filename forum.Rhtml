@@ -1,0 +1,649 @@
+<!--begin.rcode init,echo=FALSE,result="hide"
+knitr::opts_chunk$set(comment=NA, prompt=TRUE, dev="CairoPNG", cache=TRUE)
+op = options()$continue
+options(continue=" ")
+grDevices::X11.options(type='cairo')
+end.rcode-->
+
+<div class="slide" id="title">
+<h1>Packages of the Hadleyverse</h1>
+<h2>Power for your R</h2>
+<h3>Barry Rowlingson</h3>
+<h4>Lancaster University</h4>
+</div>
+<div class="slide" id="first">
+<h1>Who?</h1>
+<div class="left">
+<ul>
+<li>Hadley Wickham</li>
+<li>RStudio Chief Scientist</li>
+</ul>
+</div>
+<div class="right">
+<img src="images/hadley.jpg" />
+</div>
+</div>
+<div class="slide" id="another">
+<h1>Packages</h1>
+<div class="left">
+<img class="fit" src="images/MRAN2.png" />
+</div>
+<div class="right">
+<img class="fit" src="images/github.png" />
+</div>
+</div>
+
+<div class="slide">
+<div class="left">
+<h1>Beginners</h1>
+<dl class="packagelist">
+<dt><code>lubridate</code></dt>
+<dd>Date and time handling</dd>
+<dt><code>stringr</code></dt>
+<dd>Working with text strings</dd>
+<!--dt>reshape2</dt>
+<dd>Reshape data</dd-->
+<dt><code>tidyr</code></dt>
+<dd>Make tidy data</dd>
+<dt><code>dplyr</code></dt>
+<dd>Data manipulation</dd>
+<dt><code>ggplot2</code></dt>
+<dd>The graphical grammar</dd>
+</dl>
+</div>
+<div class="right">
+<h1>Advanced</h1>
+<dl class="packagelist">
+<dt><code>devtools</code></dt>
+<dd>Package development</dd>
+<dt><code>roxygen2</code></dt>
+<dd>Document your functions</dd>
+<dt><code>testthat</code></dt>
+<dd>Automatic code testing</dd>
+</dl>
+</div>
+</div>
+
+<div class="slide">
+<h1><code>lubridate</code></h1>
+<p>provides</p>
+<ul>
+<li>Text to Date/Date Time Conversion</li>
+<li>Duration and Periods</li>
+<li>Arithmetic for Dates</li>
+</ul>
+<h1>But....</h1>
+<p>
+Doesn't R already have dates and times?
+</p>
+<p>
+Yes...
+</p>
+<pre>
+strptime                 package:base                  R Documentation
+
+Date-time Conversion Functions to and from Character
+
+Description:
+
+Functions to convert between character representations and objects
+of classes ‘"POSIXlt"’ and ‘"POSIXct"’ representing calendar dates
+and times.
+
+‘strptime’ converts character vectors to class ‘"POSIXlt"’: its
+input ‘x’ is first converted by ‘as.character’.  Each input string
+is processed as far as necessary for the format specified: any
+trailing characters are ignored.
+
+‘strftime’ is a wrapper for ‘format.POSIXlt’, and it and
+‘format.POSIXct’ first convert to class ‘"POSIXlt"’ by calling
+‘as.POSIXlt’ (so they also work for class ‘"Date"’).  Note that
+only that conversion depends on the time zone.
+</pre>
+</div>
+
+<div class="slide">
+<h1>Make it Easy</h1>
+<h2>Dates with <code>ymd</code> etc</h2>
+<!--begin.rcode
+d = ymd(c("2001-01-12", "2011/3/31"))
+d
+dmy("310314")
+end.rcode-->
+<h2>Dates and times...</h2>
+<!--begin.rcode
+dt = ymd_hms("2001-01-12 14:12:00")
+dt
+end.rcode-->
+<h2>Date and Time Info</h2>
+<!--begin.rcode
+day(dt); month(dt); year(dt)
+month(dt, label=TRUE)
+wday(dt, label=TRUE)
+yday(d)
+end.rcode-->
+<h2>Durations and Intervals</h2>
+<!--begin.rcode
+leave = ymd(20150601)    # go away
+ret = leave + weeks(2) + days(4)   # come back 2 weeks 4 days later
+ret
+howlong = ret - leave    # an R difftime
+howlong 
+holiday = leave %--% ret # a lubridate interval
+holiday
+holiday/dweeks(1)   # how many weeks?
+leave + days(1:10)
+end.rcode-->
+</div>
+
+<div class="slide">
+<h1><code>stringr</code></h1>
+<p>Doesn't R have string handling?</p>
+<!--begin.rcode
+nchar("Barry")
+who = c("Barry", "Fred", "Steve")
+nchar(who)
+who = c("Sara", "Julie", "Jenny", NA, "Helen")
+nchar(who)
+end.rcode-->
+</div>
+
+<div class="slide">
+<h1><code>stringr</code> for sensible string handling</h1>
+<h2>String Length</h2>
+<!--begin.rcode
+who
+str_length(who)
+end.rcode-->
+
+<h2>Pattern count</h2>
+<!--begin.rcode 
+library(stringr)
+fruit <- c("apple", "banana", "pear", "pineapple")
+str_count(fruit, "apple")
+str_count(fruit, "p")
+str_count(fruit, c("a", "b", "p", "p"))
+end.rcode-->
+
+<h2>Pattern matching</h2>
+<!--begin.rcode
+str_detect(fruit, "apple") # find anywhere
+str_detect(fruit, "^p")     # ^ matches start
+str_detect(fruit, "a$")     # $ matches end
+end.rcode-->
+
+<h2>Extracting patterns</h2>
+<!--begin.rcode
+people = c("Arthur 25", "Barry 33", "Charles 12", "Darren Edward 19")
+str_extract(people, "\\d+")     # one or more digits
+str_extract(people, "[^0-9]+")  # from start to non-numeric
+end.rcode-->
+
+<h2>Trim</h2>
+<!--begin.rcode
+str_trim(str_extract(people, "[^0-9]*"))
+end.rcode-->
+
+<h2>Splitting</h2>
+<!--begin.rcode
+bp=c("150;120;110", "100;100;110;120;130", "90")
+str_split(bp, ";")
+str_split(bp, ";", n=2)
+end.rcode-->
+
+<h2>Substrings</h2>
+<!--begin.rcode
+s = "The Quick Brown Fox"
+str_sub(s,5,9)
+str_sub(s,5,9) <- "Slow" # replace with different length
+s
+str_sub(s,-3,-1)         # negative numbers count from end
+str_sub(s,-3,-1) <- "Monkey"
+s
+end.rcode-->
+
+</div>
+
+<!--div class="slide">
+<h1>reshape2</h1>
+</div-->
+
+<div class="slide">
+<h1><code>tidyr</code></h1>
+<h2>A package for making tidy data</h2>
+<h3>What is tidy data?</h3>
+<p>Read all about it here:
+<a href="http://vita.had.co.nz/papers/tidy-data.pdf">http://vita.had.co.nz/papers/tidy-data.pdf</a>. In a nutshell:
+<ul>
+<li>Each observation is a row</li>
+<li>Each variable is a column</li>
+<li>No data in labels</li>
+</ul>
+</p>
+
+<!--begin.rcode makedata ,echo=FALSE,results="hide"
+# data set
+set.seed(310366)
+bpd = data.frame(Name=c("Anne","Ben","Carl","Debs","Ed"))
+bpd$Age=c(35,41,33,27,22)
+bpd$Start = ymd(20140301) + ddays(round(runif(5)*40))
+r5 = function(x){round(x*2,-1)/2}
+bpf = function(n){
+  sys=r5(runif(n,90,140));dia=r5(runif(n,60,90));paste(sys,dia,sep="/")}
+
+bpd2 = bpd
+
+bpd$Week1=bpf(5)
+bpd$Week2=bpf(5)
+bpd$Week3=bpf(5); bpd$Week3[3]=NA
+bpd$Week4=bpf(5); bpd$Week4[3:4]=NA
+
+bpd2=cbind(bpd2, makebpdf(52,5))
+
+bps2 = gather(bpd2, Week, BP, Week1:Week52) %>%
+  separate(BP, c("sys","dia"), "/", convert=TRUE, extra="drop") %>%
+  separate(Week, c("X","Week"), 4, convert=TRUE) %>% 
+  select(-X) %>%
+  filter(!is.na(sys)) %>%
+  mutate(obs_date = Start + weeks(Week-1))
+
+ stocksA <- data.frame(
+       time = as.Date('2009-01-01') + 0:5,
+       MSFT = round(800 + arima.sim(list(ar=c(.99,-.001),ma=c(4,4)),6)),
+       GOOG = round(400 + arima.sim(list(ar=c(.99,-.001),ma=c(4,4)),6)),
+       ORAC = round(400 + arima.sim(list(ar=c(.99,-.001),ma=c(4,4)),6)),
+       AMAZ = round(400 + arima.sim(list(ar=c(.99,-.001),ma=c(4,4)),6)),
+       SONY = round(400 + arima.sim(list(ar=c(.99,-.001),ma=c(4,4)),6)),
+       YHOO = round(375 + arima.sim(list(ar=c(.99,-.001),ma=c(4,4)),6))
+     )
+ stocks <- spread(gather(stocksA, Stock, Price, -time), time, Price)
+
+end.rcode-->
+
+<h3>Untidy data</h3>
+<p>As seen in spreadsheets...</p>
+
+<!--begin.rcode
+stocks
+end.rcode-->
+
+<p><code>gather</code> to put one observation per row</p>
+
+<!--begin.rcode
+library(tidyr)
+stockTidy = gather(stocks, Date, Price, -Stock)
+stockTidy[1:20,]
+end.rcode-->
+
+<p><code>spread</code> reverses <code>gather</code> to get
+the table format back:</p>
+
+<!--begin.rcode
+spread(stockTidy, Date, Price)
+end.rcode-->
+
+<p>or this way round:</p>
+
+<!--begin.rcode
+spread(stockTidy, Stock, Price)
+end.rcode-->
+
+<h2>Why tidy data?</h2>
+<p>
+Regularity makes queries easy...
+</p>
+<!--begin.rcode
+# any stock prices over 540:
+subset(stockTidy, Price > 540)
+end.rcode-->
+
+</div>
+
+<div class="slide">
+<h1>More tidyr-ing</h1>
+
+<h2>Sample data</h2>
+<p>Blood pressure for five individuals recorded over 
+up to four weeks</p>
+<!--begin.rcode
+bpd
+end.rcode-->
+
+<p>What's wrong with it?
+<ul>
+<li>Several observations in a row</li>
+<li>Measurement columns have two variables</li>
+<li>Week number is coded into the column label</li>
+</ul>
+</p>
+
+<p>Let's fix this up:
+<dl>
+<dt>put the weekly measurements onto separate lines:</dt>
+<dd>
+<!--begin.rcode
+bps = gather(bpd, Week, BP, Week1:Week4)
+bps
+end.rcode-->
+</dd>
+<dt>split the BP measurement up and convert to numbers</dt>
+<dd>
+<!--begin.rcode
+bps = separate(bps, BP, c("sys","dia"), "/", convert=TRUE, extra="drop")
+bps
+end.rcode-->
+</dd>
+<dt>Split the weekN word up on the fourth character</dt>
+<dd>
+<!--begin.rcode
+bps = separate(bps, Week, c("X","Week"), 4, convert=TRUE)
+bps
+end.rcode-->
+</dd>
+</dl>
+
+<p>Or we could do it like this...</p>
+
+<!--begin.rcode
+bps = separate(
+         separate(
+           gather(bpd, Week, BP, Week1:Week4),
+           BP, c("sys","dia"), "/", convert=TRUE, extra="drop"
+         ),
+         Week, c("X","Week"), 4, convert=TRUE)
+bps
+end.rcode-->
+
+<p>And now we have tidy data, except for the redundant <code>X</code>
+column....</p>
+</div>
+
+
+<div class="slide">
+<h1><code>magrittr</code></h1>
+<img class="mainpic" src="images/MagrittePipe.jpg">
+<p>
+<code>magrittr</code> is about creating <em>pipelines</em>
+</p>
+<!--begin.rcode 
+mean(log(sqrt(1:10)))
+end.rcode-->
+<p>can be written as a <em>pipeline:</em></p>
+<!--begin.rcode
+1:10 %>% sqrt() %>% log() %>% mean()
+end.rcode-->
+<p>especially neat when you have args to each function:</p>
+<!--begin.rcode 
+mean(sqrt(log(1:10, base=2)),trim=0.1)
+end.rcode-->
+<p>becomes</p>
+<!--begin.rcode
+1:10 %>% 
+  log(base=2) %>%
+  sqrt() %>%
+  mean(trim=0.1)
+end.rcode-->
+<p>because the arguments are now closer to the function names!</p>
+</div>
+
+<div class="slide">
+<h1><code>magrittr</code> + <code>tidyr</code></h1>
+<p>Remember...</p>
+<!--begin.rcode eval=FALSE
+bps = gather(bpd, Week, BP, Week1:Week4)
+bps = separate(bps, BP, c("sys","dia"), "/", convert=TRUE, extra="drop")
+bps = separate(bps, Week, c("X","Week"), 4, convert=TRUE)
+end.rcode-->
+<p>Can do with pipes:</p>
+<!--begin.rcode
+bpd
+bps = bpd %>% 
+      gather(Week, BP, Week1:Week4) %>%
+      separate(BP, c("sys","dia"),"/", extra="drop", convert=TRUE) %>%
+      separate(Week, c("X","Week"), 4, convert=TRUE)
+head(bps)
+end.rcode-->
+</div>
+
+<div class="slide">
+<h1><code>dplyr</code></h1>
+<h2>useful functions for tidy data</h2>
+<h3>Selecting - chooses <em>columns</em></h2>
+<!--begin.rcode
+bps %>% select(c(1,2),3) %>% head()
+bps %>% select(Name, Start) %>% head()
+bps %>% select(-X) %>% head()
+bps %>% select(-X) -> bps
+end.rcode-->
+<h3>Filtering - chooses <em>rows</em></h3>
+<!--begin.rcode
+bps %>% filter(Name=="Anne")
+bps %>% filter(sys >= 140 & dia >=80)
+end.rcode-->
+<h3>Mutating - adding <em>columns</em></h3>
+<!--begin.rcode
+bps %>% mutate(obs_date = Start + weeks(Week-1))
+bps = bps %>% mutate(obs_date = Start + weeks(Week-1)) %>%
+        filter(!is.na(sys))
+head(bps)
+end.rcode-->
+<h3>Sorting</h3>
+<!--begin.rcode
+bps %>% arrange(Name,-sys)
+end.rcode-->
+</div>
+
+<div class="slide">
+<h1><code>dplyr</code> grouping</h1>
+<p><code>group_by</code> specifies a grouping of a data frame:</p>
+<!--begin.rcode
+bps %>% group_by(Name)
+end.rcode-->
+<p>which you can then pass to <code>summarize</code></p>
+<!--begin.rcode
+bps %>% group_by(Name) %>% 
+  summarize(min=min(sys), max=max(sys))
+end.rcode-->
+
+<p>Having the data in a tidy format makes grouping by different
+variables easy - eg what was each person's highest systolic BP, and
+what was the highest BP measured in each week?</p>
+
+<!--begin.rcode
+bps %>% group_by(Name) %>% filter(sys==max(sys))
+bps %>% group_by(Week) %>% filter(sys==max(sys))
+end.rcode-->
+
+<p><em>Exercise: do those on the untidy, spreadsheet format data.</em></p>
+
+</div>
+
+<div class="slide">
+<h1><code>dplyr</code>  data joins</h1>
+<!--begin.rcode makejdata ,echo=FALSE,results="hide"
+bpsdata = bps2 %>% select(-Age, -Start, -obs_date)
+people = bps2 %>% filter(Week==1) %>% select(Name, Age, Start)
+end.rcode-->
+<p>Suppose the data is in two tables, connected by the <code>Name</code> 
+column:</p>
+<ul>
+<li>People data:
+<!--begin.rcode
+people
+end.rcode-->
+</li>
+<li>Measurement data:
+<!--begin.rcode
+head(bpsdata)
+end.rcode-->
+</li>
+</ul>
+<p>We can join them using <em>join</em> operations</p>
+<!--begin.rcode
+left_join(bpsdata, people) %>% head(10)
+end.rcode-->
+<p>Hence we can compute the observation date by a join and a mutate:</p>
+<!--begin.rcode
+left_join(bpsdata, people) %>% 
+   mutate(obs_date = Start+dweeks(Week-1)) %>%
+   head(10)
+end.rcode-->
+</div>
+
+<div class="slide">
+<h1><code>ggplot2</code></h1>
+<p>A plotting system, works best with tidy data, implementing a
+grammar of graphics</p>
+<h2>Concepts</h2>
+<dl>
+<dt><em>aesthetics</em></dt>
+<dd>An <em>aesthetic</em> is a mapping of a data frame column
+to some aspect of the thing you are trying to draw - such as
+position, size, colour.</dd>
+<dt><em>geom</em></dt>
+<dd>A <em>geom</em> is a type of graphic that does the mapping
+of aesthetics to actual visible things on the page - such 
+as point, lines, rectangles, boxplots</dd>
+<dt><em>layer</em></dt>
+<dd>The plot is built up using layers, starting with the data,
+and adding elements until the result is printed.</dd>
+</dl>
+
+<h2>Example</h2>
+<p>The <code>geom_point</code> geom uses x, y, and colour aesthetics (amongst others)</p>
+<!--begin.rcode fig.width=12, fig.height=6
+library(ggplot2)
+ggplot(bps2, aes(x=obs_date, y=sys, colour=Name)) + geom_point()
+end.rcode-->
+<p>Add a smoothing layer</p>
+<!--begin.rcode fig.width=12, fig.height=6
+ggplot(bps2, aes(x=Week, y=sys)) + geom_point() + 
+   stat_smooth(method="loess")
+end.rcode-->
+<p>Lines need the additional <code>group</code> aesthetic
+to define what to join up:</p>
+<!--begin.rcode fig.width=12, fig.height=6
+ggplot(bps2, aes(x=obs_date, y=sys, group=Name, colour=Name)) +
+   geom_line()
+ggplot(bps2, aes(x=Week, y=sys, group=Name, colour=Name)) +
+   geom_line() + 
+   geom_point()
+end.rcode-->
+<p>To plot more than one variable, specify the aesthetic in the geom.
+Getting the legend right takes a bit of fiddling:</p>
+<!--begin.rcode  fig.width=12, fig.height=6
+ggplot(bps2 %>% filter(Name=="Carl"), aes(x=Week)) +
+     geom_line(aes(y=sys, col="sys"), lwd=1) +
+     geom_line(aes(y=dia, col="dia"), lwd=1) + 
+     scale_colour_manual(name="Phase",
+             values=c(sys="red",dia="blue")) + 
+     ylab("mmHg")
+end.rcode-->
+<p>Or tidy the variables using <code>gather</code>:</p>
+<!--begin.rcode fig.width=12, fig.height=6
+bps2 %>% filter(Name=="Carl") %>% 
+  gather(BP, Hg, sys:dia) %>% arrange(Week) %>% head()
+end.rcode-->
+<p>We pipe that into <code>ggplot</code> and the legend is
+then automatically nice:</p>
+<!--begin.rcode  fig.width=12, fig.height=6
+bps2 %>% filter(Name=="Carl") %>% gather(Phase, mmHg, sys:dia) %>%
+   ggplot(
+    aes(x=Week, y=mmHg, group=Phase, col=Phase)
+   ) + 
+   geom_line()
+end.rcode-->
+<h2>Some other geoms</h2>
+<h3>histograms</h3>
+<!--begin.rcode  fig.width=12, fig.height=6
+ggplot(bps2, aes(x=sys)) + geom_histogram(binwidth=1)
+ggplot(bps2, aes(x=sys, fill=Name)) + geom_histogram(binwidth=1)
+end.rcode-->
+
+<h3>boxplots</h3>
+<p>The <code>boxplot</code> geom uses <code>group</code> to
+define the set of points in each boxplot:
+</p>
+<!--begin.rcode fig.width=12, fig.height=6
+ggplot(bps2, aes(x=Name, y=sys, group=Name)) + geom_boxplot()
+end.rcode-->
+
+<h3>pie charts</h3>
+<!--begin.rcode
+ggplot(bps2, aes(size=sys)) + geom_pie()
+end.rcode-->
+
+</div>
+
+<div class="slide">
+<h1>Saving and Theming</h1>
+<p>Layers and plots can be saved:</p>
+<!--begin.rcode
+g = ggplot(bps2, aes(x=sys, y=dia, col=Name)) +
+    geom_point()
+end.rcode-->
+<p>nothing plots until the object is printed</p>
+<!--begin.rcode fig.width=12, fig.height=6
+g
+end.rcode-->
+<p>then you can add things to objects:</p>
+<!--begin.rcode fig.width=12, fig.height=6
+g + geom_point(aes(size=Week))
+end.rcode-->
+<h2>themes</h2>
+<p>Add a <code>theme</code> function to modify a plot's appearance</p>
+<!--begin.rcode fig.width=10, fig.height=5
+g + theme_bw()
+g + theme_minimal()
+g + theme_classic()
+end.rcode-->
+<p>with the <code>ggthemes</code> package you get some more themes:</p>
+<!--begin.rcode fig.width=12, fig.height=6
+library(ggthemes)
+g + theme_excel()
+g + theme_tufte()
+end.rcode-->
+<p>and even...</p>
+<img class="mainpic" src="images/xkcd.png">
+<p>inspired by <a href="http://www.xkcd.com/">XKCD comic</a></p>
+<img class="mainpic" src="images/minifigs.png">
+<img class="mainpic" src="images/decline.png">
+</div>
+
+<div class="slide">
+<h1>Faceting</h1>
+<p>Faceting is breaking a plot into several mini-plots
+by levels of a factor</p>
+<!--begin.rcode ggp1, fig.width=10, fig.height=4
+ggplot(bps2, aes(x=obs_date, y=sys)) + 
+  geom_line() + stat_smooth(method="loess") + 
+  facet_wrap(~Name,nrow=1) + 
+  theme_stata()
+end.rcode-->
+
+<p>You can control which axes are fixed and which are free.
+Here's a ribbon geom with free y axis and common x axis:</p>
+
+<!--begin.rcode ggp2, fig.width=10
+ggplot(bps2, aes(x=obs_date, ymin=dia, ymax=sys, fill=Name)) +
+  geom_ribbon(alpha=0.5) + 
+  facet_wrap(~Name, ncol=1, scales="free_y")
+end.rcode-->
+</div>
+
+<div class="slide">
+<h1>devtools</h1>
+</div>
+
+<div class="slide">
+<h1>roxygen2</h1>
+</div>
+
+<div class="slide">
+<h1>testthat</h1>
+</div>
+
+<!--begin.rcode endit,echo=FALSE,result="hide", cache=FALSE
+save(list=c("bps","bpd","bpd2","bps2"),file="/tmp/run.RData")
+options(continue=op)
+end.rcode-->
