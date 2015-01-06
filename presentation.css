@@ -25,6 +25,10 @@ pre.knitr {
     margin: 0.5em 0px;
 }
 
+div.chunk:hover {
+outline: 1px solid red;
+}
+
 #counter {
     position: fixed;
     top: 0;
