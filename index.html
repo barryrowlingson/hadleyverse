@@ -1078,15 +1078,15 @@ Getting the legend right takes a bit of fiddling:</p>
 </div><div class="rimage default"><img src="figure/unnamed-chunk-47-1.png" title="plot of chunk unnamed-chunk-47" alt="plot of chunk unnamed-chunk-47" class="plot" /></div></div>
 <p>Or tidy the variables using <code>gather</code>:</p>
 <div class="chunk" id="unnamed-chunk-48"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span>
-<span class="hl std"> </span>  <span class="hl kwd">gather</span><span class="hl std">(BP, Hg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Week)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
+<span class="hl std"> </span>  <span class="hl kwd">gather</span><span class="hl std">(Phase, mmHg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Week)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
 </pre></div>
-<div class="output"><pre class="knitr r">  Name Age      Start Week   obs_date  BP  Hg
-1 Carl  33 2014-04-02    1 2014-04-02 sys 165
-2 Carl  33 2014-04-02    1 2014-04-02 dia  45
-3 Carl  33 2014-04-02    2 2014-04-09 sys 165
-4 Carl  33 2014-04-02    2 2014-04-09 dia  42
-5 Carl  33 2014-04-02    3 2014-04-16 sys 159
-6 Carl  33 2014-04-02    3 2014-04-16 dia  43
+<div class="output"><pre class="knitr r">  Name Age      Start Week   obs_date Phase mmHg
+1 Carl  33 2014-04-02    1 2014-04-02   sys  165
+2 Carl  33 2014-04-02    1 2014-04-02   dia   45
+3 Carl  33 2014-04-02    2 2014-04-09   sys  165
+4 Carl  33 2014-04-02    2 2014-04-09   dia   42
+5 Carl  33 2014-04-02    3 2014-04-16   sys  159
+6 Carl  33 2014-04-02    3 2014-04-16   dia   43
 </pre></div>
 </div></div>
 <p>We pipe that into <code>ggplot</code> and the legend is
@@ -1862,6 +1862,28 @@ by <code>devtools</code></p>
 
 <p>Guess how the <code>testthat</code> package tests itself?</p>
 
+</div>
+
+<div class="slide">
+<h1>Test data as well as code</h1>
+<div class="chunk" id="unnamed-chunk-64"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;BP data okay&quot;</span><span class="hl std">, {</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">is.factor</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">Name))</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">is.numeric</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">sys))</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">is.numeric</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">dia))</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">all</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">sys</span> <span class="hl opt">&lt;</span> <span class="hl num">200</span><span class="hl std">),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;suspiciously high sys values&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">all</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">sys</span> <span class="hl opt">&gt;</span> <span class="hl num">10</span><span class="hl std">),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;suspiciosly low sys values&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span><span class="hl std">})</span>
+<span class="hl std">&gt; </span>
+<span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;BP data size&quot;</span><span class="hl std">, {</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_more_than</span><span class="hl std">(</span><span class="hl kwd">nrow</span><span class="hl std">(bps2),</span> <span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;not enough rows of data&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_less_than</span><span class="hl std">(</span><span class="hl kwd">nrow</span><span class="hl std">(bps2),</span> <span class="hl num">200</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;too many rows of data&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span><span class="hl std">})</span>
+</pre></div>
+<div class="error"><pre class="knitr r">Error: Test failed: 'BP data size'
+Not expected: nrow(bps2) not less than 200. Difference: -13
+too many rows of data.
+</pre></div>
+</div></div>
 </div>
 
 <div class="slide">

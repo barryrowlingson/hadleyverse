@@ -582,7 +582,7 @@ end.rcode-->
 <p>Or tidy the variables using <code>gather</code>:</p>
 <!--begin.rcode fig.width=12, fig.height=6
 bps2 %>% filter(Name=="Carl") %>% 
-  gather(BP, Hg, sys:dia) %>% arrange(Week) %>% head()
+  gather(Phase, mmHg, sys:dia) %>% arrange(Week) %>% head()
 end.rcode-->
 <p>We pipe that into <code>ggplot</code> and the legend is
 then automatically nice:</p>
@@ -856,6 +856,25 @@ by <code>devtools</code></p>
 
 <p>Guess how the <code>testthat</code> package tests itself?</p>
 
+</div>
+
+<div class="slide">
+<h1>Test data as well as code</h1>
+<!--begin.rcode
+test_that("BP data okay", {
+  expect_true(is.factor(bps2$Name))
+  expect_true(is.numeric(bps2$sys))
+  expect_true(is.numeric(bps2$dia))
+  expect_true(all(bps2$sys < 200), info="suspiciously high sys values")
+  expect_true(all(bps2$sys > 10), info="suspiciosly low sys values")
+})
+
+test_that("BP data size", {
+  expect_more_than(nrow(bps2), 10, info="not enough rows of data")
+  expect_less_than(nrow(bps2), 200, info="too many rows of data")
+})
+
+end.rcode-->
 </div>
 
 <div class="slide">
