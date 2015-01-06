@@ -64,6 +64,15 @@
 }
 </style>
 <meta charset="utf-8"> 
+<script src="lib/jquery-1.11.0/jquery.min.js"></script>
+<link href="lib/jquery-ui-1.10.4/css/smoothness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
+<script src="lib/jquery-ui-1.10.4/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="lib/d3-3.5.2/d3.min.js"></script>
+<script src="lib/vega-1.4.3/vega.min.js"></script>
+<script src="lib/lodash-2.2.1/lodash.min.js"></script>
+<script>var lodash = _.noConflict();</script>
+<link href="lib/ggvis-0.4.0.9000/css/ggvis.css" rel="stylesheet" />
+<script src="lib/ggvis-0.4.0.9000/js/ggvis.js"></script>
 <title>The Hadleyverse</title>
 <link rel="stylesheet" type="text/css" href="presentation.css" />
 </head>
@@ -120,6 +129,8 @@
 <div class="right">
 <h1>Advanced</h1>
 <dl class="packagelist">
+<dt><code>ggvis</code></dt>
+<dd>Web graphics</dd>
 <dt><code>devtools</code></dt>
 <dd>Package development</dd>
 <dt><code>roxygen2</code></dt>
@@ -145,7 +156,7 @@ Doesn't R already have dates and times?
 <p>
 Yes...
 </p>
-<pre>
+<pre class="list">
 strptime                 package:base                  R Documentation
 
 Date-time Conversion Functions to and from Character
@@ -171,21 +182,22 @@ only that conversion depends on the time zone.
 <div class="slide">
 <h1>Make it Easy</h1>
 <h2>Dates with <code>ymd</code> etc</h2>
-<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">d</span> <span class="hl kwb">=</span> <span class="hl kwd">ymd</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;2001-01-12&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;2011/3/31&quot;</span><span class="hl std">))</span>
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(lubridate)</span>
+<span class="hl std">&gt; </span><span class="hl std">d</span> <span class="hl kwb">=</span> <span class="hl kwd">ymd</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;2001-01-12&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;2011/3/31&quot;</span><span class="hl std">))</span>
 <span class="hl std">&gt; </span><span class="hl std">d</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "2001-01-12 UTC" "2011-03-31 UTC"
+<div class="output"><pre class="knitr r">[1] &quot;2001-01-12 UTC&quot; &quot;2011-03-31 UTC&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">dmy</span><span class="hl std">(</span><span class="hl str">&quot;310314&quot;</span><span class="hl std">)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "2014-03-31 UTC"
+<div class="output"><pre class="knitr r">[1] &quot;2014-03-31 UTC&quot;
 </pre></div>
 </div></div>
 <h2>Dates and times...</h2>
 <div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">dt</span> <span class="hl kwb">=</span> <span class="hl kwd">ymd_hms</span><span class="hl std">(</span><span class="hl str">&quot;2001-01-12 14:12:00&quot;</span><span class="hl std">)</span>
 <span class="hl std">&gt; </span><span class="hl std">dt</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "2001-01-12 14:12:00 UTC"
+<div class="output"><pre class="knitr r">[1] &quot;2001-01-12 14:12:00 UTC&quot;
 </pre></div>
 </div></div>
 <h2>Date and Time Info</h2>
@@ -200,12 +212,12 @@ only that conversion depends on the time zone.
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">month</span><span class="hl std">(dt,</span> <span class="hl kwc">label</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[1] Jan
-12 Levels: Jan < Feb < Mar < Apr < May < Jun < Jul < Aug < Sep < ... < Dec
+12 Levels: Jan &lt; Feb &lt; Mar &lt; Apr &lt; May &lt; Jun &lt; Jul &lt; Aug &lt; Sep &lt; ... &lt; Dec
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">wday</span><span class="hl std">(dt,</span> <span class="hl kwc">label</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[1] Fri
-Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
+Levels: Sun &lt; Mon &lt; Tues &lt; Wed &lt; Thurs &lt; Fri &lt; Sat
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">yday</span><span class="hl std">(d)</span>
 </pre></div>
@@ -217,7 +229,7 @@ Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
 <span class="hl std">&gt; </span><span class="hl std">ret</span> <span class="hl kwb">=</span> <span class="hl std">leave</span> <span class="hl opt">+</span> <span class="hl kwd">weeks</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">)</span> <span class="hl opt">+</span> <span class="hl kwd">days</span><span class="hl std">(</span><span class="hl num">4</span><span class="hl std">)</span>   <span class="hl com"># come back 2 weeks 4 days later</span>
 <span class="hl std">&gt; </span><span class="hl std">ret</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "2015-06-19 UTC"
+<div class="output"><pre class="knitr r">[1] &quot;2015-06-19 UTC&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">howlong</span> <span class="hl kwb">=</span> <span class="hl std">ret</span> <span class="hl opt">-</span> <span class="hl std">leave</span>    <span class="hl com"># an R difftime</span>
 <span class="hl std">&gt; </span><span class="hl std">howlong</span>
@@ -231,13 +243,13 @@ Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">holiday</span><span class="hl opt">/</span><span class="hl kwd">dweeks</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">)</span>   <span class="hl com"># how many weeks?</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 2.571
+<div class="output"><pre class="knitr r">[1] 2.571429
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">leave</span> <span class="hl opt">+</span> <span class="hl kwd">days</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">)</span>
 </pre></div>
-<div class="output"><pre class="knitr r"> [1] "2015-06-02 UTC" "2015-06-03 UTC" "2015-06-04 UTC" "2015-06-05 UTC"
- [5] "2015-06-06 UTC" "2015-06-07 UTC" "2015-06-08 UTC" "2015-06-09 UTC"
- [9] "2015-06-10 UTC" "2015-06-11 UTC"
+<div class="output"><pre class="knitr r"> [1] &quot;2015-06-02 UTC&quot; &quot;2015-06-03 UTC&quot; &quot;2015-06-04 UTC&quot; &quot;2015-06-05 UTC&quot;
+ [5] &quot;2015-06-06 UTC&quot; &quot;2015-06-07 UTC&quot; &quot;2015-06-08 UTC&quot; &quot;2015-06-09 UTC&quot;
+ [9] &quot;2015-06-10 UTC&quot; &quot;2015-06-11 UTC&quot;
 </pre></div>
 </div></div>
 </div>
@@ -267,7 +279,7 @@ Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
 <h2>String Length</h2>
 <div class="chunk" id="unnamed-chunk-6"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">who</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "Sara"  "Julie" "Jenny" NA      "Helen"
+<div class="output"><pre class="knitr r">[1] &quot;Sara&quot;  &quot;Julie&quot; &quot;Jenny&quot; NA      &quot;Helen&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_length</span><span class="hl std">(who)</span>
 </pre></div>
@@ -311,18 +323,18 @@ Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
 <div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">people</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Arthur 25&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Barry 33&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Charles 12&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Darren Edward 19&quot;</span><span class="hl std">)</span>
 <span class="hl std">&gt; </span><span class="hl kwd">str_extract</span><span class="hl std">(people,</span> <span class="hl str">&quot;\\d+&quot;</span><span class="hl std">)</span>     <span class="hl com"># one or more digits</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "25" "33" "12" "19"
+<div class="output"><pre class="knitr r">[1] &quot;25&quot; &quot;33&quot; &quot;12&quot; &quot;19&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_extract</span><span class="hl std">(people,</span> <span class="hl str">&quot;[^0-9]+&quot;</span><span class="hl std">)</span>  <span class="hl com"># from start to non-numeric</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "Arthur "        "Barry "         "Charles "       "Darren Edward "
+<div class="output"><pre class="knitr r">[1] &quot;Arthur &quot;        &quot;Barry &quot;         &quot;Charles &quot;       &quot;Darren Edward &quot;
 </pre></div>
 </div></div>
 
 <h2>Trim</h2>
 <div class="chunk" id="unnamed-chunk-10"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_trim</span><span class="hl std">(</span><span class="hl kwd">str_extract</span><span class="hl std">(people,</span> <span class="hl str">&quot;[^0-9]*&quot;</span><span class="hl std">))</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "Arthur"        "Barry"         "Charles"       "Darren Edward"
+<div class="output"><pre class="knitr r">[1] &quot;Arthur&quot;        &quot;Barry&quot;         &quot;Charles&quot;       &quot;Darren Edward&quot;
 </pre></div>
 </div></div>
 
@@ -331,24 +343,24 @@ Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
 <span class="hl std">&gt; </span><span class="hl kwd">str_split</span><span class="hl std">(bp,</span> <span class="hl str">&quot;;&quot;</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[[1]]
-[1] "150" "120" "110"
+[1] &quot;150&quot; &quot;120&quot; &quot;110&quot;
 
 [[2]]
-[1] "100" "100" "110" "120" "130"
+[1] &quot;100&quot; &quot;100&quot; &quot;110&quot; &quot;120&quot; &quot;130&quot;
 
 [[3]]
-[1] "90"
+[1] &quot;90&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_split</span><span class="hl std">(bp,</span> <span class="hl str">&quot;;&quot;</span><span class="hl std">,</span> <span class="hl kwc">n</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">[[1]]
-[1] "150"     "120;110"
+[1] &quot;150&quot;     &quot;120;110&quot;
 
 [[2]]
-[1] "100"             "100;110;120;130"
+[1] &quot;100&quot;             &quot;100;110;120;130&quot;
 
 [[3]]
-[1] "90"
+[1] &quot;90&quot;
 </pre></div>
 </div></div>
 
@@ -356,21 +368,21 @@ Levels: Sun < Mon < Tues < Wed < Thurs < Fri < Sat
 <div class="chunk" id="unnamed-chunk-12"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">s</span> <span class="hl kwb">=</span> <span class="hl str">&quot;The Quick Brown Fox&quot;</span>
 <span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl num">5</span><span class="hl std">,</span><span class="hl num">9</span><span class="hl std">)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "Quick"
+<div class="output"><pre class="knitr r">[1] &quot;Quick&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl num">5</span><span class="hl std">,</span><span class="hl num">9</span><span class="hl std">)</span> <span class="hl kwb">&lt;-</span> <span class="hl str">&quot;Slow&quot;</span> <span class="hl com"># replace with different length</span>
 <span class="hl std">&gt; </span><span class="hl std">s</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "The Slow Brown Fox"
+<div class="output"><pre class="knitr r">[1] &quot;The Slow Brown Fox&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl opt">-</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span>         <span class="hl com"># negative numbers count from end</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "Fox"
+<div class="output"><pre class="knitr r">[1] &quot;Fox&quot;
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">str_sub</span><span class="hl std">(s,</span><span class="hl opt">-</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl kwb">&lt;-</span> <span class="hl str">&quot;Monkey&quot;</span>
 <span class="hl std">&gt; </span><span class="hl std">s</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] "The Slow Brown Monkey"
+<div class="output"><pre class="knitr r">[1] &quot;The Slow Brown Monkey&quot;
 </pre></div>
 </div></div>
 
@@ -501,8 +513,8 @@ up to four weeks</p>
 <div class="output"><pre class="knitr r">  Name Age      Start  Week1  Week2  Week3  Week4
 1 Anne  35 2014-03-27 100/80 140/70 100/75 120/90
 2  Ben  41 2014-03-09 110/65 115/80 100/65 135/70
-3 Carl  33 2014-04-02 125/80 140/90   <NA>   <NA>
-4 Debs  27 2014-04-01 100/65 115/85 120/80   <NA>
+3 Carl  33 2014-04-02 125/80 140/90   &lt;NA&gt;   &lt;NA&gt;
+4 Debs  27 2014-04-01 100/65 115/85 120/80   &lt;NA&gt;
 5   Ed  22 2014-04-02 115/75  90/75 110/65 120/75
 </pre></div>
 </div></div>
@@ -535,13 +547,13 @@ up to four weeks</p>
 10   Ed  22 2014-04-02 Week2  90/75
 11 Anne  35 2014-03-27 Week3 100/75
 12  Ben  41 2014-03-09 Week3 100/65
-13 Carl  33 2014-04-02 Week3   <NA>
+13 Carl  33 2014-04-02 Week3   &lt;NA&gt;
 14 Debs  27 2014-04-01 Week3 120/80
 15   Ed  22 2014-04-02 Week3 110/65
 16 Anne  35 2014-03-27 Week4 120/90
 17  Ben  41 2014-03-09 Week4 135/70
-18 Carl  33 2014-04-02 Week4   <NA>
-19 Debs  27 2014-04-01 Week4   <NA>
+18 Carl  33 2014-04-02 Week4   &lt;NA&gt;
+19 Debs  27 2014-04-01 Week4   &lt;NA&gt;
 20   Ed  22 2014-04-02 Week4 120/75
 </pre></div>
 </div></div>
@@ -653,19 +665,19 @@ column....</p>
 </p>
 <div class="chunk" id="unnamed-chunk-23"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">log</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">)))</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.7552
+<div class="output"><pre class="knitr r">[1] 0.7552206
 </pre></div>
 </div></div>
 <p>can be written as a <em>pipeline:</em></p>
 <div class="chunk" id="unnamed-chunk-24"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">sqrt</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">log</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">mean</span><span class="hl std">()</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 0.7552
+<div class="output"><pre class="knitr r">[1] 0.7552206
 </pre></div>
 </div></div>
 <p>especially neat when you have args to each function:</p>
 <div class="chunk" id="unnamed-chunk-25"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwd">sqrt</span><span class="hl std">(</span><span class="hl kwd">log</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">base</span><span class="hl std">=</span><span class="hl num">2</span><span class="hl std">)),</span><span class="hl kwc">trim</span><span class="hl std">=</span><span class="hl num">0.1</span><span class="hl std">)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 1.499
+<div class="output"><pre class="knitr r">[1] 1.499091
 </pre></div>
 </div></div>
 <p>becomes</p>
@@ -674,28 +686,62 @@ column....</p>
 <span class="hl std"> </span>  <span class="hl kwd">sqrt</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span>
 <span class="hl std"> </span>  <span class="hl kwd">mean</span><span class="hl std">(</span><span class="hl kwc">trim</span><span class="hl std">=</span><span class="hl num">0.1</span><span class="hl std">)</span>
 </pre></div>
-<div class="output"><pre class="knitr r">[1] 1.499
+<div class="output"><pre class="knitr r">[1] 1.499091
 </pre></div>
 </div></div>
 <p>because the arguments are now closer to the function names!</p>
 </div>
 
 <div class="slide">
+<h1>Other pipes</h1>
+<h2>"Name" piping: <code>%$%</code></h2>
+<p>Makes the names of things on the lhs visible to the rhs:</p>
+<div class="chunk" id="unnamed-chunk-27"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">A</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">100</span><span class="hl std">,</span> <span class="hl kwc">B</span><span class="hl std">=</span><span class="hl kwd">cumsum</span><span class="hl std">(</span><span class="hl kwd">runif</span><span class="hl std">(</span><span class="hl num">100</span><span class="hl std">)))</span> <span class="hl opt">%$%</span> <span class="hl kwd">plot</span><span class="hl std">(A,B,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;l&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-27-1.png" title="plot of chunk unnamed-chunk-27" alt="plot of chunk unnamed-chunk-27" class="plot" /></div></div>
+<h2>"Tee" piping: <code>%T&gt;%</code></h2>
+<p>Lets you inject something into the pipe:</p>
+<div class="chunk" id="unnamed-chunk-28"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">d</span> <span class="hl kwb">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span><span class="hl std">,</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl kwd">runif</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">))</span>
+<span class="hl std">&gt; </span><span class="hl std">d</span> <span class="hl opt">%T&gt;%</span> <span class="hl kwd">plot</span><span class="hl std">()</span> <span class="hl opt">%$%</span> <span class="hl kwd">sum</span><span class="hl std">(x</span><span class="hl opt">+</span><span class="hl std">y)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-28-1.png" title="plot of chunk unnamed-chunk-28" alt="plot of chunk unnamed-chunk-28" class="plot" /></div><div class="rcode">
+<div class="output"><pre class="knitr r">[1] 60.53051
+</pre></div>
+</div></div>
+<img class="mainpic" src="images/tee.png" >
+<h2>"Back" piping: <code>%&lt;&gt;%</code></h2>
+<p>Easy updating of piped objects:</p>
+<div class="chunk" id="unnamed-chunk-29"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span>
+<span class="hl std">&gt; </span><span class="hl std">x</span> <span class="hl opt">%&lt;&gt;%</span> <span class="hl kwd">log</span><span class="hl std">(</span><span class="hl kwc">base</span><span class="hl std">=</span><span class="hl num">10</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">sqrt</span><span class="hl std">()</span>
+<span class="hl std">&gt; </span><span class="hl std">x</span>
+</pre></div>
+<div class="output"><pre class="knitr r"> [1] 0.0000000 0.5486620 0.6907396 0.7759252 0.8360443 0.8821288 0.9192921
+ [8] 0.9503105 0.9768534 1.0000000
+</pre></div>
+</div></div>
+<p>Shortcut for</p>
+<div class="chunk" id="unnamed-chunk-30"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">10</span>
+<span class="hl std">&gt; </span><span class="hl std">x</span> <span class="hl kwb">&lt;-</span> <span class="hl std">x</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">log</span><span class="hl std">(</span><span class="hl kwc">base</span><span class="hl std">=</span><span class="hl num">10</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">sqrt</span><span class="hl std">()</span>
+</pre></div>
+</div></div>
+</div>
+
+<div class="slide">
 <h1><code>magrittr</code> + <code>tidyr</code></h1>
 <p>Remember...</p>
-<div class="chunk" id="unnamed-chunk-27"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">gather</span><span class="hl std">(bpd, Week, BP, Week1</span><span class="hl opt">:</span><span class="hl std">Week4)</span>
+<div class="chunk" id="unnamed-chunk-31"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">gather</span><span class="hl std">(bpd, Week, BP, Week1</span><span class="hl opt">:</span><span class="hl std">Week4)</span>
 <span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(bps, BP,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">,</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span> <span class="hl str">&quot;/&quot;</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">,</span> <span class="hl kwc">extra</span><span class="hl std">=</span><span class="hl str">&quot;drop&quot;</span><span class="hl std">)</span>
 <span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl kwd">separate</span><span class="hl std">(bps, Week,</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;X&quot;</span><span class="hl std">,</span><span class="hl str">&quot;Week&quot;</span><span class="hl std">),</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl kwc">convert</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
 </pre></div>
 </div></div>
 <p>Can do with pipes:</p>
-<div class="chunk" id="unnamed-chunk-28"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bpd</span>
+<div class="chunk" id="unnamed-chunk-32"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bpd</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  Name Age      Start  Week1  Week2  Week3  Week4
 1 Anne  35 2014-03-27 100/80 140/70 100/75 120/90
 2  Ben  41 2014-03-09 110/65 115/80 100/65 135/70
-3 Carl  33 2014-04-02 125/80 140/90   <NA>   <NA>
-4 Debs  27 2014-04-01 100/65 115/85 120/80   <NA>
+3 Carl  33 2014-04-02 125/80 140/90   &lt;NA&gt;   &lt;NA&gt;
+4 Debs  27 2014-04-01 100/65 115/85 120/80   &lt;NA&gt;
 5   Ed  22 2014-04-02 115/75  90/75 110/65 120/75
 </pre></div>
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl kwb">=</span> <span class="hl std">bpd</span> <span class="hl opt">%&gt;%</span>
@@ -719,7 +765,7 @@ column....</p>
 <h1><code>dplyr</code></h1>
 <h2>useful functions for tidy data</h2>
 <h3>Selecting - chooses <em>columns</em></h2>
-<div class="chunk" id="unnamed-chunk-29"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">),</span><span class="hl num">3</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
+<div class="chunk" id="unnamed-chunk-33"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  Name Age      Start
 1 Anne  35 2014-03-27
@@ -749,11 +795,11 @@ column....</p>
 5   Ed  22 2014-04-02    1 115  75
 6 Anne  35 2014-03-27    2 140  70
 </pre></div>
-<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">X)</span> <span class="hl kwb">-&gt;</span> <span class="hl std">bps</span>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&lt;&gt;%</span> <span class="hl kwd">select</span><span class="hl std">(</span><span class="hl opt">-</span><span class="hl std">X)</span> <span class="hl com"># note pipe operator here!</span>
 </pre></div>
 </div></div>
 <h3>Filtering - chooses <em>rows</em></h3>
-<div class="chunk" id="unnamed-chunk-30"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Anne&quot;</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-34"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Anne&quot;</span><span class="hl std">)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  Name Age      Start Week sys dia
 1 Anne  35 2014-03-27    1 100  80
@@ -768,7 +814,7 @@ column....</p>
 </pre></div>
 </div></div>
 <h3>Mutating - adding <em>columns</em></h3>
-<div class="chunk" id="unnamed-chunk-31"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">mutate</span><span class="hl std">(</span><span class="hl kwc">obs_date</span> <span class="hl std">= Start</span> <span class="hl opt">+</span> <span class="hl kwd">weeks</span><span class="hl std">(Week</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span>
+<div class="chunk" id="unnamed-chunk-35"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">mutate</span><span class="hl std">(</span><span class="hl kwc">obs_date</span> <span class="hl std">= Start</span> <span class="hl opt">+</span> <span class="hl kwd">weeks</span><span class="hl std">(Week</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   Name Age      Start Week sys dia   obs_date
 1  Anne  35 2014-03-27    1 100  80 2014-03-27
@@ -806,7 +852,7 @@ column....</p>
 </pre></div>
 </div></div>
 <h3>Sorting</h3>
-<div class="chunk" id="unnamed-chunk-32"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Name,</span><span class="hl opt">-</span><span class="hl std">sys)</span>
+<div class="chunk" id="unnamed-chunk-36"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Name,</span><span class="hl opt">-</span><span class="hl std">sys)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">   Name Age      Start Week sys dia   obs_date
 1  Anne  35 2014-03-27    2 140  70 2014-04-03
@@ -833,7 +879,7 @@ column....</p>
 <div class="slide">
 <h1><code>dplyr</code> grouping</h1>
 <p><code>group_by</code> specifies a grouping of a data frame:</p>
-<div class="chunk" id="unnamed-chunk-33"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span>
+<div class="chunk" id="unnamed-chunk-37"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">Source: local data frame [17 x 7]
 Groups: Name
@@ -859,10 +905,17 @@ Groups: Name
 </pre></div>
 </div></div>
 <p>which you can then pass to <code>summarize</code></p>
-<div class="chunk" id="unnamed-chunk-34"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span>
+<div class="chunk" id="unnamed-chunk-38"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span>
 <span class="hl std"> </span>  <span class="hl kwd">summarize</span><span class="hl std">(</span><span class="hl kwc">min</span><span class="hl std">=</span><span class="hl kwd">min</span><span class="hl std">(sys),</span> <span class="hl kwc">max</span><span class="hl std">=</span><span class="hl kwd">max</span><span class="hl std">(sys))</span>
 </pre></div>
-<div class="error"><pre class="knitr r">Error: argument "by" is missing, with no default
+<div class="output"><pre class="knitr r">Source: local data frame [5 x 3]
+
+  Name min max
+1 Anne 100 140
+2  Ben 100 135
+3 Carl 125 140
+4 Debs 100 120
+5   Ed  90 120
 </pre></div>
 </div></div>
 
@@ -870,7 +923,7 @@ Groups: Name
 variables easy - eg what was each person's highest systolic BP, and
 what was the highest BP measured in each week?</p>
 
-<div class="chunk" id="unnamed-chunk-35"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(sys</span><span class="hl opt">==</span><span class="hl kwd">max</span><span class="hl std">(sys))</span>
+<div class="chunk" id="unnamed-chunk-39"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(sys</span><span class="hl opt">==</span><span class="hl kwd">max</span><span class="hl std">(sys))</span>
 </pre></div>
 <div class="output"><pre class="knitr r">Source: local data frame [5 x 7]
 Groups: Name
@@ -907,7 +960,7 @@ Groups: Week
 column:</p>
 <ul>
 <li>People data:
-<div class="chunk" id="unnamed-chunk-36"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">people</span>
+<div class="chunk" id="unnamed-chunk-40"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">people</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  Name Age      Start
 1 Anne  35 2014-03-27
@@ -919,7 +972,7 @@ column:</p>
 </div></div>
 </li>
 <li>Measurement data:
-<div class="chunk" id="unnamed-chunk-37"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">head</span><span class="hl std">(bpsdata)</span>
+<div class="chunk" id="unnamed-chunk-41"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">head</span><span class="hl std">(bpsdata)</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  Name Week sys dia
 1 Anne    1  99  62
@@ -933,9 +986,9 @@ column:</p>
 </li>
 </ul>
 <p>We can join them using <em>join</em> operations</p>
-<div class="chunk" id="unnamed-chunk-38"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">left_join</span><span class="hl std">(bpsdata, people)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-42"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">left_join</span><span class="hl std">(bpsdata, people)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
 </pre></div>
-<div class="message"><pre class="knitr r">Joining by: "Name"
+<div class="message"><pre class="knitr r">Joining by: &quot;Name&quot;
 </pre></div>
 <div class="output"><pre class="knitr r">   Name Week sys dia Age      Start
 1  Anne    1  99  62  35 2014-03-27
@@ -951,11 +1004,11 @@ column:</p>
 </pre></div>
 </div></div>
 <p>Hence we can compute the observation date by a join and a mutate:</p>
-<div class="chunk" id="unnamed-chunk-39"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">left_join</span><span class="hl std">(bpsdata, people)</span> <span class="hl opt">%&gt;%</span>
+<div class="chunk" id="unnamed-chunk-43"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">left_join</span><span class="hl std">(bpsdata, people)</span> <span class="hl opt">%&gt;%</span>
 <span class="hl std"> </span>   <span class="hl kwd">mutate</span><span class="hl std">(</span><span class="hl kwc">obs_date</span> <span class="hl std">= Start</span><span class="hl opt">+</span><span class="hl kwd">dweeks</span><span class="hl std">(Week</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">))</span> <span class="hl opt">%&gt;%</span>
 <span class="hl std"> </span>   <span class="hl kwd">head</span><span class="hl std">(</span><span class="hl num">10</span><span class="hl std">)</span>
 </pre></div>
-<div class="message"><pre class="knitr r">Joining by: "Name"
+<div class="message"><pre class="knitr r">Joining by: &quot;Name&quot;
 </pre></div>
 <div class="output"><pre class="knitr r">   Name Week sys dia Age      Start   obs_date
 1  Anne    1  99  62  35 2014-03-27 2014-03-27
@@ -993,38 +1046,38 @@ and adding elements until the result is printed.</dd>
 
 <h2>Example</h2>
 <p>The <code>geom_point</code> geom uses x, y, and colour aesthetics (amongst others)</p>
-<div class="chunk" id="unnamed-chunk-40"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggplot2)</span>
+<div class="chunk" id="unnamed-chunk-44"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggplot2)</span>
 <span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-40.png" title="plot of chunk unnamed-chunk-40" alt="plot of chunk unnamed-chunk-40" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-44-1.png" title="plot of chunk unnamed-chunk-44" alt="plot of chunk unnamed-chunk-44" class="plot" /></div></div>
 <p>Add a smoothing layer</p>
-<div class="chunk" id="unnamed-chunk-41"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">()</span> <span class="hl opt">+</span>
+<div class="chunk" id="unnamed-chunk-45"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">()</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>   <span class="hl kwd">stat_smooth</span><span class="hl std">(</span><span class="hl kwc">method</span><span class="hl std">=</span><span class="hl str">&quot;loess&quot;</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-41.png" title="plot of chunk unnamed-chunk-41" alt="plot of chunk unnamed-chunk-41" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-45-1.png" title="plot of chunk unnamed-chunk-45" alt="plot of chunk unnamed-chunk-45" class="plot" /></div></div>
 <p>Lines need the additional <code>group</code> aesthetic
 to define what to join up:</p>
-<div class="chunk" id="unnamed-chunk-42"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
+<div class="chunk" id="unnamed-chunk-46"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>   <span class="hl kwd">geom_line</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-421.png" title="plot of chunk unnamed-chunk-42" alt="plot of chunk unnamed-chunk-42" class="plot" /></div><div class="rcode">
+</div><div class="rimage default"><img src="figure/unnamed-chunk-46-1.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" class="plot" /></div><div class="rcode">
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name,</span> <span class="hl kwc">colour</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>   <span class="hl kwd">geom_line</span><span class="hl std">()</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>   <span class="hl kwd">geom_point</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-422.png" title="plot of chunk unnamed-chunk-42" alt="plot of chunk unnamed-chunk-42" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-46-2.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" class="plot" /></div></div>
 <p>To plot more than one variable, specify the aesthetic in the geom.
 Getting the legend right takes a bit of fiddling:</p>
-<div class="chunk" id="unnamed-chunk-43"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">),</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week))</span> <span class="hl opt">+</span>
+<div class="chunk" id="unnamed-chunk-47"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">),</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week))</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>     <span class="hl kwd">geom_line</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;sys&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>     <span class="hl kwd">geom_line</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">y</span><span class="hl std">=dia,</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;dia&quot;</span><span class="hl std">),</span> <span class="hl kwc">lwd</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>     <span class="hl kwd">scale_colour_manual</span><span class="hl std">(</span><span class="hl kwc">name</span><span class="hl std">=</span><span class="hl str">&quot;Phase&quot;</span><span class="hl std">,</span>
 <span class="hl std"> </span>             <span class="hl kwc">values</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwc">sys</span><span class="hl std">=</span><span class="hl str">&quot;red&quot;</span><span class="hl std">,</span><span class="hl kwc">dia</span><span class="hl std">=</span><span class="hl str">&quot;blue&quot;</span><span class="hl std">))</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>     <span class="hl kwd">ylab</span><span class="hl std">(</span><span class="hl str">&quot;mmHg&quot;</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-43.png" title="plot of chunk unnamed-chunk-43" alt="plot of chunk unnamed-chunk-43" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-47-1.png" title="plot of chunk unnamed-chunk-47" alt="plot of chunk unnamed-chunk-47" class="plot" /></div></div>
 <p>Or tidy the variables using <code>gather</code>:</p>
-<div class="chunk" id="unnamed-chunk-44"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span>
+<div class="chunk" id="unnamed-chunk-48"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span>
 <span class="hl std"> </span>  <span class="hl kwd">gather</span><span class="hl std">(BP, Hg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">arrange</span><span class="hl std">(Week)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">head</span><span class="hl std">()</span>
 </pre></div>
 <div class="output"><pre class="knitr r">  Name Age      Start Week   obs_date  BP  Hg
@@ -1038,34 +1091,34 @@ Getting the legend right takes a bit of fiddling:</p>
 </div></div>
 <p>We pipe that into <code>ggplot</code> and the legend is
 then automatically nice:</p>
-<div class="chunk" id="unnamed-chunk-45"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">gather</span><span class="hl std">(Phase, mmHg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span>
+<div class="chunk" id="unnamed-chunk-49"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">filter</span><span class="hl std">(Name</span><span class="hl opt">==</span><span class="hl str">&quot;Carl&quot;</span><span class="hl std">)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">gather</span><span class="hl std">(Phase, mmHg, sys</span><span class="hl opt">:</span><span class="hl std">dia)</span> <span class="hl opt">%&gt;%</span>
 <span class="hl std"> </span>   <span class="hl kwd">ggplot</span><span class="hl std">(</span>
 <span class="hl std"> </span>    <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Week,</span> <span class="hl kwc">y</span><span class="hl std">=mmHg,</span> <span class="hl kwc">group</span><span class="hl std">=Phase,</span> <span class="hl kwc">col</span><span class="hl std">=Phase)</span>
 <span class="hl std"> </span>   <span class="hl std">)</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>   <span class="hl kwd">geom_line</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-45.png" title="plot of chunk unnamed-chunk-45" alt="plot of chunk unnamed-chunk-45" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-49-1.png" title="plot of chunk unnamed-chunk-49" alt="plot of chunk unnamed-chunk-49" class="plot" /></div></div>
 <h2>Some other geoms</h2>
 <h3>histograms</h3>
-<div class="chunk" id="unnamed-chunk-46"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_histogram</span><span class="hl std">(</span><span class="hl kwc">binwidth</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-50"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_histogram</span><span class="hl std">(</span><span class="hl kwc">binwidth</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-461.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" class="plot" /></div><div class="rcode">
+</div><div class="rimage default"><img src="figure/unnamed-chunk-50-1.png" title="plot of chunk unnamed-chunk-50" alt="plot of chunk unnamed-chunk-50" class="plot" /></div><div class="rcode">
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys,</span> <span class="hl kwc">fill</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_histogram</span><span class="hl std">(</span><span class="hl kwc">binwidth</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-462.png" title="plot of chunk unnamed-chunk-46" alt="plot of chunk unnamed-chunk-46" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-50-2.png" title="plot of chunk unnamed-chunk-50" alt="plot of chunk unnamed-chunk-50" class="plot" /></div></div>
 
 <h3>boxplots</h3>
 <p>The <code>boxplot</code> geom uses <code>group</code> to
 define the set of points in each boxplot:
 </p>
-<div class="chunk" id="unnamed-chunk-47"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Name,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_boxplot</span><span class="hl std">()</span>
+<div class="chunk" id="unnamed-chunk-51"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=Name,</span> <span class="hl kwc">y</span><span class="hl std">=sys,</span> <span class="hl kwc">group</span><span class="hl std">=Name))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_boxplot</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-47.png" title="plot of chunk unnamed-chunk-47" alt="plot of chunk unnamed-chunk-47" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-51-1.png" title="plot of chunk unnamed-chunk-51" alt="plot of chunk unnamed-chunk-51" class="plot" /></div></div>
 
 <h3>pie charts</h3>
-<div class="chunk" id="unnamed-chunk-48"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">size</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_pie</span><span class="hl std">()</span>
+<div class="chunk" id="unnamed-chunk-52"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">size</span><span class="hl std">=sys))</span> <span class="hl opt">+</span> <span class="hl kwd">geom_pie</span><span class="hl std">()</span>
 </pre></div>
-<div class="error"><pre class="knitr r">Error: could not find function "geom_pie"
+<div class="error"><pre class="knitr r">Error in eval(expr, envir, enclos): could not find function &quot;geom_pie&quot;
 </pre></div>
 </div></div>
 
@@ -1074,37 +1127,37 @@ define the set of points in each boxplot:
 <div class="slide">
 <h1>Saving and Theming</h1>
 <p>Layers and plots can be saved:</p>
-<div class="chunk" id="unnamed-chunk-49"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl kwb">=</span> <span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys,</span> <span class="hl kwc">y</span><span class="hl std">=dia,</span> <span class="hl kwc">col</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
+<div class="chunk" id="unnamed-chunk-53"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl kwb">=</span> <span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=sys,</span> <span class="hl kwc">y</span><span class="hl std">=dia,</span> <span class="hl kwc">col</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>    <span class="hl kwd">geom_point</span><span class="hl std">()</span>
 </pre></div>
 </div></div>
 <p>nothing plots until the object is printed</p>
-<div class="chunk" id="unnamed-chunk-50"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span>
+<div class="chunk" id="unnamed-chunk-54"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-50.png" title="plot of chunk unnamed-chunk-50" alt="plot of chunk unnamed-chunk-50" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-54-1.png" title="plot of chunk unnamed-chunk-54" alt="plot of chunk unnamed-chunk-54" class="plot" /></div></div>
 <p>then you can add things to objects:</p>
-<div class="chunk" id="unnamed-chunk-51"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">size</span><span class="hl std">=Week))</span>
+<div class="chunk" id="unnamed-chunk-55"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">geom_point</span><span class="hl std">(</span><span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">size</span><span class="hl std">=Week))</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-51.png" title="plot of chunk unnamed-chunk-51" alt="plot of chunk unnamed-chunk-51" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-55-1.png" title="plot of chunk unnamed-chunk-55" alt="plot of chunk unnamed-chunk-55" class="plot" /></div></div>
 <h2>themes</h2>
 <p>Add a <code>theme</code> function to modify a plot's appearance</p>
-<div class="chunk" id="unnamed-chunk-52"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span>
+<div class="chunk" id="unnamed-chunk-56"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_bw</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-521.png" title="plot of chunk unnamed-chunk-52" alt="plot of chunk unnamed-chunk-52" class="plot" /></div><div class="rcode">
+</div><div class="rimage default"><img src="figure/unnamed-chunk-56-1.png" title="plot of chunk unnamed-chunk-56" alt="plot of chunk unnamed-chunk-56" class="plot" /></div><div class="rcode">
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_minimal</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-522.png" title="plot of chunk unnamed-chunk-52" alt="plot of chunk unnamed-chunk-52" class="plot" /></div><div class="rcode">
+</div><div class="rimage default"><img src="figure/unnamed-chunk-56-2.png" title="plot of chunk unnamed-chunk-56" alt="plot of chunk unnamed-chunk-56" class="plot" /></div><div class="rcode">
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_classic</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-523.png" title="plot of chunk unnamed-chunk-52" alt="plot of chunk unnamed-chunk-52" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-56-3.png" title="plot of chunk unnamed-chunk-56" alt="plot of chunk unnamed-chunk-56" class="plot" /></div></div>
 <p>with the <code>ggthemes</code> package you get some more themes:</p>
-<div class="chunk" id="unnamed-chunk-53"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggthemes)</span>
+<div class="chunk" id="unnamed-chunk-57"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggthemes)</span>
 <span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_excel</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-531.png" title="plot of chunk unnamed-chunk-53" alt="plot of chunk unnamed-chunk-53" class="plot" /></div><div class="rcode">
+</div><div class="rimage default"><img src="figure/unnamed-chunk-57-1.png" title="plot of chunk unnamed-chunk-57" alt="plot of chunk unnamed-chunk-57" class="plot" /></div><div class="rcode">
 <div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">g</span> <span class="hl opt">+</span> <span class="hl kwd">theme_tufte</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/unnamed-chunk-532.png" title="plot of chunk unnamed-chunk-53" alt="plot of chunk unnamed-chunk-53" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-57-2.png" title="plot of chunk unnamed-chunk-57" alt="plot of chunk unnamed-chunk-57" class="plot" /></div></div>
 <p>and even...</p>
 <img class="mainpic" src="images/xkcd.png">
 <p>inspired by <a href="http://www.xkcd.com/">XKCD comic</a></p>
@@ -1121,32 +1174,712 @@ by levels of a factor</p>
 <span class="hl std"> </span>  <span class="hl kwd">facet_wrap</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">Name,</span><span class="hl kwc">nrow</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>  <span class="hl kwd">theme_stata</span><span class="hl std">()</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/ggp1.png" title="plot of chunk ggp1" alt="plot of chunk ggp1" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/ggp1-1.png" title="plot of chunk ggp1" alt="plot of chunk ggp1" class="plot" /></div></div>
 
-<p>You can control which axes are fixed and which are free.
+<p>By default, each facet uses the same fixed x and y axis range.
+This can be changed to "free", so that axes fit the data in the 
+facet.</p>
+<p>
 Here's a ribbon geom with free y axis and common x axis:</p>
 
 <div class="chunk" id="ggp2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">ggplot</span><span class="hl std">(bps2,</span> <span class="hl kwd">aes</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=obs_date,</span> <span class="hl kwc">ymin</span><span class="hl std">=dia,</span> <span class="hl kwc">ymax</span><span class="hl std">=sys,</span> <span class="hl kwc">fill</span><span class="hl std">=Name))</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>  <span class="hl kwd">geom_ribbon</span><span class="hl std">(</span><span class="hl kwc">alpha</span><span class="hl std">=</span><span class="hl num">0.5</span><span class="hl std">)</span> <span class="hl opt">+</span>
 <span class="hl std"> </span>  <span class="hl kwd">facet_wrap</span><span class="hl std">(</span><span class="hl opt">~</span><span class="hl std">Name,</span> <span class="hl kwc">ncol</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">scales</span><span class="hl std">=</span><span class="hl str">&quot;free_y&quot;</span><span class="hl std">)</span>
 </pre></div>
-</div><div class="rimage default"><img src="figure/ggp2.png" title="plot of chunk ggp2" alt="plot of chunk ggp2" class="plot" /></div></div>
+</div><div class="rimage default"><img src="figure/ggp2-1.png" title="plot of chunk ggp2" alt="plot of chunk ggp2" class="plot" /></div></div>
+</div>
+
+<div class="slide">
+<h1>ggvis</h1>
+<p>Its like <code>ggplot</code> for web pages:</p>
+
+<div class="chunk" id="unnamed-chunk-58"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">library</span><span class="hl std">(ggvis)</span>
+<span class="hl std">&gt; </span><span class="hl std">mtcars</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">ggvis</span><span class="hl std">(</span><span class="hl kwc">x</span> <span class="hl std">=</span> <span class="hl opt">~</span><span class="hl std">wt,</span> <span class="hl kwc">y</span> <span class="hl std">=</span> <span class="hl opt">~</span><span class="hl std">mpg)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">layer_points</span><span class="hl std">()</span>
+</pre></div>
+<!--html_preserve--><div id="plot_id987928721-container" class="ggvis-output-container">
+<div id="plot_id987928721" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id987928721_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id987928721" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id987928721_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id987928721" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id987928721_download" class="ggvis-download" data-plot-id="plot_id987928721">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id987928721_spec = {
+    "data": [
+        {
+            "name": ".0",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "wt": "number",
+                    "mpg": "number"
+                }
+            },
+            "values": "\"wt\",\"mpg\"\n2.62,21\n2.875,21\n2.32,22.8\n3.215,21.4\n3.44,18.7\n3.46,18.1\n3.57,14.3\n3.19,24.4\n3.15,22.8\n3.44,19.2\n3.44,17.8\n4.07,16.4\n3.73,17.3\n3.78,15.2\n5.25,10.4\n5.424,10.4\n5.345,14.7\n2.2,32.4\n1.615,30.4\n1.835,33.9\n2.465,21.5\n3.52,15.5\n3.435,15.2\n3.84,13.3\n3.845,19.2\n1.935,27.3\n2.14,26\n1.513,30.4\n3.17,15.8\n2.77,19.7\n3.57,15\n2.78,21.4"
+        },
+        {
+            "name": "scale/x",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "domain": "number"
+                }
+            },
+            "values": "\"domain\"\n1.31745\n5.61955"
+        },
+        {
+            "name": "scale/y",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "domain": "number"
+                }
+            },
+            "values": "\"domain\"\n9.225\n35.075"
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "domain": {
+                "data": "scale/x",
+                "field": "data.domain"
+            },
+            "zero": false,
+            "nice": false,
+            "clamp": false,
+            "range": "width"
+        },
+        {
+            "name": "y",
+            "domain": {
+                "data": "scale/y",
+                "field": "data.domain"
+            },
+            "zero": false,
+            "nice": false,
+            "clamp": false,
+            "range": "height"
+        }
+    ],
+    "marks": [
+        {
+            "type": "symbol",
+            "properties": {
+                "update": {
+                    "fill": {
+                        "value": "#000000"
+                    },
+                    "size": {
+                        "value": 50
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "data.wt"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "data.mpg"
+                    }
+                },
+                "ggvis": {
+                    "data": {
+                        "value": ".0"
+                    }
+                }
+            },
+            "from": {
+                "data": ".0"
+            }
+        }
+    ],
+    "width": 504,
+    "height": 504,
+    "legends": [
+
+    ],
+    "axes": [
+        {
+            "type": "x",
+            "scale": "x",
+            "orient": "bottom",
+            "layer": "back",
+            "grid": true,
+            "title": "wt"
+        },
+        {
+            "type": "y",
+            "scale": "y",
+            "orient": "left",
+            "layer": "back",
+            "grid": true,
+            "title": "mpg"
+        }
+    ],
+    "padding": null,
+    "ggvis_opts": {
+        "keep_aspect": false,
+        "resizable": true,
+        "padding": {
+
+        },
+        "duration": 250,
+        "renderer": "svg",
+        "hover_duration": 0,
+        "width": 504,
+        "height": 504
+    },
+    "handlers": null
+}
+;
+ggvis.getPlot("plot_id987928721").parseSpec(plot_id987928721_spec);
+</script><!--/html_preserve--></div></div>
+
+<p>not quite as feature-ful as <code>ggplot</code>:</p>
+
+<div class="chunk" id="unnamed-chunk-59"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">bps2</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">ggvis</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">=</span><span class="hl opt">~</span><span class="hl std">obs_date,</span> <span class="hl kwc">y</span><span class="hl std">=</span><span class="hl opt">~</span><span class="hl std">sys,</span> <span class="hl kwc">stroke</span><span class="hl std">=</span><span class="hl opt">~</span><span class="hl std">Name,</span> <span class="hl kwc">fill</span><span class="hl std">=</span><span class="hl opt">~</span><span class="hl std">Name)</span> <span class="hl opt">%&gt;%</span>
+<span class="hl std"> </span>   <span class="hl kwd">group_by</span><span class="hl std">(Name)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">layer_points</span><span class="hl std">()</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">layer_smooths</span><span class="hl std">(</span><span class="hl kwc">se</span><span class="hl std">=</span><span class="hl num">TRUE</span><span class="hl std">)</span>
+</pre></div>
+<!--html_preserve--><div id="plot_id350057529-container" class="ggvis-output-container">
+<div id="plot_id350057529" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id350057529_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id350057529" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id350057529_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id350057529" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id350057529_download" class="ggvis-download" data-plot-id="plot_id350057529">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id350057529_spec = {
+    "data": [
+        {
+            "name": ".0/group_by1_flat",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "obs_date": "number",
+                    "sys": "number"
+                }
+            },
+            "values": "\"obs_date\",\"sys\",\"Name\"\n1395878400000,99,\"Anne\"\n1396483200000,91,\"Anne\"\n1.397088e+12,88,\"Anne\"\n1397692800000,95,\"Anne\"\n1398297600000,96,\"Anne\"\n1398902400000,92,\"Anne\"\n1399507200000,88,\"Anne\"\n1.400112e+12,86,\"Anne\"\n1400716800000,93,\"Anne\"\n1401321600000,102,\"Anne\"\n1401926400000,105,\"Anne\"\n1402531200000,104,\"Anne\"\n1.403136e+12,106,\"Anne\"\n1403740800000,118,\"Anne\"\n1404345600000,133,\"Anne\"\n1404950400000,141,\"Anne\"\n1405555200000,141,\"Anne\"\n1.40616e+12,141,\"Anne\"\n1406764800000,146,\"Anne\"\n1407369600000,150,\"Anne\"\n1407974400000,149,\"Anne\"\n1408579200000,143,\"Anne\"\n1.409184e+12,131,\"Anne\"\n1409788800000,127,\"Anne\"\n1410393600000,130,\"Anne\"\n1410998400000,136,\"Anne\"\n1411603200000,139,\"Anne\"\n1.412208e+12,139,\"Anne\"\n1412812800000,140,\"Anne\"\n1413417600000,141,\"Anne\"\n1414022400000,136,\"Anne\"\n1414627200000,125,\"Anne\"\n1.415232e+12,121,\"Anne\"\n1415836800000,130,\"Anne\"\n1416441600000,134,\"Anne\"\n1417046400000,125,\"Anne\"\n1417651200000,117,\"Anne\"\n1.418256e+12,113,\"Anne\"\n1418860800000,105,\"Anne\"\n1419465600000,97,\"Anne\"\n1420070400000,97,\"Anne\"\n1420675200000,95,\"Anne\"\n1.42128e+12,97,\"Anne\"\n1394323200000,160,\"Ben\"\n1.394928e+12,147,\"Ben\"\n1395532800000,147,\"Ben\"\n1396137600000,157,\"Ben\"\n1396742400000,159,\"Ben\"\n1397347200000,155,\"Ben\"\n1.397952e+12,142,\"Ben\"\n1398556800000,137,\"Ben\"\n1399161600000,141,\"Ben\"\n1399766400000,141,\"Ben\"\n1400371200000,141,\"Ben\"\n1.400976e+12,143,\"Ben\"\n1401580800000,145,\"Ben\"\n1402185600000,148,\"Ben\"\n1402790400000,148,\"Ben\"\n1403395200000,144,\"Ben\"\n1.404e+12,142,\"Ben\"\n1404604800000,145,\"Ben\"\n1405209600000,151,\"Ben\"\n1405814400000,167,\"Ben\"\n1406419200000,167,\"Ben\"\n1.407024e+12,160,\"Ben\"\n1407628800000,156,\"Ben\"\n1408233600000,148,\"Ben\"\n1408838400000,139,\"Ben\"\n1409443200000,128,\"Ben\"\n1.410048e+12,125,\"Ben\"\n1410652800000,131,\"Ben\"\n1411257600000,132,\"Ben\"\n1411862400000,130,\"Ben\"\n1412467200000,138,\"Ben\"\n1.413072e+12,155,\"Ben\"\n1413676800000,159,\"Ben\"\n1414281600000,141,\"Ben\"\n1414886400000,126,\"Ben\"\n1415491200000,115,\"Ben\"\n1.416096e+12,107,\"Ben\"\n1416700800000,102,\"Ben\"\n1417305600000,100,\"Ben\"\n1417910400000,101,\"Ben\"\n1418515200000,105,\"Ben\"\n1.41912e+12,106,\"Ben\"\n1419724800000,106,\"Ben\"\n1420329600000,100,\"Ben\"\n1420934400000,100,\"Ben\"\n1421539200000,105,\"Ben\"\n1.422144e+12,100,\"Ben\"\n1422748800000,94,\"Ben\"\n1396396800000,165,\"Carl\"\n1397001600000,165,\"Carl\"\n1397606400000,159,\"Carl\"\n1398211200000,151,\"Carl\"\n1.398816e+12,149,\"Carl\"\n1399420800000,153,\"Carl\"\n1400025600000,156,\"Carl\"\n1400630400000,155,\"Carl\"\n1401235200000,153,\"Carl\"\n1.40184e+12,151,\"Carl\"\n1402444800000,144,\"Carl\"\n1403049600000,139,\"Carl\"\n1403654400000,141,\"Carl\"\n1404259200000,145,\"Carl\"\n1.404864e+12,140,\"Carl\"\n1405468800000,140,\"Carl\"\n1406073600000,144,\"Carl\"\n1406678400000,146,\"Carl\"\n1407283200000,147,\"Carl\"\n1.407888e+12,149,\"Carl\"\n1408492800000,151,\"Carl\"\n1409097600000,150,\"Carl\"\n1409702400000,146,\"Carl\"\n1410307200000,142,\"Carl\"\n1.410912e+12,141,\"Carl\"\n1411516800000,136,\"Carl\"\n1412121600000,130,\"Carl\"\n1412726400000,127,\"Carl\"\n1413331200000,130,\"Carl\"\n1.413936e+12,135,\"Carl\"\n1414540800000,138,\"Carl\"\n1415145600000,135,\"Carl\"\n1415750400000,130,\"Carl\"\n1416355200000,125,\"Carl\"\n1.41696e+12,122,\"Carl\"\n1417564800000,125,\"Carl\"\n1418169600000,129,\"Carl\"\n1418774400000,129,\"Carl\"\n1419379200000,132,\"Carl\"\n1.419984e+12,132,\"Carl\"\n1420588800000,128,\"Carl\"\n1421193600000,120,\"Carl\"\n1421798400000,115,\"Carl\"\n1422403200000,120,\"Carl\"\n1.423008e+12,121,\"Carl\"\n1396310400000,135,\"Debs\"\n1396915200000,136,\"Debs\"\n1.39752e+12,130,\"Debs\"\n1398124800000,128,\"Debs\"\n1398729600000,123,\"Debs\"\n1399334400000,120,\"Debs\"\n1399939200000,125,\"Debs\"\n1.400544e+12,124,\"Debs\"\n1401148800000,112,\"Debs\"\n1401753600000,106,\"Debs\"\n1402358400000,110,\"Debs\"\n1402963200000,116,\"Debs\"\n1.403568e+12,127,\"Debs\"\n1404172800000,135,\"Debs\"\n1404777600000,139,\"Debs\"\n1405382400000,139,\"Debs\"\n1405987200000,138,\"Debs\"\n1.406592e+12,143,\"Debs\"\n1407196800000,148,\"Debs\"\n1407801600000,150,\"Debs\"\n1408406400000,155,\"Debs\"\n1409011200000,161,\"Debs\"\n1.409616e+12,166,\"Debs\"\n1410220800000,162,\"Debs\"\n1410825600000,155,\"Debs\"\n1411430400000,150,\"Debs\"\n1412035200000,149,\"Debs\"\n1.41264e+12,145,\"Debs\"\n1413244800000,134,\"Debs\"\n1413849600000,128,\"Debs\"\n1414454400000,126,\"Debs\"\n1415059200000,127,\"Debs\"\n1.415664e+12,124,\"Debs\"\n1416268800000,123,\"Debs\"\n1416873600000,126,\"Debs\"\n1417478400000,130,\"Debs\"\n1418083200000,128,\"Debs\"\n1.418688e+12,119,\"Debs\"\n1419292800000,109,\"Debs\"\n1419897600000,98,\"Debs\"\n1420502400000,95,\"Debs\"\n1421107200000,100,\"Debs\"\n1.421712e+12,105,\"Debs\"\n1396396800000,147,\"Ed\"\n1397001600000,157,\"Ed\"\n1397606400000,166,\"Ed\"\n1398211200000,167,\"Ed\"\n1.398816e+12,166,\"Ed\"\n1399420800000,161,\"Ed\"\n1400025600000,154,\"Ed\"\n1400630400000,144,\"Ed\"\n1401235200000,139,\"Ed\"\n1.40184e+12,137,\"Ed\"\n1402444800000,132,\"Ed\"\n1403049600000,124,\"Ed\"\n1403654400000,114,\"Ed\"\n1404259200000,110,\"Ed\"\n1.404864e+12,110,\"Ed\"\n1405468800000,110,\"Ed\"\n1406073600000,111,\"Ed\"\n1406678400000,110,\"Ed\"\n1407283200000,106,\"Ed\"\n1.407888e+12,106,\"Ed\"\n1408492800000,111,\"Ed\"\n1409097600000,115,\"Ed\"\n1409702400000,117,\"Ed\"\n1410307200000,119,\"Ed\"\n1.410912e+12,125,\"Ed\"\n1411516800000,130,\"Ed\"\n1412121600000,129,\"Ed\"\n1412726400000,120,\"Ed\"\n1413331200000,111,\"Ed\"\n1.413936e+12,111,\"Ed\"\n1414540800000,112,\"Ed\"\n1415145600000,111,\"Ed\"\n1415750400000,113,\"Ed\"\n1416355200000,116,\"Ed\""
+        },
+        {
+            "name": ".0/group_by1",
+            "source": ".0/group_by1_flat",
+            "transform": [
+                {
+                    "type": "treefacet",
+                    "keys": [
+                        "data.Name"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": ".0/group_by1/model_prediction2_flat",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "resp_upr_": "number",
+                    "pred_": "number",
+                    "resp_lwr_": "number",
+                    "resp_": "number"
+                }
+            },
+            "values": "\"Name\",\"resp_upr_\",\"pred_\",\"resp_lwr_\",\"resp_\"\n\"Anne\",94.6648055594042,1395878400000,76.5344961891661,85.5996508742851\n\"Anne\",94.9210452390336,1396199939240,78.2670149446503,86.594030091842\n\"Anne\",95.2547543174738,1396521478481,79.9673393182418,87.6110468178578\n\"Anne\",95.674322740983,1396843017721,81.6370847232159,88.6557037320994\n\"Anne\",96.1882353946137,1397164556962,83.2777716340494,89.7330035143316\n\"Anne\",96.8048316741443,1397486096202,84.8910660144933,90.8479488443188\n\"Anne\",97.5319188431174,1397807635443,86.4791659605387,92.0055424018281\n\"Anne\",98.3762353488037,1398129174683,88.0453383844443,93.210786866624\n\"Anne\",99.3428250869133,1398450713924,89.594544750029,94.4686849184711\n\"Anne\",100.434472294442,1398772253164,91.1340061798315,95.7842392371366\n\"Anne\",101.655351234458,1399093792405,92.6778910612267,97.1666211478425\n\"Anne\",103.011006032001,1399415331645,94.2478087597533,98.629407395877\n\"Anne\",104.479812405928,1399736870886,95.8386012943034,100.159206850116\n\"Anne\",106.037659736287,1400058410126,97.4426009398898,101.740130338088\n\"Anne\",107.660766359334,1400379949367,99.0518110153111,103.356288687323\n\"Anne\",109.325982643423,1400701488607,100.65760280728,104.991792725352\n\"Anne\",111.010962416929,1401023027848,102.250544142478,106.630753279704\n\"Anne\",112.694220126563,1401344567088,103.820342229253,108.257281177908\n\"Anne\",114.355113004737,1401666106329,105.355861490257,109.855487247497\n\"Anne\",115.979203074432,1401987645569,106.851654592517,111.415428833475\n\"Anne\",117.736139192003,1402309184810,108.51851404034,113.127326616171\n\"Anne\",119.682777663842,1402630724050,110.419746409055,115.051262036448\n\"Anne\",121.778423312378,1402952263291,112.493682280322,117.13605279635\n\"Anne\",123.98293090975,1403273802531,114.678102286101,119.330516597925\n\"Anne\",126.254278910703,1403595341772,116.912663375736,121.583471143219\n\"Anne\",128.546707010998,1403916881012,119.140761257556,123.843734134277\n\"Anne\",130.80958525489,1404238420253,121.310661291406,126.060123273148\n\"Anne\",132.987181009303,1404559959493,123.375731514449,128.181456261876\n\"Anne\",135.019308374083,1404881498734,125.293793230933,130.156550802508\n\"Anne\",136.842641358391,1405203037974,127.025807835792,131.934224597092\n\"Anne\",138.392409631887,1405524577215,128.534181063458,133.463295347673\n\"Anne\",139.6929535932,1405846116455,129.886268909477,134.789611251339\n\"Anne\",140.862518322323,1406167655696,131.194553916111,136.028536119217\n\"Anne\",141.930665670908,1406489194936,132.420361137359,137.175513404134\n\"Anne\",142.923004997119,1406810734177,133.526955788122,138.224980392621\n\"Anne\",143.854910466217,1407132273417,134.48783827621,139.171374371214\n\"Anne\",144.726016555409,1407453812658,135.292248697481,140.009132626445\n\"Anne\",145.518740821376,1407775351898,135.94664406832,140.732692444848\n\"Anne\",146.201630739254,1408096891139,136.471351486662,141.336491112958\n\"Anne\",146.735817839299,1408418430379,136.894113995317,141.814965917308\n\"Anne\",147.068258311278,1408739969620,137.225556217737,142.146907264507\n\"Anne\",147.11316286736,1409061508860,137.380033933353,142.246598400356\n\"Anne\",146.90918922089,1409383048101,137.346631684793,142.127910452842\n\"Anne\",146.514113070951,1409704587341,137.129660286309,141.82188667863\n\"Anne\",145.983443287795,1410026126582,136.73569738098,141.359570334388\n\"Anne\",145.366192363088,1410347665822,136.177816990472,140.77200467678\n\"Anne\",144.701123265923,1410669205063,135.479342659027,140.090232962475\n\"Anne\",144.014939043541,1410990744303,134.675657852733,139.345298448137\n\"Anne\",143.323316110647,1411312283544,133.813172670219,138.568244390433\n\"Anne\",142.634252931236,1411633822784,132.945975160823,137.790114046029\n\"Anne\",141.952292843516,1411955362025,132.131608499667,137.041950671591\n\"Anne\",141.28071928851,1412276901265,131.423939890974,136.352329589742\n\"Anne\",140.574152000679,1412598440506,130.766389672842,135.67027083676\n\"Anne\",139.81348526927,1412919979746,130.099473395717,134.956479332493\n\"Anne\",139.00262972924,1413241518987,129.398526745414,134.200578237327\n\"Anne\",138.142458582987,1413563058227,128.64192284031,133.392190711648\n\"Anne\",137.228844439663,1413884597468,127.813035392022,132.520939915843\n\"Anne\",136.251671306555,1414206136708,126.901226714039,131.576449010297\n\"Anne\",135.195134939416,1414527675949,125.901547371379,130.548341155398\n\"Anne\",134.039421903257,1414849215189,124.813057119803,129.42623951153\n\"Anne\",132.763650162976,1415170754430,123.635884315186,128.199767239081\n\"Anne\",131.379327046269,1415492293670,122.380075531789,126.879701289029\n\"Anne\",129.938710718861,1415813832911,121.064832821552,125.501771770207\n\"Anne\",128.444035339531,1416135372151,119.68361706508,124.063826202306\n\"Anne\",126.896773788262,1416456911392,118.228393952118,122.56258387019\n\"Anne\",125.299241730738,1416778450632,116.690286386715,120.994764058727\n\"Anne\",123.654615450983,1417099989873,115.059556654586,119.357086052785\n\"Anne\",121.96687469304,1417421529113,113.325663581415,117.646269137228\n\"Anne\",120.240631233047,1417743068354,111.477433960799,115.859032596923\n\"Anne\",118.480825803355,1418064607594,109.503365630123,113.992095716739\n\"Anne\",116.692934262205,1418386146835,107.392468147595,112.0427012049\n\"Anne\",114.887840925874,1418707686075,105.13956058899,110.013700757432\n\"Anne\",113.072393893664,1419029225316,102.741496929304,107.906945411484\n\"Anne\",111.249781690053,1419350764556,100.197028807475,105.723405248764\n\"Anne\",109.420933180808,1419672303797,97.5071675211574,103.464050350983\n\"Anne\",107.585082680135,1419993843037,94.674618919571,101.129850799853\n\"Anne\",105.740395685965,1420315382278,91.7031576681977,98.7217766770813\n\"Anne\",103.884505563995,1420636921518,88.5970905647633,96.2407980643793\n\"Anne\",102.014900190651,1420958460759,85.3608698962677,93.6878850434593\n\"Anne\",100.129162381147,1.42128e+12,81.9988530109087,91.0640076960277\n\"Ben\",163.023576654468,1394323200000,140.489670138892,151.75662339668\n\"Ben\",161.738937767142,1394683017721,141.02679038673,151.382864076936\n\"Ben\",160.526671565084,1395042835443,141.504412151936,151.01554185851\n\"Ben\",159.396337992476,1395402653164,141.922918636269,150.659628314372\n\"Ben\",158.357486358732,1395762470886,142.282703676253,150.320095017493\n\"Ben\",157.419321548743,1396122288607,142.584505532942,150.001913540843\n\"Ben\",156.590201600474,1396482106329,142.829909314308,149.710055457391\n\"Ben\",155.876978863188,1396841924050,143.022005817031,149.44949234011\n\"Ben\",155.284278258149,1397201741772,143.166113265786,149.225195761968\n\"Ben\",154.813722316599,1397561559493,143.270226860476,149.041974588537\n\"Ben\",154.458504584826,1397921377215,143.339462057769,148.898983321297\n\"Ben\",154.204159991775,1398281194936,143.374524601797,148.789342296786\n\"Ben\",154.034768375521,1398641012658,143.377065701385,148.705917038453\n\"Ben\",153.933707584118,1399000830379,143.34943855538,148.641573069749\n\"Ben\",153.884241259502,1399360648101,143.294110568747,148.589175914124\n\"Ben\",153.870044819198,1399720465822,143.213137370861,148.54159109503\n\"Ben\",153.875582874796,1400080283544,143.107785397033,148.491684135915\n\"Ben\",153.886318525234,1400440101265,142.978322595226,148.43232056023\n\"Ben\",153.888783796469,1400799918987,142.823947986384,148.356365891426\n\"Ben\",153.887974580244,1401159736708,142.667016457997,148.277495519121\n\"Ben\",153.968575354944,1401519554430,142.632525653333,148.300550504139\n\"Ben\",154.128103500913,1401879372151,142.70795123698,148.418027368946\n\"Ben\",154.349951895497,1402239189873,142.855049995113,148.602500945305\n\"Ben\",154.616206307923,1402599007594,143.036885822028,148.826546064975\n\"Ben\",154.904964270025,1402958825316,143.220510849413,149.062737559719\n\"Ben\",155.188772217724,1403318643037,143.378528304872,149.283650261298\n\"Ben\",155.43427431451,1403678460759,143.489443688436,149.461859001473\n\"Ben\",155.603001994753,1404038278481,143.536875229258,149.569938612006\n\"Ben\",155.653047775318,1404398096202,143.507880073996,149.580463924657\n\"Ben\",155.554220323424,1404757913924,143.409752651609,149.481986487517\n\"Ben\",155.39077737029,1405117731645,143.374372240059,149.382574805175\n\"Ben\",155.204396607673,1405477549367,143.386465395645,149.295431001659\n\"Ben\",155.01775178768,1405837367088,143.392867298198,149.205309542939\n\"Ben\",154.847862254812,1406197184810,143.346067535158,149.096964894985\n\"Ben\",154.699149905551,1406557002531,143.211153141984,148.955151523767\n\"Ben\",154.558549998666,1406916820253,142.970697791845,148.764623895256\n\"Ben\",154.394933885725,1407276637974,142.625339065115,148.51013647542\n\"Ben\",154.163150870027,1407636455696,142.189736590434,148.176443730231\n\"Ben\",153.810715044171,1407996273417,141.685885207145,147.748300125658\n\"Ben\",153.284531621845,1408356091139,141.13484325124,147.209687436543\n\"Ben\",152.559531502941,1408715908860,140.528400203561,146.543965853251\n\"Ben\",151.676417266424,1409075726582,139.840773555168,145.758595410796\n\"Ben\",150.685621463003,1409435544303,139.046255549621,144.865938506312\n\"Ben\",149.632533267043,1409795362025,138.124181806822,143.878357536932\n\"Ben\",148.55049167241,1410155179746,137.065938127173,142.808214899791\n\"Ben\",147.455621149366,1410514997468,135.880124834681,141.667872992023\n\"Ben\",146.345837214438,1410874815189,134.593551207087,140.469694210762\n\"Ben\",145.204549575395,1411234632911,133.247532330888,139.226040953142\n\"Ben\",144.007223974139,1411594450632,131.891327258453,137.949275616296\n\"Ben\",142.725007362011,1411954268354,130.569294549037,136.647150955524\n\"Ben\",141.280894552987,1412314086075,129.19666526336,135.238779908174\n\"Ben\",139.689028002983,1412673903797,127.735680500033,133.712354251508\n\"Ben\",137.999310430628,1413033721518,126.194312974455,132.096811702542\n\"Ben\",136.257986912837,1413393539240,124.584193043745,130.421089978291\n\"Ben\",134.504672849655,1413753356962,122.923580741887,128.714126795771\n\"Ben\",132.770475166244,1414113174683,121.239244577751,127.004859871997\n\"Ben\",131.077785769814,1414472992405,119.566668078158,125.322226923986\n\"Ben\",129.441953716176,1414832810126,117.948377621328,123.695165668752\n\"Ben\",127.874557271106,1415192627848,116.430670375516,122.152613823311\n\"Ben\",126.386262820032,1415552445569,115.056406743323,120.721334781678\n\"Ben\",124.919434228754,1415912263291,113.736249955236,119.327842091995\n\"Ben\",123.442604532946,1416272081012,112.408281572482,117.925443052714\n\"Ben\",121.961712434747,1416631898734,111.070314667459,116.516013551103\n\"Ben\",120.483495690999,1416991716455,109.719363257852,115.101429474425\n\"Ben\",119.015600637629,1417351534177,108.351532782269,113.683566709949\n\"Ben\",117.5666944697,1417711351898,106.961907820178,112.264301144939\n\"Ben\",116.146538373109,1418071169620,105.544478960216,110.845508666662\n\"Ben\",114.765967248018,1418430987341,104.092163076751,109.429065162384\n\"Ben\",113.436721183056,1418790805063,102.596971855686,108.016846519371\n\"Ben\",112.171106124859,1419150622784,101.050352460308,106.610729292583\n\"Ben\",110.982061699125,1419510440506,99.4423699881772,105.212215843651\n\"Ben\",109.878314506964,1419870258227,97.763993908339,103.821154207651\n\"Ben\",108.864227280022,1420230075949,96.0097207011054,102.436973990563\n\"Ben\",107.941171140189,1420589893670,94.1770384565421,101.059104798366\n\"Ben\",107.107988078005,1420949711392,92.2659643960671,99.6869762370362\n\"Ben\",106.361706443018,1421309529113,90.2783293820903,98.3200179125539\n\"Ben\",105.698272122217,1421669346835,88.2170467395772,96.9576594308972\n\"Ben\",105.113145710776,1422029164556,86.0855150853127,95.5993303980445\n\"Ben\",104.601716498878,1422388982278,83.8872043410712,94.2444604199744\n\"Ben\",104.159549972027,1422748800000,81.6254082333039,92.8924791026654\n\"Carl\",167.996362643239,1396396800000,157.491652188133,162.744007415686\n\"Carl\",166.40631356699,1396733650632,156.769562902626,161.587938234808\n\"Carl\",164.880670899959,1397070501265,156.046626567742,160.463648733851\n\"Carl\",163.423443347165,1397407351898,155.322625716981,159.373034532073\n\"Carl\",162.038679848113,1397744202531,154.597302649353,158.317991248733\n\"Carl\",160.730310404172,1398081053164,153.870518602007,157.300414503089\n\"Carl\",159.501893943,1398417903797,153.142505885803,156.322199914401\n\"Carl\",158.356274689639,1398754754430,152.414211514218,155.385243101929\n\"Carl\",157.295193041169,1399091605063,151.687686328688,154.491439684928\n\"Carl\",156.318957280452,1399428455696,150.966419467082,153.642688373767\n\"Carl\",155.431080645315,1399765306329,150.260793639178,152.845937142246\n\"Carl\",154.628752521864,1400102156962,149.577286510353,152.103019516108\n\"Carl\",153.902111556774,1400439007594,148.915808063698,151.408959810236\n\"Carl\",153.241195845312,1400775858227,148.276368833711,150.758782339511\n\"Carl\",152.636228713231,1401112708860,147.658794124404,150.147511418818\n\"Carl\",152.077829421976,1401449559493,147.062513304097,149.570171363037\n\"Carl\",151.557129275413,1401786410126,146.486443698691,149.021786487052\n\"Carl\",151.065805101845,1402123260759,145.928957109648,148.497381105746\n\"Carl\",150.596057187508,1402460111392,145.387901880495,147.991979534002\n\"Carl\",150.140559837069,1402796962025,144.860652336332,147.5006060867\n\"Carl\",149.695534667469,1403133812658,144.348420021242,147.021977344355\n\"Carl\",149.321058783393,1403470663291,143.935723560854,146.628391172123\n\"Carl\",149.032721560593,1403807513924,143.635947187228,146.33433437391\n\"Carl\",148.819025090469,1404144364556,143.420253104068,146.119639097269\n\"Carl\",148.668196199777,1404481215189,143.260078779726,145.964137489751\n\"Carl\",148.566258311129,1404818065822,143.129065086692,145.84766169891\n\"Carl\",148.495625851261,1405154916455,143.004461893337,145.750043872299\n\"Carl\",148.434457607627,1405491767088,142.867774707312,145.65111615747\n\"Carl\",148.356887380895,1405828617721,142.704534023055,145.530710701975\n\"Carl\",148.233985855555,1406165468354,142.50333345118,145.368659653367\n\"Carl\",148.035138406479,1406502318987,142.254451911921,145.1447951592\n\"Carl\",147.747347137332,1406839169620,141.968835447399,144.858091292365\n\"Carl\",147.468604448071,1407176020253,141.75963919381,144.614121820941\n\"Carl\",147.220801314125,1407512870886,141.609395673216,144.415098493671\n\"Carl\",147.005388469911,1407849721518,141.475098848922,144.240243659416\n\"Carl\",146.81810177594,1408186572151,141.31945755814,144.06877966704\n\"Carl\",146.644393772251,1408523422784,141.115463958554,143.879928865403\n\"Carl\",146.457526117703,1408860273417,140.848301089031,143.652913603367\n\"Carl\",146.220396888709,1409197124050,140.513515570879,143.366956229794\n\"Carl\",145.890070799504,1409533974683,140.112487387587,143.001279093545\n\"Carl\",145.416163160079,1409870825316,139.637946362743,142.527054761411\n\"Carl\",144.749003986746,1410207675949,139.040578612785,141.894791299765\n\"Carl\",143.926605130791,1410544526582,138.324815515288,141.12571032304\n\"Carl\",142.998400201619,1410881377215,137.504118344957,140.251259273288\n\"Carl\",142.011867421544,1411218227848,136.593903763586,139.302885592565\n\"Carl\",141.00940615296,1411555078481,135.614667292889,138.312036722925\n\"Carl\",140.025769308707,1411891929113,134.594550904133,137.31016010642\n\"Carl\",139.087208620547,1412228779746,133.570197749664,136.328703185105\n\"Carl\",138.212800952909,1412565630379,132.585425849162,135.399113401035\n\"Carl\",137.417245850777,1412902481012,131.68843054175,134.552838196264\n\"Carl\",136.713976666085,1413239331645,130.928673359602,133.821325012844\n\"Carl\",136.094282499661,1413576182278,130.321462727693,133.207872613677\n\"Carl\",135.505351045374,1413913032911,129.79244835841,132.648899701892\n\"Carl\",134.946597012646,1414249883544,129.314972447613,132.13078473013\n\"Carl\",134.419094216424,1414586734177,128.867602836847,131.643348526636\n\"Carl\",133.920258353442,1414923584810,128.432565485863,131.176411919653\n\"Carl\",133.442368453736,1415260435443,127.997223021116,130.719795737426\n\"Carl\",132.9722667076,1415597286075,127.554374908802,130.263320808201\n\"Carl\",132.492494388921,1415934136708,127.101121531522,129.796807960221\n\"Carl\",131.983748550252,1416270987341,126.636407493212,129.310078021732\n\"Carl\",131.446867266318,1416607837974,126.166959765581,128.806913515949\n\"Carl\",130.92013504781,1416944688607,125.711979740797,128.316057394303\n\"Carl\",130.406599369769,1417281539240,125.269751377572,127.83817537367\n\"Carl\",129.907822487101,1417618389873,124.837136910379,127.37247969874\n\"Carl\",129.425840673139,1417955240506,124.41052455526,126.9181826142\n\"Carl\",128.963213659153,1418292091139,123.985779070326,126.474496364739\n\"Carl\",128.523046700848,1418628941772,123.558219689248,126.040633195048\n\"Carl\",128.108957096352,1418965792405,123.122653603276,125.615805349814\n\"Carl\",127.724958079483,1419302643037,122.673492067972,125.199225073728\n\"Carl\",127.375248114545,1419639493670,122.204961108408,124.790104611476\n\"Carl\",127.063925114434,1419976344303,121.711387301065,124.387656207749\n\"Carl\",126.79479382498,1420313194936,121.187287112499,123.991040468739\n\"Carl\",126.571239177188,1420650045569,120.629176001768,123.600207589478\n\"Carl\",126.39528289213,1420986896202,120.035894834933,123.215588863532\n\"Carl\",126.267511618436,1421323746835,119.407719816271,122.837615717353\n\"Carl\",126.187408176775,1421660597468,118.746030978015,122.466719577395\n\"Carl\",126.153740685201,1421997448101,118.052923055017,122.103331870109\n\"Carl\",126.164906188057,1422334298734,117.33086185584,121.747884021948\n\"Carl\",126.219182791546,1422671149367,116.582432127182,121.400807459364\n\"Carl\",126.314888836363,1.423008e+12,115.810178381257,121.06253360881\n\"Debs\",140.743318344057,1396310400000,124.510083314836,132.626700829446\n\"Debs\",138.641755087222,1396631939240,123.730327905716,131.186041496469\n\"Debs\",136.68884283013,1396953478481,123.001034442308,129.844938636219\n\"Debs\",134.891786484423,1397275017721,122.323342160048,128.607564322235\n\"Debs\",133.257875966568,1397596556962,121.69830528955,127.478090628059\n\"Debs\",131.794270927107,1397918096202,121.127108327353,126.46068962723\n\"Debs\",130.507654564274,1398239635443,120.611412222302,125.559533393288\n\"Debs\",129.403753096179,1398561174683,120.153834903365,124.778793999772\n\"Debs\",128.486775499659,1398882713924,119.758511540791,124.122643520225\n\"Debs\",127.758907533391,1399204253164,119.431600522977,123.595254028184\n\"Debs\",127.224232239716,1399525792405,119.186133276178,123.205182757947\n\"Debs\",126.890321242364,1399847331645,119.04406566984,122.967193456102\n\"Debs\",126.738231617085,1400168870886,119.001198119886,122.869714868485\n\"Debs\",126.746504353224,1400490410126,119.050793999769,122.898649176497\n\"Debs\",126.893974975835,1400811949367,119.185822147235,123.039898561535\n\"Debs\",127.160044909058,1401133488607,119.398685500946,123.279365205002\n\"Debs\",127.524834966598,1401455027848,119.681067609992,123.602951288295\n\"Debs\",127.969236529253,1401776567088,120.023881456377,123.996558992815\n\"Debs\",128.474895578198,1402098106329,120.417285421725,124.446090499962\n\"Debs\",129.030126977944,1402419645569,120.857644273883,124.943885625914\n\"Debs\",129.824232365412,1402741184810,121.571098210745,125.697665288078\n\"Debs\",130.917517598104,1403062724050,122.623728431506,126.770623014805\n\"Debs\",132.261505713585,1403384263291,123.948278383541,128.104892048563\n\"Debs\",133.808212154852,1403705802531,125.476999108798,129.642605631825\n\"Debs\",135.507972376958,1404027341772,127.143821637165,131.325897007061\n\"Debs\",137.307774282958,1404348881012,128.886024550525,133.096899416742\n\"Debs\",139.150245662918,1404670420253,130.64524654376,134.897746103339\n\"Debs\",140.973445550867,1404991959493,132.36769506778,136.670570309324\n\"Debs\",142.711445683669,1405313498734,134.003564870661,138.357505277165\n\"Debs\",144.295506272525,1405635037974,135.505862226148,139.900684249336\n\"Debs\",145.655594318346,1405956577215,136.828886618268,141.242240468307\n\"Debs\",146.964090916521,1406278116455,138.18353377999,142.573812348256\n\"Debs\",148.498428107245,1406599655696,139.842076179913,144.170252143579\n\"Debs\",150.19342218959,1406921194936,141.67823331223,145.93582775091\n\"Debs\",151.978425311744,1407242734177,143.565536593686,147.771980952715\n\"Debs\",153.773625393718,1407564273417,145.386681669212,149.580153531465\n\"Debs\",155.485117597908,1407885812658,147.038456941348,151.261787269628\n\"Debs\",157.003581667608,1408207351898,148.433066231734,152.718323949671\n\"Debs\",158.207278567757,1408528891139,149.495132140374,153.851205354066\n\"Debs\",158.967829289659,1408850430379,150.155917240899,154.561873265279\n\"Debs\",159.186674892771,1409171969620,150.373869046812,154.780271969791\n\"Debs\",158.989923983222,1409493508860,150.275226052319,154.63257501777\n\"Debs\",158.466989998217,1409815048101,149.905015638378,154.186002818297\n\"Debs\",157.686494649308,1410136587341,149.283988957718,153.485241803513\n\"Debs\",156.715030010033,1410458126582,148.434926801079,152.574978405556\n\"Debs\",155.613371527291,1410779665822,147.386426585842,151.499899056566\n\"Debs\",154.433117589526,1411101205063,146.176262787843,150.304690188685\n\"Debs\",153.215068559523,1411422744303,144.853007908576,149.03403823405\n\"Debs\",151.990151944952,1411744283544,143.47510730465,147.732629624801\n\"Debs\",150.782420689138,1412065822784,142.107880897023,146.44515079308\n\"Debs\",149.612834138497,1412387362025,140.819742203553,145.216288171025\n\"Debs\",148.496724391532,1412708901265,139.671314227598,144.084019309565\n\"Debs\",147.283097005748,1413030440506,138.501574984956,142.892335995352\n\"Debs\",145.924835722546,1413351979746,137.227254528544,141.576045125545\n\"Debs\",144.457479709603,1413673518987,135.858307031545,140.157893370574\n\"Debs\",142.913848525371,1413995058227,134.407406276373,138.660627400872\n\"Debs\",141.322284374724,1414316597468,132.891703399006,137.106993886865\n\"Debs\",139.705767481144,1414638136708,131.333711516827,135.519739498986\n\"Debs\",138.082185009732,1414959675949,129.761036805597,133.921610907665\n\"Debs\",136.465834438602,1415281215189,128.204875128057,132.335354783329\n\"Debs\",134.870056459283,1415602754430,126.697379133539,130.783717796411\n\"Debs\",133.273871386407,1415924293670,125.216261229934,129.245066308171\n\"Debs\",131.618277856083,1416245832911,123.672922783207,127.645600319645\n\"Debs\",129.91303248004,1416567372151,122.069265123434,125.991148801737\n\"Debs\",128.170589497153,1416888911392,120.409230089041,124.289909793097\n\"Debs\",126.404157746679,1417210450632,118.696004918079,122.550081332379\n\"Debs\",124.627716634964,1417531989873,116.932006281509,120.779861458236\n\"Debs\",122.855964957919,1417853529113,115.118931460719,118.987448209319\n\"Debs\",121.104167410544,1418175068354,113.257911838019,117.181039624281\n\"Debs\",119.387883223547,1418496607594,111.349784260008,115.368833741778\n\"Debs\",117.720876796491,1418818146835,109.393569786076,113.557223291284\n\"Debs\",116.098752453079,1419139686075,107.370488494211,111.734620473645\n\"Debs\",114.520388307707,1419461225316,105.270470114893,109.8954292113\n\"Debs\",112.985458149483,1419782764556,103.089215807511,108.037336978497\n\"Debs\",111.491612549365,1420104303797,100.824449949611,106.158031249488\n\"Debs\",110.034984837036,1420425843037,98.4754141600177,104.255199498527\n\"Debs\",108.610751362049,1420747382278,96.042307037674,102.326529199861\n\"Debs\",107.213612021656,1421068921518,93.5258036338328,100.369707827744\n\"Debs\",105.838136447182,1421390460759,90.9267092656753,98.3824228564285\n\"Debs\",104.478979274773,1.421712e+12,88.2457442455521,96.3623617601625\n\"Ed\",173.172774850275,1396396800000,156.02557694971,164.599175899993\n\"Ed\",171.517521398806,1396649437974,155.783760337628,163.650640868217\n\"Ed\",169.886113230596,1396902075949,155.455924720273,162.671018975435\n\"Ed\",168.278812801939,1397154713924,155.035789085687,161.657300943813\n\"Ed\",166.695971407045,1397407351898,154.516983584,160.606477495522\n\"Ed\",165.137765918404,1397659989873,153.893312787058,159.515539352731\n\"Ed\",163.603779454667,1397912627848,153.159175020548,158.381477237607\n\"Ed\",162.092430015109,1398165265822,152.310133729536,157.201281872322\n\"Ed\",160.600326121349,1398417903797,151.343561836739,155.971943979044\n\"Ed\",159.121722143093,1398670541772,150.25918641679,154.690454279941\n\"Ed\",157.645425156677,1398923179746,149.056788450239,153.351106803458\n\"Ed\",156.142675701751,1399175817721,147.7257882216,151.934231961676\n\"Ed\",154.61228592922,1399428455696,146.282956667446,150.447621298333\n\"Ed\",153.059541283822,1399681093670,144.750369373924,148.904955328873\n\"Ed\",151.490388189368,1399933731645,143.149440948108,147.319914568738\n\"Ed\",149.911634188115,1400186369620,141.500724878628,145.706179533372\n\"Ed\",148.33100814715,1400439007594,139.823853329282,144.077430738216\n\"Ed\",146.75712381876,1400691645569,138.137573578666,142.447348698713\n\"Ed\",145.199396406695,1400944283544,136.45983145392,140.829613930308\n\"Ed\",143.667953345932,1401196921518,134.807860550952,139.237906948442\n\"Ed\",142.032673804712,1401449559493,133.073658010812,137.553165907762\n\"Ed\",140.099714966401,1401702197468,131.082262541467,135.590988753934\n\"Ed\",137.950128379702,1401954835443,128.889448254879,133.419788317291\n\"Ed\",135.669744454801,1402207473417,126.55512906439,131.112436759595\n\"Ed\",133.340297783127,1402460111392,124.143314702095,128.741806242611\n\"Ed\",131.036759208489,1402712749367,121.724778647712,126.3807689281\n\"Ed\",128.826417317627,1402965387341,119.377976638026,124.102196977826\n\"Ed\",126.76972912988,1403218025316,117.188195977225,121.978962553552\n\"Ed\",124.922511937541,1403470663291,115.245363696541,120.083937817041\n\"Ed\",123.325137006581,1403723301265,113.628920443984,118.477028725283\n\"Ed\",121.773702441059,1403975939240,112.174202593615,116.973952517337\n\"Ed\",120.226558789812,1404228577215,110.791796613088,115.50917770145\n\"Ed\",118.741253827621,1404481215189,109.468567149968,114.104910488794\n\"Ed\",117.370007884344,1404733853164,108.196706296744,112.783357090544\n\"Ed\",116.15258493584,1404986491139,106.980862499903,111.566723717872\n\"Ed\",115.111467341534,1405239129113,105.84296582237,110.477216581952\n\"Ed\",114.251775522865,1405491767088,104.822308265052,109.537041893958\n\"Ed\",113.565978800081,1405744405063,103.970832930046,108.768405865063\n\"Ed\",113.040994794804,1405997043037,103.346034618079,108.193514706441\n\"Ed\",112.706556297718,1406249681012,103.035895941422,107.87122611957\n\"Ed\",112.663830165697,1406502318987,103.124684497298,107.894257331497\n\"Ed\",112.890952922661,1406754956962,103.5414873606,108.216220141631\n\"Ed\",113.359338110129,1407007594936,104.20591007483,108.782624092479\n\"Ed\",114.038575573542,1407260232911,105.039381879561,109.538978726551\n\"Ed\",114.892552877434,1407512870886,105.969034295279,110.430793586357\n\"Ed\",115.875765845644,1407765508860,106.931390583163,111.403578214403\n\"Ed\",116.931246001803,1408018146835,107.874438304599,112.402842153201\n\"Ed\",117.991150741347,1408270784810,108.757039149171,113.374094945259\n\"Ed\",118.979702482188,1408523422784,109.545989783983,114.262846133085\n\"Ed\",119.817109227657,1408776060759,110.212101290722,115.014605259189\n\"Ed\",120.423242934551,1409028698734,110.72652079761,115.57488186608\n\"Ed\",120.808101977904,1409281336708,111.130953736904,115.969527857404\n\"Ed\",121.166453649255,1409533974683,111.584920496599,116.375687072927\n\"Ed\",121.513078229707,1409786612658,112.064637550105,116.788857889906\n\"Ed\",121.84971647865,1410039250632,112.537735917873,117.193726198261\n\"Ed\",122.173469428429,1410291888607,112.976486347397,117.574977887913\n\"Ed\",122.474606543986,1410544526582,113.359991153575,117.917298848781\n\"Ed\",122.735715033197,1410797164556,113.675034908375,118.205374970786\n\"Ed\",122.932618356315,1411049802531,113.915165931381,118.423892143848\n\"Ed\",123.037044154837,1411302440506,114.078028360937,118.557536257887\n\"Ed\",123.022181709221,1411555078481,114.162088914242,118.592135311731\n\"Ed\",122.946798039827,1411807716455,114.207233087052,118.57701556344\n\"Ed\",122.850810711472,1412060354430,114.231260471377,118.541035591424\n\"Ed\",122.731954191017,1412312992405,114.224799373149,118.478376782083\n\"Ed\",122.588675176556,1412565630379,114.177765867069,118.383220521813\n\"Ed\",122.420221817641,1412818268354,114.079274576381,118.249748197011\n\"Ed\",122.226727149024,1413070906329,113.917555239126,118.072141194075\n\"Ed\",122.00924553029,1413323544303,113.679916268516,117.844580899403\n\"Ed\",121.769692439467,1413576182278,113.352804959316,117.561248699391\n\"Ed\",121.510644333656,1413828820253,112.922007627219,117.216325980438\n\"Ed\",121.237987464285,1414081458227,112.375451737982,116.806719601133\n\"Ed\",120.970159932857,1414334096202,111.713395648246,116.341777790552\n\"Ed\",120.715174381973,1414586734177,110.9328780964,115.824026239187\n\"Ed\",120.477025380061,1414839372151,110.032420945942,115.254723163002\n\"Ed\",120.257353343633,1415092010126,109.012900212287,114.63512677796\n\"Ed\",120.055989211548,1415344648101,107.877001388503,113.966495300025\n\"Ed\",119.871598803287,1415597286075,106.628575087035,113.250086945161\n\"Ed\",119.702254184492,1415849924050,105.272065674169,112.48715992933\n\"Ed\",119.545852999086,1416102562025,103.812091937908,111.678972468497\n\"Ed\",119.400381728906,1416355200000,102.253183828342,110.826782778624"
+        },
+        {
+            "name": ".0/group_by1/model_prediction2",
+            "source": ".0/group_by1/model_prediction2_flat",
+            "transform": [
+                {
+                    "type": "treefacet",
+                    "keys": [
+                        "data.Name"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "scale/fill",
+            "format": {
+                "type": "csv",
+                "parse": {
+
+                }
+            },
+            "values": "\"domain\"\n\"Anne\"\n\"Ben\"\n\"Carl\"\n\"Debs\"\n\"Ed\""
+        },
+        {
+            "name": "scale/stroke",
+            "format": {
+                "type": "csv",
+                "parse": {
+
+                }
+            },
+            "values": "\"domain\"\n\"Anne\"\n\"Ben\"\n\"Carl\"\n\"Debs\"\n\"Ed\""
+        },
+        {
+            "name": "scale/x",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "domain": "number"
+                }
+            },
+            "values": "\"domain\"\n1392888960000\n1424442240000"
+        },
+        {
+            "name": "scale/y",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "domain": "number"
+                }
+            },
+            "values": "\"domain\"\n71.7025822561107\n178.00468878333"
+        }
+    ],
+    "scales": [
+        {
+            "name": "fill",
+            "type": "ordinal",
+            "domain": {
+                "data": "scale/fill",
+                "field": "data.domain"
+            },
+            "points": true,
+            "sort": false,
+            "range": "category10"
+        },
+        {
+            "name": "stroke",
+            "type": "ordinal",
+            "domain": {
+                "data": "scale/stroke",
+                "field": "data.domain"
+            },
+            "points": true,
+            "sort": false,
+            "range": "category10"
+        },
+        {
+            "name": "x",
+            "domain": {
+                "data": "scale/x",
+                "field": "data.domain"
+            },
+            "type": "time",
+            "clamp": false,
+            "range": "width"
+        },
+        {
+            "name": "y",
+            "domain": {
+                "data": "scale/y",
+                "field": "data.domain"
+            },
+            "zero": false,
+            "nice": false,
+            "clamp": false,
+            "range": "height"
+        }
+    ],
+    "marks": [
+        {
+            "type": "group",
+            "from": {
+                "data": ".0/group_by1"
+            },
+            "marks": [
+                {
+                    "type": "symbol",
+                    "properties": {
+                        "update": {
+                            "size": {
+                                "value": 50
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "data.obs_date"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "data.sys"
+                            },
+                            "stroke": {
+                                "scale": "stroke",
+                                "field": "data.Name"
+                            },
+                            "fill": {
+                                "scale": "fill",
+                                "field": "data.Name"
+                            }
+                        },
+                        "ggvis": {
+                            "data": {
+                                "value": ".0/group_by1"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "from": {
+                "data": ".0/group_by1/model_prediction2"
+            },
+            "marks": [
+                {
+                    "type": "area",
+                    "properties": {
+                        "update": {
+                            "fill": {
+                                "scale": "fill",
+                                "field": "data.Name"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "data.resp_upr_"
+                            },
+                            "fillOpacity": {
+                                "value": 0.2
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "data.pred_"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "data.resp_lwr_"
+                            },
+                            "stroke": {
+                                "value": "transparent"
+                            }
+                        },
+                        "ggvis": {
+                            "data": {
+                                "value": ".0/group_by1/model_prediction2"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "from": {
+                "data": ".0/group_by1/model_prediction2"
+            },
+            "marks": [
+                {
+                    "type": "line",
+                    "properties": {
+                        "update": {
+                            "stroke": {
+                                "scale": "stroke",
+                                "field": "data.Name"
+                            },
+                            "strokeWidth": {
+                                "value": 2
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "data.pred_"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "data.resp_"
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            }
+                        },
+                        "ggvis": {
+                            "data": {
+                                "value": ".0/group_by1/model_prediction2"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "width": 504,
+    "height": 504,
+    "legends": [
+        {
+            "orient": "right",
+            "fill": "fill",
+            "title": "Name"
+        },
+        {
+            "orient": "right",
+            "stroke": "stroke",
+            "title": "Name"
+        }
+    ],
+    "axes": [
+        {
+            "type": "x",
+            "scale": "x",
+            "orient": "bottom",
+            "layer": "back",
+            "grid": true,
+            "title": "obs_date"
+        },
+        {
+            "type": "y",
+            "scale": "y",
+            "orient": "left",
+            "layer": "back",
+            "grid": true,
+            "title": "sys"
+        }
+    ],
+    "padding": null,
+    "ggvis_opts": {
+        "keep_aspect": false,
+        "resizable": true,
+        "padding": {
+
+        },
+        "duration": 250,
+        "renderer": "svg",
+        "hover_duration": 0,
+        "width": 504,
+        "height": 504
+    },
+    "handlers": null
+}
+;
+ggvis.getPlot("plot_id350057529").parseSpec(plot_id350057529_spec);
+</script><!--/html_preserve--></div></div>
+
+<p>Has interactive features:</p>
+<img style="border: 3px solid black" src="images/ggvis.png">
+
 </div>
 
 <div class="slide">
 <h1>devtools</h1>
+<h2>In the old days...</h2>
+<ul>
+<li>Start R</li>
+<li>Edit your R code</li>
+<li>Outside R, run <code>R CMD BUILD package</code></li>
+<li>Back in R, run <code>install.packages("package", lib.loc="./package")</code></li>
+<li>Realise you didn't uninstall the old code</li>
+<li>Try again</li>
+<li>Discover your C code is still loaded</li>
+<li>Quit and put everything in one big script</li>
+</ul>
+<h2>With <code>devtools</code></h2>
+<ol>
+<li><code>create("package")</code></li>
+<li>edit <code>package/R/function.R</code></li>
+<li><code>load_all("package")</code></li>
+<li>repeat 2-3 until bugs in code = 0</li>
+</ol>
+
+<p><code>devtools</code> takes all the pain out of developing. It removes old R code and
+reloads new code, recompiles and loads C and Fortran etc.</p>
+
 </div>
 
 <div class="slide">
 <h1>roxygen2</h1>
+<h2>In the old days...</h2>
+<ul>
+<li>Create your function: <code>foo=function(a,b=1){a+b}</code></li>
+<li>Use <code>prompt(foo)</code> to create a broken documentation skeleton
+in the wrong place:
+<pre class="list">
+\name{foo}
+\alias{foo}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+%%  ~~function to do ... ~~
+}
+\description{
+%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+}
+\usage{
+foo(a, b = 1)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{a}{
+%%     ~~Describe \code{a} here~~
+}
+  \item{b}{
+%%     ~~Describe \code{b} here~~
+}
+}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{
+%%  ~Describe the value returned
+%%  If it is a LIST, use
+%%  \item{comp1 }{Description of 'comp1'}
+%%  \item{comp2 }{Description of 'comp2'}
+%% ...
+}
+ETC
+</pre>
+</li>
+<li>Edit it, put it in the right place</li>
+<li>Build your package</li>
+<li>Manually create DESCRIPTION and NAMESPACE files</li>
+<li>Edit your R code and forget it doesn't match the docs any more</li>
+<li>Give up and go live in a shed</li>
+</ul>
+</div>
+<div class="slide">
+<h2>With <code>roxygen</code></h2>
+<ul>
+<li>Use RStudio or Emacs to create a working documentation skeleton
+at the start of your function, or make from scratch:
+<pre class="list">
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param a 
+##' @param b 
+##' @return 
+##' @author Barry Rowlingson
+
+foo = function(a, b=1){
+   a+b
+   }
+
+</pre></li>
+<li>Add any extra goodies to it</li>
+<li>Use <code>devtools</code> to build the <code>.Rd</code> files,
+DESCRIPTION, and NAMESPACE files</li>
+<li>Edit your R code, and your documentation is right there in the same file.</li>
+<li>Live happily ever after (yes, this is a bit of a fairy tale)</li>
+</ul>
+
 </div>
 
 <div class="slide">
 <h1>testthat</h1>
+<p>Code testing has various purposes:
+<ul>
+<li>Check your code produces right answers</li>
+<li>Check your code produces right errors</li>
+<li>Check your code does only what you say it does</li>
+<li>others?</li>
+</ul>
+</p>
+<p>The <code>testthat</code> package lets you write <em>expectations</em> as
+R expressions of what should happen:</p>
+<div class="chunk" id="unnamed-chunk-60"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">foo</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">,</span> <span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">){ a</span> <span class="hl opt">+</span> <span class="hl std">b }</span>
+<span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">2</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">)</span>
+<span class="hl std">&gt; </span><span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">())</span>
+</pre></div>
+</div></div>
+
+<p>If the expection is correct, nothing happens. Otherwise:</p>
+
+<div class="chunk" id="unnamed-chunk-61"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">Error: foo(1) not equal to 3
+Mean relative difference: 0.3333333
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(),</span> <span class="hl num">2</span><span class="hl std">)</span>
+</pre></div>
+<div class="error"><pre class="knitr r">Error in foo(): argument &quot;a&quot; is missing, with no default
+</pre></div>
+</div></div>
+
+<p>You can collect expectations into little suites:</p>
+
+<div class="chunk" id="unnamed-chunk-62"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;foo works&quot;</span><span class="hl std">, {</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;add 2 numbers&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;default b is 1&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;need one arg&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl num">4</span><span class="hl std">,</span><span class="hl num">5</span><span class="hl std">),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;too many args&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span><span class="hl std">})</span>
+</pre></div>
+</div></div>
+
+<p>Now if I change the function definition, I can see 
+what tests fail:</p>
+
+<div class="chunk" id="unnamed-chunk-63"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">foo</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl kwc">c</span><span class="hl std">=</span><span class="hl num">7</span><span class="hl std">){a</span><span class="hl opt">+</span><span class="hl std">b</span><span class="hl opt">+</span><span class="hl std">c}</span>
+<span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;when tests fail&quot;</span><span class="hl std">, {</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;add 2 numbers&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;default b is 1&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;need one arg&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span>  <span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl num">4</span><span class="hl std">,</span><span class="hl num">5</span><span class="hl std">),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;too many args&quot;</span><span class="hl std">)</span>
+<span class="hl std"> </span><span class="hl std">})</span>
+</pre></div>
+<div class="error"><pre class="knitr r">Error: Test failed: 'when tests fail'
+* Not expected: foo(1, 2) not equal to 3
+Mean relative difference: 2.333333
+add 2 numbers.
+* Not expected: foo(1) not equal to 2
+Mean relative difference: 4.5
+default b is 1.
+* Not expected: foo() code did not generate an error
+need one arg.
+</pre></div>
+</div></div>
+
+<p>Test suites can be put into package test folders and run
+by <code>devtools</code></p>
+
+<p>Automated build systems can run tests and report errors!</p>
+
+<p>Guess how the <code>testthat</code> package tests itself?</p>
+
+</div>
+
+<div class="slide">
+<h1>Other stuff</h1>
+<ul>
+<li>Advanced R: <a href="http://adv-r.had.co.nz/">http://adv-r.had.co.nz/</a>
+<br/>
+<img src="images/advr.png">
+</li>
+<li>R packages: <a href="http://r-pkgs.had.co.nz/">http://r-pkgs.had.co.nz/</a>
+<br/>
+<img src="images/rpkgs.png"></li>
+<ul>
 </div>
 
 
-<script type="text/javascript" src="lib/jquery-2.1.3.min.js" ></script>
+
+<!--script type="text/javascript" src="lib/jquery-2.1.3.min.js" ></script-->
 <script type="text/javascript" src="presentation.js"></script>
 </body>
 </html>

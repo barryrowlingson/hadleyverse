@@ -3,6 +3,15 @@ knitr::opts_chunk$set(comment=NA, prompt=TRUE, dev="CairoPNG", cache=TRUE)
 op = options()$continue
 options(continue=" ")
 grDevices::X11.options(type='cairo')
+library(lubridate)
+library(stringr)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(ggvis)
+library(testthat)
+library(devtools)
+library(testthat)
 end.rcode-->
 
 <div class="slide" id="title">
@@ -54,6 +63,8 @@ end.rcode-->
 <div class="right">
 <h1>Advanced</h1>
 <dl class="packagelist">
+<dt><code>ggvis</code></dt>
+<dd>Web graphics</dd>
 <dt><code>devtools</code></dt>
 <dd>Package development</dd>
 <dt><code>roxygen2</code></dt>
@@ -79,7 +90,7 @@ Doesn't R already have dates and times?
 <p>
 Yes...
 </p>
-<pre>
+<pre class="list">
 strptime                 package:base                  R Documentation
 
 Date-time Conversion Functions to and from Character
@@ -106,6 +117,7 @@ only that conversion depends on the time zone.
 <h1>Make it Easy</h1>
 <h2>Dates with <code>ymd</code> etc</h2>
 <!--begin.rcode
+library(lubridate)
 d = ymd(c("2001-01-12", "2011/3/31"))
 d
 dmy("310314")
@@ -387,6 +399,34 @@ end.rcode-->
 </div>
 
 <div class="slide">
+<h1>Other pipes</h1>
+<h2>"Name" piping: <code>%$%</code></h2>
+<p>Makes the names of things on the lhs visible to the rhs:</p>
+<!--begin.rcode
+data.frame(A=1:100, B=cumsum(runif(100))) %$% plot(A,B, type="l")
+end.rcode-->
+<h2>"Tee" piping: <code>%T&gt;%</code></h2>
+<p>Lets you inject something into the pipe:</p>
+<!--begin.rcode
+d = data.frame(x=1:10, y=runif(10))
+d %T>% plot() %$% sum(x+y)
+end.rcode-->
+<img class="mainpic" src="images/tee.png" >
+<h2>"Back" piping: <code>%&lt;&gt;%</code></h2>
+<p>Easy updating of piped objects:</p>
+<!--begin.rcode
+x = 1:10
+x %<>% log(base=10) %>% sqrt()
+x
+end.rcode-->
+<p>Shortcut for</p>
+<!--begin.rcode
+x = 1:10
+x <- x %>% log(base=10) %>% sqrt()
+end.rcode-->
+</div>
+
+<div class="slide">
 <h1><code>magrittr</code> + <code>tidyr</code></h1>
 <p>Remember...</p>
 <!--begin.rcode eval=FALSE
@@ -410,10 +450,10 @@ end.rcode-->
 <h2>useful functions for tidy data</h2>
 <h3>Selecting - chooses <em>columns</em></h2>
 <!--begin.rcode
-bps %>% select(c(1,2),3) %>% head()
+bps %>% select(1,2,3) %>% head()
 bps %>% select(Name, Start) %>% head()
 bps %>% select(-X) %>% head()
-bps %>% select(-X) -> bps
+bps %<>% select(-X) # note pipe operator here!
 end.rcode-->
 <h3>Filtering - chooses <em>rows</em></h3>
 <!--begin.rcode
@@ -621,7 +661,10 @@ ggplot(bps2, aes(x=obs_date, y=sys)) +
   theme_stata()
 end.rcode-->
 
-<p>You can control which axes are fixed and which are free.
+<p>By default, each facet uses the same fixed x and y axis range.
+This can be changed to "free", so that axes fit the data in the 
+facet.</p>
+<p>
 Here's a ribbon geom with free y axis and common x axis:</p>
 
 <!--begin.rcode ggp2, fig.width=10
@@ -632,16 +675,202 @@ end.rcode-->
 </div>
 
 <div class="slide">
+<h1>ggvis</h1>
+<p>Its like <code>ggplot</code> for web pages:</p>
+
+<!--begin.rcode cache=FALSE
+library(ggvis)
+mtcars %>% ggvis(x = ~wt, y = ~mpg) %>% layer_points()
+end.rcode-->
+
+<p>not quite as feature-ful as <code>ggplot</code>:</p>
+
+<!--begin.rcode cache=FALSE 
+bps2 %>% ggvis(x=~obs_date, y=~sys, stroke=~Name, fill=~Name) %>%
+   group_by(Name) %>% layer_points() %>% layer_smooths(se=TRUE)
+end.rcode-->
+
+<p>Has interactive features:</p>
+<img style="border: 3px solid black" src="images/ggvis.png">
+
+</div>
+
+<div class="slide">
 <h1>devtools</h1>
+<h2>In the old days...</h2>
+<ul>
+<li>Start R</li>
+<li>Edit your R code</li>
+<li>Outside R, run <code>R CMD BUILD package</code></li>
+<li>Back in R, run <code>install.packages("package", lib.loc="./package")</code></li>
+<li>Realise you didn't uninstall the old code</li>
+<li>Try again</li>
+<li>Discover your C code is still loaded</li>
+<li>Quit and put everything in one big script</li>
+</ul>
+<h2>With <code>devtools</code></h2>
+<ol>
+<li><code>create("package")</code></li>
+<li>edit <code>package/R/function.R</code></li>
+<li><code>load_all("package")</code></li>
+<li>repeat 2-3 until bugs in code = 0</li>
+</ol>
+
+<p><code>devtools</code> takes all the pain out of developing. It removes old R code and
+reloads new code, recompiles and loads C and Fortran etc.</p>
+
 </div>
 
 <div class="slide">
 <h1>roxygen2</h1>
+<h2>In the old days...</h2>
+<ul>
+<li>Create your function: <code>foo=function(a,b=1){a+b}</code></li>
+<li>Use <code>prompt(foo)</code> to create a broken documentation skeleton
+in the wrong place:
+<pre class="list">
+\name{foo}
+\alias{foo}
+%- Also NEED an '\alias' for EACH other topic documented here.
+\title{
+%%  ~~function to do ... ~~
+}
+\description{
+%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+}
+\usage{
+foo(a, b = 1)
+}
+%- maybe also 'usage' for other objects documented here.
+\arguments{
+  \item{a}{
+%%     ~~Describe \code{a} here~~
+}
+  \item{b}{
+%%     ~~Describe \code{b} here~~
+}
+}
+\details{
+%%  ~~ If necessary, more details than the description above ~~
+}
+\value{
+%%  ~Describe the value returned
+%%  If it is a LIST, use
+%%  \item{comp1 }{Description of 'comp1'}
+%%  \item{comp2 }{Description of 'comp2'}
+%% ...
+}
+ETC
+</pre>
+</li>
+<li>Edit it, put it in the right place</li>
+<li>Build your package</li>
+<li>Manually create DESCRIPTION and NAMESPACE files</li>
+<li>Edit your R code and forget it doesn't match the docs any more</li>
+<li>Give up and go live in a shed</li>
+</ul>
+</div>
+<div class="slide">
+<h2>With <code>roxygen</code></h2>
+<ul>
+<li>Use RStudio or Emacs to create a working documentation skeleton
+at the start of your function, or make from scratch:
+<pre class="list">
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param a 
+##' @param b 
+##' @return 
+##' @author Barry Rowlingson
+
+foo = function(a, b=1){
+   a+b
+   }
+
+</pre></li>
+<li>Add any extra goodies to it</li>
+<li>Use <code>devtools</code> to build the <code>.Rd</code> files,
+DESCRIPTION, and NAMESPACE files</li>
+<li>Edit your R code, and your documentation is right there in the same file.</li>
+<li>Live happily ever after (yes, this is a bit of a fairy tale)</li>
+</ul>
+
 </div>
 
 <div class="slide">
 <h1>testthat</h1>
+<p>Code testing has various purposes:
+<ul>
+<li>Check your code produces right answers</li>
+<li>Check your code produces right errors</li>
+<li>Check your code does only what you say it does</li>
+<li>others?</li>
+</ul>
+</p>
+<p>The <code>testthat</code> package lets you write <em>expectations</em> as
+R expressions of what should happen:</p>
+<!--begin.rcode
+foo = function(a, b=1){ a + b }
+expect_equal(foo(1), 2)
+expect_equal(foo(1, 2), 3)
+expect_error(foo())
+end.rcode-->
+
+<p>If the expection is correct, nothing happens. Otherwise:</p>
+
+<!--begin.rcode
+expect_equal(foo(1), 3)
+expect_equal(foo(), 2)
+end.rcode-->
+
+<p>You can collect expectations into little suites:</p>
+
+<!--begin.rcode
+test_that("foo works", {
+  expect_equal(foo(1, 2), 3, info="add 2 numbers")
+  expect_equal(foo(1), 2, info="default b is 1")
+  expect_error(foo(), info="need one arg")
+  expect_error(foo(1,2,3,4,5), info="too many args")
+})
+end.rcode-->
+
+<p>Now if I change the function definition, I can see 
+what tests fail:</p>
+
+<!--begin.rcode
+foo = function(a=1,b=3,c=7){a+b+c}
+test_that("when tests fail", {
+  expect_equal(foo(1, 2), 3, info="add 2 numbers")
+  expect_equal(foo(1), 2, info="default b is 1")
+  expect_error(foo(), info="need one arg")
+  expect_error(foo(1,2,3,4,5), info="too many args")
+})
+end.rcode-->
+
+<p>Test suites can be put into package test folders and run
+by <code>devtools</code></p>
+
+<p>Automated build systems can run tests and report errors!</p>
+
+<p>Guess how the <code>testthat</code> package tests itself?</p>
+
 </div>
+
+<div class="slide">
+<h1>Other stuff</h1>
+<ul>
+<li>Advanced R: <a href="http://adv-r.had.co.nz/">http://adv-r.had.co.nz/</a>
+<br/>
+<img src="images/advr.png">
+</li>
+<li>R packages: <a href="http://r-pkgs.had.co.nz/">http://r-pkgs.had.co.nz/</a>
+<br/>
+<img src="images/rpkgs.png"></li>
+<ul>
+</div>
+
 
 <!--begin.rcode endit,echo=FALSE,result="hide", cache=FALSE
 save(list=c("bps","bpd","bpd2","bps2"),file="/tmp/run.RData")
