@@ -38,6 +38,24 @@ outline: 1px solid red;
     z-index: 5;
 }
 
+#index {
+overflow: auto;
+font-size: 70%;
+width: 4em;
+height: 50%;
+position: fixed;
+top: 0;
+right:0;
+z-index: 6;
+border: 1px solid red;
+background: white;
+}
+
+#index ul {
+    list-style-type: none;
+    padding-left: 1em;
+}
+
 #title {
     font-size: 200%;
     text-align: center;

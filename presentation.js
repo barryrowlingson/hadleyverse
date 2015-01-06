@@ -43,7 +43,15 @@ $(function(){
     nslides = slides.length;
     slides.each(function(i, e){
 	$(e).data("slide",i+1);
+        $("#index ul").append('<li><a href="javascript:switchSlide('+(i+1)+')">'+(i+1)+'</a></li>');
     });
+    $("#index").hide();
+    $("#counter").hover(function(){
+	$("#index").show();
+	},
+			function(){
+			});
+    $("#index").hover(function(){}, function(){$("#index").hide()});
     current = 1;
     if(parseInt(location.hash.substring(1))){
 	current = parseInt(location.hash.substring(1));
@@ -57,7 +65,6 @@ $(function(){
     switchSlide(current);
 //    $("div.slide").filterByData("slide",current).show();
     $( "body" ).keydown(function(event) {
-	console.log(event);
 	if(event.keyCode == 39){
 	    nextSlide();
 	};
