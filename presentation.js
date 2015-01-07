@@ -46,12 +46,10 @@ $(function(){
         $("#index ul").append('<li><a href="javascript:switchSlide('+(i+1)+')">'+(i+1)+'</a></li>');
     });
     $("#index").hide();
-    $("#counter").hover(function(){
+    $("#counter").click(function(){
 	$("#index").show();
-	},
-			function(){
-			});
-    $("#index").hover(function(){}, function(){$("#index").hide()});
+	});
+    $("#index").click(function(){$("#index").hide()});
     current = 1;
     if(parseInt(location.hash.substring(1))){
 	current = parseInt(location.hash.substring(1));

@@ -80,7 +80,7 @@ end.rcode-->
 <p>provides
 <ul>
 <li>Text to Date/Date Time Conversion</li>
-<li>Duration and Periods</li>
+<li>Durations and Intervals</li>
 <li>Arithmetic for Dates</li>
 </ul>
 </p>
@@ -112,6 +112,8 @@ trailing characters are ignored.
 ‘as.POSIXlt’ (so they also work for class ‘"Date"’).  Note that
 only that conversion depends on the time zone.
 </pre>
+
+<img src="images/iso_8601.png" width="60%" class="mainpic">
 </div>
 
 <div class="slide">
@@ -133,19 +135,28 @@ end.rcode-->
 day(dt); month(dt); year(dt)
 month(dt, label=TRUE)
 wday(dt, label=TRUE)
-yday(d)
+yday(d) # day of the year (1 to 366)
 end.rcode-->
-<h2>Durations and Intervals</h2>
+<h2>Durations (aka Periods) and Intervals</h2>
+<p>Durations are lengths of time:</p>
 <!--begin.rcode
+weeks(2)
+days(4)
 leave = ymd(20150601)    # go away
+leave
 ret = leave + weeks(2) + days(4)   # come back 2 weeks 4 days later
 ret
 howlong = ret - leave    # an R difftime
 howlong 
+end.rcode-->
+
+<p>Intervals are between two fixed time points:</p>
+<!--begin.rcode
 holiday = leave %--% ret # a lubridate interval
 holiday
-holiday/dweeks(1)   # how many weeks?
-leave + days(1:10)
+holiday2 = ymd(20150612) %--% ymd(20150712)
+int_overlaps(holiday, holiday2)
+lubridate::intersect(holiday, holiday2)
 end.rcode-->
 </div>
 
@@ -163,6 +174,9 @@ end.rcode-->
 
 <div class="slide">
 <h1><code>stringr</code> for sensible string handling</h1>
+<!--begin.rcode cache=FALSE
+ls("package:stringr")
+end.rcode-->
 <h2>String Length</h2>
 <!--begin.rcode
 who
@@ -207,11 +221,12 @@ end.rcode-->
 <h2>Substrings</h2>
 <!--begin.rcode
 s = "The Quick Brown Fox"
-str_sub(s,5,9)
-str_sub(s,5,9) <- "Slow" # replace with different length
+str_sub(s, 5, 9)
+str_sub(s, c(1,4,9), 12)   # vectorised
+str_sub(s, 5, 9) <- "Slow" # replace with different length
 s
-str_sub(s,-3,-1)         # negative numbers count from end
-str_sub(s,-3,-1) <- "Monkey"
+str_sub(s, -3, -1)         # negative numbers count from end
+str_sub(s,-3, -1) <- "Monkey"
 s
 end.rcode-->
 
@@ -237,12 +252,12 @@ end.rcode-->
 <!--begin.rcode makedata ,echo=FALSE,results="hide"
 # data set
 set.seed(310366)
-bpd = data.frame(Name=c("Anne","Ben","Carl","Debs","Ed"))
-bpd$Age=c(35,41,33,27,22)
+bpd = data.frame(Name=c("Anne", "Ben", "Carl", "Debs", "Ed"))
+bpd$Age=c(35, 41, 33, 27, 22)
 bpd$Start = ymd(20140301) + ddays(round(runif(5)*40))
-r5 = function(x){round(x*2,-1)/2}
+r5 = function(x){round(x*2, -1)/2}
 bpf = function(n){
-  sys=r5(runif(n,90,140));dia=r5(runif(n,60,90));paste(sys,dia,sep="/")}
+  sys=r5(runif(n, 90, 140));dia=r5(runif(n, 60, 90));paste(sys, dia, sep="/")}
 
 bpd2 = bpd
 
@@ -285,7 +300,7 @@ end.rcode-->
 <!--begin.rcode
 library(tidyr)
 stockTidy = gather(stocks, Date, Price, -Stock)
-stockTidy[1:20,]
+stockTidy[1:20, ]
 end.rcode-->
 
 <p><code>spread</code> reverses <code>gather</code> to get
@@ -552,12 +567,12 @@ and adding elements until the result is printed.</dd>
 
 <h2>Example</h2>
 <p>The <code>geom_point</code> geom uses x, y, and colour aesthetics (amongst others)</p>
-<!--begin.rcode fig.width=12, fig.height=6
+<!--begin.rcode fig.width=12, fig.height=6, cache=FALSE
 library(ggplot2)
 ggplot(bps2, aes(x=obs_date, y=sys, colour=Name)) + geom_point()
 end.rcode-->
 <p>Add a smoothing layer</p>
-<!--begin.rcode fig.width=12, fig.height=6
+<!--begin.rcode fig.width=12, fig.height=6, cache=FALSE
 ggplot(bps2, aes(x=Week, y=sys)) + geom_point() + 
    stat_smooth(method="loess")
 end.rcode-->
@@ -610,7 +625,7 @@ ggplot(bps2, aes(x=Name, y=sys, group=Name)) + geom_boxplot()
 end.rcode-->
 
 <h3>pie charts</h3>
-<!--begin.rcode
+<!--begin.rcode cache=FALSE
 ggplot(bps2, aes(size=sys)) + geom_pie()
 end.rcode-->
 
@@ -619,12 +634,12 @@ end.rcode-->
 <div class="slide">
 <h1>Saving and Theming</h1>
 <p>Layers and plots can be saved:</p>
-<!--begin.rcode
+<!--begin.rcode cache=FALSE
 g = ggplot(bps2, aes(x=sys, y=dia, col=Name)) +
     geom_point()
 end.rcode-->
 <p>nothing plots until the object is printed</p>
-<!--begin.rcode fig.width=12, fig.height=6
+<!--begin.rcode cache=FALSE
 g
 end.rcode-->
 <p>then you can add things to objects:</p>
