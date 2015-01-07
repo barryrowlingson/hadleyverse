@@ -446,9 +446,12 @@ end.rcode-->
 <h1><code>magrittr</code> + <code>tidyr</code></h1>
 <p>Remember...</p>
 <!--begin.rcode eval=FALSE
-bps = gather(bpd, Week, BP, Week1:Week4)
-bps = separate(bps, BP, c("sys","dia"), "/", convert=TRUE, extra="drop")
-bps = separate(bps, Week, c("X","Week"), 4, convert=TRUE)
+bps = separate(
+         separate(
+           gather(bpd, Week, BP, Week1:Week4),
+           BP, c("sys","dia"), "/", convert=TRUE, extra="drop"
+         ),
+         Week, c("X","Week"), 4, convert=TRUE)
 end.rcode-->
 <p>Can do with pipes:</p>
 <!--begin.rcode
@@ -466,10 +469,10 @@ end.rcode-->
 <h2>useful functions for tidy data</h2>
 <h3>Selecting - chooses <em>columns</em></h2>
 <!--begin.rcode
-bps %>% select(1,2,3) %>% head()
+bps %>% select(1,2,3) %>% head() # pipe into head 
 bps %>% select(Name, Start) %>% head()
 bps %>% select(-X) %>% head()
-bps %<>% select(-X) # note pipe operator here!
+bps %<>% select(-X) # note backpipe operator here!
 end.rcode-->
 <h3>Filtering - chooses <em>rows</em></h3>
 <!--begin.rcode
@@ -479,7 +482,8 @@ end.rcode-->
 <h3>Mutating - adding <em>columns</em></h3>
 <!--begin.rcode
 bps %>% mutate(obs_date = Start + weeks(Week-1))
-bps = bps %>% mutate(obs_date = Start + weeks(Week-1)) %>%
+# get rid of missing data:
+bps %<>% mutate(obs_date = Start + weeks(Week-1)) %>%
         filter(!is.na(sys))
 head(bps)
 end.rcode-->
@@ -502,8 +506,11 @@ bps %>% group_by(Name) %>%
 end.rcode-->
 
 <p>Having the data in a tidy format makes grouping by different
-variables easy - eg what was each person's highest systolic BP, and
-what was the highest BP measured in each week?</p>
+variables easy:
+<ul>
+<li>What was each person's highest systolic BP</li>
+<li>What was the highest BP measured in each week?</li>
+</p>
 
 <!--begin.rcode
 bps %>% group_by(Name) %>% filter(sys==max(sys))
@@ -635,16 +642,12 @@ end.rcode-->
 <h1>Saving and Theming</h1>
 <p>Layers and plots can be saved:</p>
 <!--begin.rcode cache=FALSE
-g = ggplot(bps2, aes(x=sys, y=dia, col=Name)) +
-    geom_point()
+gg = ggplot(bps2, aes(x=sys, y=dia, col=Name))
 end.rcode-->
-<p>nothing plots until the object is printed</p>
-<!--begin.rcode cache=FALSE
-g
-end.rcode-->
-<p>then you can add things to objects:</p>
+<p>nothing plots until you add geom layers, and print:</p>
 <!--begin.rcode fig.width=12, fig.height=6
-g + geom_point(aes(size=Week))
+g = gg + geom_point(aes(size=Week))
+g
 end.rcode-->
 <h2>themes</h2>
 <p>Add a <code>theme</code> function to modify a plot's appearance</p>
@@ -662,8 +665,8 @@ end.rcode-->
 <p>and even...</p>
 <img class="mainpic" src="images/xkcd.png">
 <p>inspired by <a href="http://www.xkcd.com/">XKCD comic</a></p>
-<img class="mainpic" src="images/minifigs.png">
-<img class="mainpic" src="images/decline.png">
+<img style="border: 2px solid red; padding: 1em; margin-bottom: 1em" class="mainpic" src="images/minifigs.png">
+<img style="border: 2px solid red; padding: 1em;  margin-bottom: 1em" class="mainpic" src="images/decline.png">
 </div>
 
 <div class="slide">
