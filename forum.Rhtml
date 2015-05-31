@@ -1,14 +1,18 @@
 <!--begin.rcode init,echo=FALSE,result="hide"
+# build("./hadleyverse/forum.Rhtml", "./templatr/inst/templates/pres1/","index.html",title="The Hadleyverse")
 knitr::opts_chunk$set(comment=NA, prompt=TRUE, dev="CairoPNG", cache=TRUE)
+knitr::opts_knit$set(root.dir=wd)
 op = options()$continue
 options(continue=" ")
 grDevices::X11.options(type='cairo')
+library(readr)
 library(lubridate)
 library(stringr)
 library(tidyr)
 library(dplyr)
 library(ggplot2)
 library(ggvis)
+library(rvest)
 library(testthat)
 library(devtools)
 library(testthat)
@@ -47,6 +51,8 @@ end.rcode-->
 <div class="left">
 <h1>Beginners</h1>
 <dl class="packagelist">
+<dt><code>readr</code></dt>
+<dd>Reading files</dd>
 <dt><code>lubridate</code></dt>
 <dd>Date and time handling</dd>
 <dt><code>stringr</code></dt>
@@ -66,6 +72,8 @@ end.rcode-->
 <dl class="packagelist">
 <dt><code>ggvis</code></dt>
 <dd>Web graphics</dd>
+<dt><code>rvest</code></dt>
+<dd>Web scraping</dd>
 <dt><code>devtools</code></dt>
 <dd>Package development</dd>
 <dt><code>roxygen2</code></dt>
@@ -75,6 +83,77 @@ end.rcode-->
 </dl>
 </div>
 </div>
+
+<div class="slide">
+<h1><code>readr</code></h1>
+<p>provides
+<ul>
+<li>Read/write comma-separated files</li>
+<li>Read/write space-separated files</li>
+<li>Read/write fixed-field files</li>
+</ul>
+</p>
+<h1>But....</h1>
+<p>
+Doesn't R already have:
+<ul>
+<li><code>read.csv</code></li>
+<li><code>read.table</code></li>
+<li><code>read.fwf</code></li>
+</ul>
+</p>
+
+<p>How complex are these?</p>
+<!--begin.rcode
+args(read.csv)
+args(read.table)
+end.rcode-->
+
+<!--begin.rcode
+t1 = read.csv("test2.csv")
+summary(t1)
+t1 = read.csv("test2.csv", colClass="numeric")
+end.rcode-->
+
+<p>Where's the problem?</p>
+
+</div>
+
+<div class="slide">
+<h1>With <code>readr</code></h1>
+<ul>
+<li><code>read_csv</code> for comma-separated</li>
+<li><code>read_csv2</code> for semicolon-separated</li>
+<li><code>read_tsv</code> for tab-separated</li>
+<li><code>read_delim</code> for any-other-char-separated</li>
+<li><code>read_table</code> for fixed-width table formatted files</li>
+</ul>
+
+<!--begin.rcode
+args(read_csv)
+end.rcode-->
+<p>Lets read that file with 3 numeric columns:</p>
+
+<!--begin.rcode
+t1 = read_csv("test2.csv", col_type="nnn")
+end.rcode-->
+<p>What happened?</p>
+<!--begin.rcode
+problems(t1)
+summary(t1)
+end.rcode-->
+
+<p>Also, its faster!</p>
+
+</div>
+
+<div class="slide">
+<h1>Oh, did I mention <code>readxl</code></h1>
+<p>
+This is an easy interface to read Excel spreadsheet files
+</p>
+</div>
+
 
 <div class="slide">
 <h1><code>lubridate</code></h1>

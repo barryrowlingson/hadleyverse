@@ -23,6 +23,7 @@ pre.knitr {
     color: black;
     font-weight: bold;
     margin: 0.5em 0px;
+    white-space: pre-wrap;
 }
 
 div.chunk:hover {
