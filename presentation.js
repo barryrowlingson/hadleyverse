@@ -43,7 +43,8 @@ $(function(){
     nslides = slides.length;
     slides.each(function(i, e){
 	$(e).data("slide",i+1);
-        $("#index ul").append('<li><a href="javascript:switchSlide('+(i+1)+')">'+(i+1)+'</a></li>');
+	var h1 = $(e).find("h1").html()
+        $("#index ul").append('<li><a href="javascript:switchSlide('+(i+1)+')">'+(i+1)+' '+h1+'</a></li>');
     });
     $("#index").hide();
     $("#counter").click(function(){
