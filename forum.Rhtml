@@ -154,7 +154,7 @@ end.rcode-->
 </div>
 
 <div class="slide">
-<h1>Oh, did I mention <code>readxl</code></h1>
+<h1>Oh, did I not mention <code>readxl</code>?</h1>
 <p>
 This is an easy interface to read Excel spreadsheet files
 </p>
@@ -801,7 +801,24 @@ end.rcode-->
 </div>
 
 <div class="slide">
-<h1>devtools</h1>
+<h1><code>rvest</code></h1>
+<h2>Harvest data from web pages</h2>
+<img class="mainpic" src="images/babynames.png">
+<p>
+Get the web page code, convert the first table to a data frame:
+</p>
+<!--begin.rcode
+url <- "http://www.ssa.gov/oact/babynames/index.html"
+names <- html(url) %>% html_table()
+names[[1]]
+end.rcode-->
+<p>
+Also contains functions for extracting any other data from web pages.
+</p>
+</div>
+
+<div class="slide">
+<h1><code>devtools</code></h1>
 <h2>In the old days...</h2>
 <ul>
 <li>Start R</li>

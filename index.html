@@ -276,7 +276,7 @@ details.
 </div>
 
 <div class="slide">
-<h1>Oh, did I mention <code>readxl</code></h1>
+<h1>Oh, did I not mention <code>readxl</code>?</h1>
 <p>
 This is an easy interface to read Excel spreadsheet files
 </p>
@@ -1545,7 +1545,36 @@ ggvis.getPlot("plot_id400069558").parseSpec(plot_id400069558_spec);
 </div>
 
 <div class="slide">
-<h1>devtools</h1>
+<h1><code>rvest</code></h1>
+<h2>Harvest data from web pages</h2>
+<img class="mainpic" src="images/babynames.png">
+<p>
+Get the web page code, convert the first table to a data frame:
+</p>
+<div class="chunk" id="unnamed-chunk-66"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">url</span> <span class="hl kwb">&lt;-</span> <span class="hl str">&quot;http://www.ssa.gov/oact/babynames/index.html&quot;</span>
+<span class="hl std">&gt; </span><span class="hl std">names</span> <span class="hl kwb">&lt;-</span> <span class="hl kwd">html</span><span class="hl std">(url)</span> <span class="hl opt">%&gt;%</span> <span class="hl kwd">html_table</span><span class="hl std">()</span>
+<span class="hl std">&gt; </span><span class="hl std">names[[</span><span class="hl num">1</span><span class="hl std">]]</span>
+</pre></div>
+<div class="output"><pre class="knitr r">   Rank Male name Female name
+1     1      Noah        Emma
+2     2      Liam      Olivia
+3     3     Mason      Sophia
+4     4     Jacob    Isabella
+5     5   William         Ava
+6     6     Ethan         Mia
+7     7   Michael       Emily
+8     8 Alexander     Abigail
+9     9     James     Madison
+10   10    Daniel   Charlotte
+</pre></div>
+</div></div>
+<p>
+Also contains functions for extracting any other data from web pages.
+</p>
+</div>
+
+<div class="slide">
+<h1><code>devtools</code></h1>
 <h2>In the old days...</h2>
 <ul>
 <li>Start R</li>
@@ -1660,7 +1689,7 @@ DESCRIPTION, and NAMESPACE files</li>
 </p>
 <p>The <code>testthat</code> package lets you write <em>expectations</em> as
 R expressions of what should happen:</p>
-<div class="chunk" id="unnamed-chunk-66"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">foo</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">,</span> <span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">){ a</span> <span class="hl opt">+</span> <span class="hl std">b }</span>
+<div class="chunk" id="unnamed-chunk-67"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">foo</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">,</span> <span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">){ a</span> <span class="hl opt">+</span> <span class="hl std">b }</span>
 <span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">2</span><span class="hl std">)</span>
 <span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">)</span>
 <span class="hl std">&gt; </span><span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">())</span>
@@ -1669,7 +1698,7 @@ R expressions of what should happen:</p>
 
 <p>If the expection is correct, nothing happens. Otherwise:</p>
 
-<div class="chunk" id="unnamed-chunk-67"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">)</span>
+<div class="chunk" id="unnamed-chunk-68"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">)</span>
 </pre></div>
 <div class="error"><pre class="knitr r">Error: foo(1) not equal to 3
 Mean relative difference: 0.3333333
@@ -1682,7 +1711,7 @@ Mean relative difference: 0.3333333
 
 <p>You can collect expectations into little suites:</p>
 
-<div class="chunk" id="unnamed-chunk-68"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;foo works&quot;</span><span class="hl std">, {</span>
+<div class="chunk" id="unnamed-chunk-69"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;foo works&quot;</span><span class="hl std">, {</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;add 2 numbers&quot;</span><span class="hl std">)</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;default b is 1&quot;</span><span class="hl std">)</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_error</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(),</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;need one arg&quot;</span><span class="hl std">)</span>
@@ -1694,7 +1723,7 @@ Mean relative difference: 0.3333333
 <p>Now if I change the function definition, I can see 
 what tests fail:</p>
 
-<div class="chunk" id="unnamed-chunk-69"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">foo</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl kwc">c</span><span class="hl std">=</span><span class="hl num">7</span><span class="hl std">){a</span><span class="hl opt">+</span><span class="hl std">b</span><span class="hl opt">+</span><span class="hl std">c}</span>
+<div class="chunk" id="unnamed-chunk-70"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl std">foo</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">a</span><span class="hl std">=</span><span class="hl num">1</span><span class="hl std">,</span><span class="hl kwc">b</span><span class="hl std">=</span><span class="hl num">3</span><span class="hl std">,</span><span class="hl kwc">c</span><span class="hl std">=</span><span class="hl num">7</span><span class="hl std">){a</span><span class="hl opt">+</span><span class="hl std">b</span><span class="hl opt">+</span><span class="hl std">c}</span>
 <span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;when tests fail&quot;</span><span class="hl std">, {</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">),</span> <span class="hl num">3</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;add 2 numbers&quot;</span><span class="hl std">)</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_equal</span><span class="hl std">(</span><span class="hl kwd">foo</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">),</span> <span class="hl num">2</span><span class="hl std">,</span> <span class="hl kwc">info</span><span class="hl std">=</span><span class="hl str">&quot;default b is 1&quot;</span><span class="hl std">)</span>
@@ -1725,7 +1754,7 @@ by <code>devtools</code></p>
 
 <div class="slide">
 <h1>Test data as well as code</h1>
-<div class="chunk" id="unnamed-chunk-70"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;BP data okay&quot;</span><span class="hl std">, {</span>
+<div class="chunk" id="unnamed-chunk-71"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">&gt; </span><span class="hl kwd">test_that</span><span class="hl std">(</span><span class="hl str">&quot;BP data okay&quot;</span><span class="hl std">, {</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">is.factor</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">Name))</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">is.numeric</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">sys))</span>
 <span class="hl std"> </span>  <span class="hl kwd">expect_true</span><span class="hl std">(</span><span class="hl kwd">is.numeric</span><span class="hl std">(bps2</span><span class="hl opt">$</span><span class="hl std">dia))</span>
