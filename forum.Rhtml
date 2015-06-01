@@ -16,6 +16,11 @@ library(rvest)
 library(testthat)
 library(devtools)
 library(testthat)
+set.seed(310366)
+tdat = data.frame(a=sample(10,100,replace=TRUE),b=runif(100),c=rnorm(100))
+tdat$a[sample(100,3)]="NULL"
+tdat$c[sample(100,1)]="<ERR:9999>"
+write.csv(tdat,"tdat.csv",row.names=FALSE,quote=FALSE)
 end.rcode-->
 
 <div class="slide" id="title">
@@ -110,9 +115,9 @@ args(read.table)
 end.rcode-->
 
 <!--begin.rcode
-t1 = read.csv("test2.csv")
+t1 = read.csv("tdat.csv")
 summary(t1)
-t1 = read.csv("test2.csv", colClass="numeric")
+t1 = read.csv("tdat.csv", colClass="numeric")
 end.rcode-->
 
 <p>Where's the problem?</p>
@@ -135,12 +140,13 @@ end.rcode-->
 <p>Lets read that file with 3 numeric columns:</p>
 
 <!--begin.rcode
-t1 = read_csv("test2.csv", col_type="nnn")
+tread = read_csv("tdat.csv", col_type="idd")
 end.rcode-->
 <p>What happened?</p>
 <!--begin.rcode
-problems(t1)
-summary(t1)
+problems(tread)
+tread[problems(tread)$row,]
+summary(tread)
 end.rcode-->
 
 <p>Also, its faster!</p>
@@ -991,6 +997,6 @@ end.rcode-->
 
 
 <!--begin.rcode endit,echo=FALSE,result="hide", cache=FALSE
-save(list=c("bps","bpd","bpd2","bps2"),file="/tmp/run.RData")
+#save(list=c("bps","bpd","bpd2","bps2"),file="/tmp/run.RData")
 options(continue=op)
 end.rcode-->
