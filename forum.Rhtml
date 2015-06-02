@@ -16,6 +16,7 @@ library(rvest)
 library(testthat)
 library(devtools)
 library(testthat)
+library(magrittr)
 set.seed(310366)
 tdat = data.frame(a=sample(10,100,replace=TRUE),b=runif(100),c=rnorm(100))
 tdat$a[sample(100,3)]="NULL"
@@ -351,7 +352,7 @@ bpd$Week1=bpf(5)
 bpd$Week2=bpf(5)
 bpd$Week3=bpf(5); bpd$Week3[3]=NA
 bpd$Week4=bpf(5); bpd$Week4[3:4]=NA
-
+source("makebp.R")
 bpd2=cbind(bpd2, makebpdf(52,5))
 
 bps2 = gather(bpd2, Week, BP, Week1:Week52) %>%
